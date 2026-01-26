@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-public class ClickSlime : MonoBehaviour
+public class ClickSlime : MonoBehaviour, Clickable
 {
     [SerializeField] private string _name;
 
-    public bool OnClick()
+    public bool OnClick(ClickInfo clickInfo)
     {
 #if UNITY_EDITOR
         Debug.Log($"{_name}에게 먹이를 줬다!");

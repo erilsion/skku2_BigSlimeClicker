@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 115550111}
   - component: {fileID: 115550113}
   - component: {fileID: 115550114}
+  - component: {fileID: 115550115}
   m_Layer: 6
   m_Name: ClickSlime
   m_TagString: Untagged
@@ -224,7 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f426ff0c613c01b42a2b6d31e5ac2d6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClickSlime
-  _name: Slime
+  _name: "\uBABD\uAE00\uC774"
 --- !u!58 &115550114
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -261,6 +262,21 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1.4375
+--- !u!114 &115550115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115550110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6db295fbc135745adeff1382a0455d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Clicker
+  ClickLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &252686495
 GameObject:
   m_ObjectHideFlags: 0
