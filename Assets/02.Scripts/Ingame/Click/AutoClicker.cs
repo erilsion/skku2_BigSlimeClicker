@@ -4,7 +4,6 @@ using UnityEngine;
 public class AutoClicker : MonoBehaviour
 {
     // 역할: 정해진 시간 간격마다 Clickable한 대상을 히트
-    [SerializeField] private int _damage;
     [SerializeField] private float _interval;
     private float _timer;
 
@@ -21,11 +20,11 @@ public class AutoClicker : MonoBehaviour
             foreach (GameObject clickable in clickables)
             { 
                 // 3. 클릭한다.
-                Clickable clickableScript = clickable.GetComponent<Clickable>();
+                IClickable clickableScript = clickable.GetComponent<IClickable>();
                 ClickInfo clickInfo = new ClickInfo
                 {
                     ClickType = EClickType.Auto,
-                    Damage = _damage
+                    Damage = GameManager.Instance.AutoDamage
                 };
             }
         }

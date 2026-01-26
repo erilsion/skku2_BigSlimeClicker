@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ClickSlime : MonoBehaviour, Clickable
+public class ClickSlime : MonoBehaviour, IClickable
 {
     [SerializeField] private string _name;
 
@@ -15,8 +15,11 @@ public class ClickSlime : MonoBehaviour, Clickable
         // 한 클래스는 하나의 역할 / 책임만 가지자
         // ClickSlime: 슬라임(타겟)에 대한 중앙 관리자, 소통 창구 (객체지향 상호작용)
         // 1. 클릭 이펙트
-        GetComponent<ScaleTweeningFeedback>().PlayTween();
-        GetComponent<ColorFlashFeedback>().PlayFlash();
+        var feedbacks = GetComponentsInChildren<IFeedback>();
+        foreach (var feedback in feedbacks)
+        {
+            feedback.Play(clickInfo);
+        }
         // 2. 캐릭터 애니메이션 (있으면)
         // 3. 스케일 트위닝
         // 4. 데미지 플로팅

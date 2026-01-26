@@ -4,7 +4,6 @@ public class Clicker : MonoBehaviour
 {
     // 목적: 타겟을 클릭하면 클릭 판정이 되게 하고 싶다.
     public LayerMask ClickLayer;
-    [SerializeField] private int _damage = 10;
 
     private void Update()
     {
@@ -29,14 +28,14 @@ public class Clicker : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(worldPosition, Vector2.zero);
         if (hit == true)
         {
-            Clickable clickable = hit.collider.GetComponent<Clickable>();
+            IClickable clickable = hit.collider.GetComponent<IClickable>();
             // 누가 클릭했는지                (ManualClick, AutoClick)
             // 어느 정도의 강도로 클릭했는지  (int, float)
 
             ClickInfo clickInfo = new ClickInfo
             {
                 ClickType = EClickType.Manual,
-                Damage = _damage,
+                Damage = GameManager.Instance.ManualDamage,
                 Position = hit.point
             };
 
