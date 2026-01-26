@@ -119,6 +119,52 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &72883080
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 72883082}
+  - component: {fileID: 72883081}
+  m_Layer: 0
+  m_Name: DamagePool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &72883081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72883080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb18a66c298c3d240a8542ad73539d12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFloaterPool
+  _prefab: {fileID: 6111044930115145903, guid: 3b33797a94967044b88dc42ee2de5504, type: 3}
+  _prewarmCount: 50
+--- !u!4 &72883082
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72883080}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &186770795
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -174,7 +220,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6531531759509754581, guid: 56970540f1068db4b822050cd45e7153, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 958319076}
   m_SourcePrefab: {fileID: 100100000, guid: 56970540f1068db4b822050cd45e7153, type: 3}
 --- !u!1 &252686495
 GameObject:
@@ -397,6 +446,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &958319068 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6531531759509754581, guid: 56970540f1068db4b822050cd45e7153, type: 3}
+  m_PrefabInstance: {fileID: 186770795}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &958319076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958319068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bba7d40868eb82c4d9614db78c2407a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFloaterFeedback
+  _pool: {fileID: 72883081}
+  _randomOffset: {x: 0.25, y: 0.15}
 --- !u!1 &1465994669
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,3 +520,4 @@ SceneRoots:
   - {fileID: 576764080}
   - {fileID: 186770795}
   - {fileID: 1465994671}
+  - {fileID: 72883082}
