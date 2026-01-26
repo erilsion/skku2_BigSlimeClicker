@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 8373715204955664211}
   - component: {fileID: 4846199131699915475}
   - component: {fileID: 4927318141745915798}
+  - component: {fileID: 1273679396521529678}
   m_Layer: 6
   m_Name: ClickSlime
-  m_TagString: Untagged
+  m_TagString: Clickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -173,3 +174,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScaleTweeningFeedback
   _owner: {fileID: 3481354016896210048}
+--- !u!114 &1273679396521529678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531531759509754581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1f1167b549e1d340865abd752c45609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorFlashFeedback
+  _spriteRenderer: {fileID: 135087985195598682}
+  _flashColor: {r: 0, g: 1, b: 1, a: 1}

@@ -174,10 +174,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6531531759509754581, guid: 56970540f1068db4b822050cd45e7153, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 958319069}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56970540f1068db4b822050cd45e7153, type: 3}
 --- !u!1 &252686495
 GameObject:
@@ -400,30 +397,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &958319068 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6531531759509754581, guid: 56970540f1068db4b822050cd45e7153, type: 3}
-  m_PrefabInstance: {fileID: 186770795}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &958319069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958319068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1f1167b549e1d340865abd752c45609, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorFlashFeedback
-  _spriteRenderer: {fileID: 958319074}
-  _flashColor: {r: 0, g: 1, b: 1, a: 1}
---- !u!212 &958319074 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 135087985195598682, guid: 56970540f1068db4b822050cd45e7153, type: 3}
-  m_PrefabInstance: {fileID: 186770795}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
