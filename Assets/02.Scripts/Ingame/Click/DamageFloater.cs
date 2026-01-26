@@ -12,7 +12,7 @@ public class DamageFloater : MonoBehaviour
     [SerializeField] private float _scalePunch = 1.15f;
     [SerializeField] private float _scaleReturnSpeed = 12f;
 
-    private float _t;
+    private float _timer;
     private Vector3 _baseScale;
 
     private DamageFloaterPool _pool;
@@ -23,7 +23,7 @@ public class DamageFloater : MonoBehaviour
     {
         if (_text != null) _text.text = damage.ToString();
 
-        _t = 0f;
+        _timer = 0f;
         _baseScale = transform.localScale;
         transform.localScale = _baseScale * _scalePunch;
 
@@ -38,20 +38,20 @@ public class DamageFloater : MonoBehaviour
 
     private void Update()
     {
-        _t += Time.deltaTime;
+        _timer += Time.deltaTime;
 
         transform.position += _moveVelocity * Time.deltaTime;
         transform.localScale = Vector3.Lerp(transform.localScale, _baseScale, _scaleReturnSpeed * Time.deltaTime);
 
         if (_text != null)
         {
-            float a = Mathf.Lerp(1f, 0f, _t / _lifeTime);
+            float a = Mathf.Lerp(1f, 0f, _timer / _lifeTime);
             var c = _text.color;
             c.a = a;
             _text.color = c;
         }
 
-        if (_t >= _lifeTime)
+        if (_timer >= _lifeTime)
         {
             if (_pool != null) _pool.Release(this);
             else gameObject.SetActive(false);

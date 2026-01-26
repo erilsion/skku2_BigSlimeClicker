@@ -28,10 +28,16 @@ public class ColorFlashFeedback : MonoBehaviour, IFeedback
 
     private IEnumerator PlayFlash_Coroutine()
     {
-        _spriteRenderer.color = _flashColor;
+        if (_spriteRenderer != null)
+        {
+            _spriteRenderer.color = _flashColor;
+        }
 
         yield return new WaitForSeconds(_flashIntensity);
 
-        _spriteRenderer.color = Color.white;
+        if (_spriteRenderer != null)
+        {
+            _spriteRenderer.color = Color.white;
+        }
     }
 }

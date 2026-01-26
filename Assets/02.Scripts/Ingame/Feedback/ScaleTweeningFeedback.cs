@@ -11,11 +11,6 @@ public class ScaleTweeningFeedback : MonoBehaviour, IFeedback
     private float _stayDuration = 0.04f;
     private float _endDuration = 0.24f;
 
-    private void Awake()
-    {
-        _owner = GetComponent<ClickSlime>();
-    }
-
     public void Play(ClickInfo clickInfo)
     {
         PlayTween();
