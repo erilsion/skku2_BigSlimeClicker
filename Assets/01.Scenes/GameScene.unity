@@ -173,6 +173,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 135087985195598682, guid: 56970540f1068db4b822050cd45e7153, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4242427459263826689, guid: 56970540f1068db4b822050cd45e7153, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -213,6 +217,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4260996832823591806, guid: 56970540f1068db4b822050cd45e7153, type: 3}
+      propertyPath: _pool
+      value: 
+      objectReference: {fileID: 72883081}
     - target: {fileID: 6531531759509754581, guid: 56970540f1068db4b822050cd45e7153, type: 3}
       propertyPath: m_Name
       value: ClickSlime
@@ -220,10 +228,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6531531759509754581, guid: 56970540f1068db4b822050cd45e7153, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 958319076}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56970540f1068db4b822050cd45e7153, type: 3}
 --- !u!1 &252686495
 GameObject:
@@ -446,25 +451,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &958319068 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6531531759509754581, guid: 56970540f1068db4b822050cd45e7153, type: 3}
-  m_PrefabInstance: {fileID: 186770795}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &958319076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958319068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bba7d40868eb82c4d9614db78c2407a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DamageFloaterFeedback
-  _pool: {fileID: 72883081}
-  _randomOffset: {x: 0.25, y: 0.15}
 --- !u!1 &1465994669
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,6 +461,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1465994671}
   - component: {fileID: 1465994670}
+  - component: {fileID: 1465994673}
+  - component: {fileID: 1465994672}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -512,6 +500,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1465994672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465994669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5efafc25b88c4a1408ee935882c04aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PotionStock
+--- !u!114 &1465994673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465994669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815b0e0569d365448815b60972f1646e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageCalculation
+  _manualBase: 10
+  _autoBase: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
