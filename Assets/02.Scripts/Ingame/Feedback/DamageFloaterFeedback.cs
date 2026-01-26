@@ -2,10 +2,11 @@
 
 public class DamageFloaterFeedback : MonoBehaviour, IFeedback
 {
-    [Header("Pool")]
+    [Header("풀링 옵션")]
     [SerializeField] private DamageFloaterPool _pool;
+    [SerializeField] private Transform _poolRoot;
 
-    [Header("Spawn Offset")]
+    [Header("스폰 오프셋")]
     [SerializeField] private Vector2 _randomOffset = new(0.25f, 0.15f);
 
     private bool _init;
@@ -15,8 +16,16 @@ public class DamageFloaterFeedback : MonoBehaviour, IFeedback
         // 풀 루트는 이 오브젝트 밑으로 정리한다.
         if (_pool != null)
         {
-            _pool.Initialize(transform);
-            _init = true;
+            if (_poolRoot != null)
+            {
+                _pool.Initialize(_poolRoot);
+                _init = true;
+            }
+            else
+            {
+                _pool.Initialize(transform);
+                _init = true;
+            }
         }
     }
 

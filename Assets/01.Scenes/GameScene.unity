@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageFloaterPool
   _prefab: {fileID: 6111044930115145903, guid: 3b33797a94967044b88dc42ee2de5504, type: 3}
-  _prewarmCount: 50
+  _damageTextCount: 30
 --- !u!4 &72883082
 Transform:
   m_ObjectHideFlags: 0
@@ -221,6 +221,10 @@ PrefabInstance:
       propertyPath: _pool
       value: 
       objectReference: {fileID: 72883081}
+    - target: {fileID: 4260996832823591806, guid: 56970540f1068db4b822050cd45e7153, type: 3}
+      propertyPath: _poolRoot
+      value: 
+      objectReference: {fileID: 72883082}
     - target: {fileID: 6531531759509754581, guid: 56970540f1068db4b822050cd45e7153, type: 3}
       propertyPath: m_Name
       value: ClickSlime

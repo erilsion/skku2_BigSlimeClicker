@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class DamageFloaterPool : MonoBehaviour
 {
     [SerializeField] private DamageFloater _prefab;
-    [SerializeField] private int _prewarmCount = 50;
+    [SerializeField] private int _damageTextCount = 30;
 
     private readonly Queue<DamageFloater> _queue = new();
     private Transform _root;
@@ -12,14 +12,20 @@ public class DamageFloaterPool : MonoBehaviour
 
     public void Initialize(Transform root)
     {
-        if (_initialized) return;
+        if (_initialized) 
+        {
+            return;
+        }
         _initialized = true;
 
         _root = root;
 
-        if (_prefab == null) return;
+        if (_prefab == null)
+        {
+            return;
+        }
 
-        for (int i = 0; i < _prewarmCount; i++)
+        for (int i = 0; i < _damageTextCount; i++)
         {
             var item = CreateNew();
             Release(item);
