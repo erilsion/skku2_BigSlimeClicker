@@ -4,6 +4,7 @@ public class Clicker : MonoBehaviour
 {
     // 목적: 타겟을 클릭하면 클릭 판정이 되게 하고 싶다.
     public LayerMask ClickLayer;
+    [SerializeField] private int _damage = 10;
 
     private void Update()
     {
@@ -35,7 +36,7 @@ public class Clicker : MonoBehaviour
             ClickInfo clickInfo = new ClickInfo
             {
                 ClickType = EClickType.Manual,
-                Damage = 10
+                Damage = _damage
             };
 
             clickable?.OnClick(clickInfo);
