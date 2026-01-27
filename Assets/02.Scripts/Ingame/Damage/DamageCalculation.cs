@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class DamageCalculation : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class DamageCalculation : MonoBehaviour
     // 업그레이드 시 사용하는 정보이다.
     public double ManualBonus { get; private set; }
     public double AutoBonus { get; private set; }
+
+    public event Action OnBonusChanged;
 
     private void Awake()
     {
@@ -25,6 +28,15 @@ public class DamageCalculation : MonoBehaviour
     public double GetManualDamage() => _manualBase + ManualBonus;
     public double GetAutoDamage() => _autoBase + AutoBonus;
 
-    public void UpgradeManual(double plus) => ManualBonus += plus;
-    public void UpgradeAuto(double plus) => AutoBonus += plus;
+    public void UpgradeManual(double plus)
+    {
+        ManualBonus += plus;
+        OnBonusChanged?.Invoke();
+    }
+
+    public void UpgradeAuto(double plus)
+    {
+        AutoBonus += plus;
+        OnBonusChanged?.Invoke();
+    }
 }

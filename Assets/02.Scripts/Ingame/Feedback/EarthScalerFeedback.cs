@@ -25,10 +25,10 @@ public class EarthScalerFeedback : MonoBehaviour
     [Header("트윈")]
     [SerializeField] private float _tweenDuration = 0.3f;
 
-    private float _shakeDuration = 0.15f;
-    private float _shakeX = 0.12f;
-    private float _shakeY = 0.08f;
-    private int _shakeVibration = 12;
+    private float _shakeDuration = 0.12f;
+    private float _shakeX = 0.06f;
+    private float _shakeY = 0.04f;
+    private int _shakeVibration = 8;
     private float _shakeRandomDegree = 90f;
 
     private Tween _tween;
