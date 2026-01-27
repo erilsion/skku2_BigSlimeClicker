@@ -603,7 +603,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6105078740582965373, guid: bfbb9ee41f006814c96ce5b7aae7e5ed, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 309.32
       objectReference: {fileID: 0}
     - target: {fileID: 6105078740582965373, guid: bfbb9ee41f006814c96ce5b7aae7e5ed, type: 3}
       propertyPath: m_AnchoredPosition.x
