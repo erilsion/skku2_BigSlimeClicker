@@ -6,7 +6,7 @@ using Lean.Pool;
 public class DamageFloater : MonoBehaviour
 {
     [Header("텍스트")]
-    [SerializeField] private TMP_Text _text;
+    [SerializeField] private TMP_Text _damagetext;
 
     [Header("모션")]
     [SerializeField] private Vector3 _moveVelocity = new(0f, 1.2f, 0f);
@@ -21,20 +21,20 @@ public class DamageFloater : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        if (_text != null)
+        if (_damagetext != null)
         {
-            _text.text = damage.ToString();
+            _damagetext.text = damage.ToString();
         }
 
         // 초기 스케일 값을 세팅한다.
         _baseScale = transform.localScale;
         transform.localScale = _baseScale * _scalePunch;
 
-        if (_text != null)
+        if (_damagetext != null)
         {
-            var color = _text.color;
+            var color = _damagetext.color;
             color.a = 1f;
-            _text.color = color;
+            _damagetext.color = color;
         }
 
         // 이미 돌고 있던 코루틴이 있으면 끊고 새로 시작한다.
@@ -57,12 +57,12 @@ public class DamageFloater : MonoBehaviour
             transform.localScale = Vector3.Lerp(transform.localScale, _baseScale, _scaleReturnSpeed * Time.deltaTime);
 
             // 효과를 위해 알파값 변화를 준다.
-            if (_text != null)
+            if (_damagetext != null)
             {
                 float a = Mathf.Lerp(1f, 0f, timer / _lifeTime);
-                var c = _text.color;
+                var c = _damagetext.color;
                 c.a = a;
-                _text.color = c;
+                _damagetext.color = c;
             }
 
             yield return null;

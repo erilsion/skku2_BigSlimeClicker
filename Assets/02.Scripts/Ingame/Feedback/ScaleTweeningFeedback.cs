@@ -27,5 +27,4 @@ public class ScaleTweeningFeedback : MonoBehaviour, IFeedback
         sequence.AppendInterval(_stayDuration);
         sequence.Append(transform.DOScale(Vector2.one, _endDuration).SetEase(Ease.OutElastic));
     }
-
 }

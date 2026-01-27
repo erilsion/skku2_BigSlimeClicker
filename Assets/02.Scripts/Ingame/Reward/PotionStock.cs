@@ -16,11 +16,16 @@ public class PotionStock : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void Add(double amount)
     {
         if (amount <= 0)
+        {
+            return;
+        }
+        if (double.IsNaN(amount) || double.IsInfinity(amount))
         {
             return;
         }
@@ -34,12 +39,18 @@ public class PotionStock : MonoBehaviour
         {
             return true;
         }
-        if (Potion < amount) 
+        if (double.IsNaN(amount) || double.IsInfinity(amount) || Potion < amount) 
         {
             return false;
         }
         Potion -= amount;
         OnPotionChanged?.Invoke(Potion);
         return true;
+    }
+
+    // 현재 값을 강제로 갱신할 때 사용한다.
+    public void NotifyChanged()
+    {
+        OnPotionChanged?.Invoke(Potion);
     }
 }
