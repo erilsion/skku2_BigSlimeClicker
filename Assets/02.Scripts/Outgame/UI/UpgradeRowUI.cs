@@ -78,7 +78,10 @@ public class UpgradeRowUI : MonoBehaviour
         if (_definition == null || UpgradeManager.Instance == null || PotionStock.Instance == null)
         {
             // 데이터가 없으면 버튼을 잠근다.
-            if (_buyButton != null) _buyButton.interactable = false;
+            if (_buyButton != null)
+            {
+                _buyButton.interactable = false;
+            }
             return;
         }
 
