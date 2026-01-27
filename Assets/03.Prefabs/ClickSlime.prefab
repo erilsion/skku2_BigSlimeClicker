@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 4260996832823591806}
   - component: {fileID: 7776144975028038639}
   - component: {fileID: 2049260218986895254}
+  - component: {fileID: 4053650242667767145}
+  - component: {fileID: 3467306549201240760}
   m_Layer: 6
   m_Name: ClickSlime
   m_TagString: Clickable
@@ -165,9 +167,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bba7d40868eb82c4d9614db78c2407a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageFloaterFeedback
-  _pool: {fileID: 0}
-  _poolRoot: {fileID: 0}
-  _randomOffset: {x: 0.25, y: 0.15}
 --- !u!95 &7776144975028038639
 Animator:
   serializedVersion: 7
@@ -224,6 +223,37 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.06}
-  m_Size: {x: 3.8, y: 3}
+  m_Offset: {x: 0, y: -0.1}
+  m_Size: {x: 4.4, y: 3.6}
   m_Direction: 1
+--- !u!114 &4053650242667767145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531531759509754581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9107b20253697e047a61d3b5d003da16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CurrencyRewardFeedback
+--- !u!114 &3467306549201240760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531531759509754581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afdc70c24f2555546831103af92ed972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EarthScalerFeedback
+  _target: {fileID: 0}
+  _maxPotion: 1000000
+  _maxScale: 1
+  _minScale: 0.001
+  _startX: 16.6
+  _endX: 4.8
+  _tweenDuration: 0.3
