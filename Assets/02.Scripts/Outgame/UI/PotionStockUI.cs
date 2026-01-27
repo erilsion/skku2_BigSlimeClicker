@@ -85,13 +85,13 @@ public class PotionStockUI : MonoBehaviour
         _stockText.text = potion.FormattedString();
     }
 
-    public void PlayTween()
+public void PlayTween()
     {
         _stockTextParent.transform.DOKill();
 
         Sequence sequence = DOTween.Sequence();
 
-        sequence.Append(_stockTextParent.transform.DOScale(new Vector2(_startPressX, _startPressY), _pressedDuration).SetEase(Ease.OutQuad));
-        sequence.Append(_stockTextParent.transform.DOScale(Vector2.one, _endDuration).SetEase(Ease.OutElastic));
+        sequence.Append(_stockTextParent.transform.DOScale(new Vector3(_startPressX, _startPressY, 1f), _pressedDuration).SetEase(Ease.OutQuad));
+        sequence.Append(_stockTextParent.transform.DOScale(Vector3.one, _endDuration).SetEase(Ease.OutElastic));
     }
 }
