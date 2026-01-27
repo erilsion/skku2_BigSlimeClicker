@@ -13,7 +13,10 @@ public class SoundFeedback : MonoBehaviour, IFeedback
         {
             return;
         }
-        _audio.pitch = Random.Range(_lowPitch, _highPitch);
-        _audio.Play();
+        if (_audio != null)
+        {
+            _audio.pitch = Random.Range(_lowPitch, _highPitch);
+            _audio.Play();
+        }
     }
 }

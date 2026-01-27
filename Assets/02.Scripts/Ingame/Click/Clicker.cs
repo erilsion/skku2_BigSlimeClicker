@@ -25,7 +25,7 @@ public class Clicker : MonoBehaviour
         // 3. 타겟이 맞다면 클릭한다.
         // 3-1. 마우스의 좌표가 타겟 위치와 비교했을 때 근처에 있는지 체크
         // 3-2. 마우스 좌표로 가상의 레이저를 쏴서, 그 레이저가 타겟과 충돌했는지 체크 (보통 이걸로 함)
-        RaycastHit2D hit = Physics2D.Raycast(worldPosition, Vector2.zero);
+        RaycastHit2D hit = Physics2D.Raycast(worldPosition, Vector2.zero, 0f, ClickLayer);
         if (hit == true)
         {
             IClickable clickable = hit.collider.GetComponent<IClickable>();
@@ -35,7 +35,7 @@ public class Clicker : MonoBehaviour
             ClickInfo clickInfo = new ClickInfo
             {
                 ClickType = EClickType.Manual,
-                Damage = GameManager.Instance.ManualDamage,
+                Damage = DamageCalculation.Instance.GetManualDamage(),
                 Position = hit.point
             };
 

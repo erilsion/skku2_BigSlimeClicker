@@ -11,10 +11,12 @@ GameObject:
   - component: {fileID: 4242427459263826689}
   - component: {fileID: 135087985195598682}
   - component: {fileID: 3481354016896210048}
-  - component: {fileID: 8373715204955664211}
   - component: {fileID: 4846199131699915475}
   - component: {fileID: 4927318141745915798}
   - component: {fileID: 1273679396521529678}
+  - component: {fileID: 4260996832823591806}
+  - component: {fileID: 7776144975028038639}
+  - component: {fileID: 2049260218986895254}
   m_Layer: 6
   m_Name: ClickSlime
   m_TagString: Clickable
@@ -109,8 +111,87 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClickSlime
   _name: "\uBABD\uAE00\uC774"
---- !u!58 &8373715204955664211
-CircleCollider2D:
+--- !u!114 &4846199131699915475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531531759509754581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6db295fbc135745adeff1382a0455d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Clicker
+  ClickLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &4927318141745915798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531531759509754581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef427e89db1838e4ab9dc343973b3de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScaleTweeningFeedback
+  _owner: {fileID: 3481354016896210048}
+--- !u!114 &1273679396521529678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531531759509754581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1f1167b549e1d340865abd752c45609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorFlashFeedback
+  _spriteRenderer: {fileID: 135087985195598682}
+  _flashColor: {r: 0, g: 1, b: 1, a: 1}
+--- !u!114 &4260996832823591806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531531759509754581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bba7d40868eb82c4d9614db78c2407a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFloaterFeedback
+  _pool: {fileID: 0}
+  _poolRoot: {fileID: 0}
+  _randomOffset: {x: 0.25, y: 0.15}
+--- !u!95 &7776144975028038639
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531531759509754581}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dcddb9852ecc9a548855e0e8c82e80c1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!70 &2049260218986895254
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -143,48 +224,6 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 1.4375
---- !u!114 &4846199131699915475
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6531531759509754581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb6db295fbc135745adeff1382a0455d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Clicker
-  ClickLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _damage: 10
---- !u!114 &4927318141745915798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6531531759509754581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef427e89db1838e4ab9dc343973b3de1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ScaleTweeningFeedback
-  _owner: {fileID: 3481354016896210048}
---- !u!114 &1273679396521529678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6531531759509754581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1f1167b549e1d340865abd752c45609, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorFlashFeedback
-  _spriteRenderer: {fileID: 135087985195598682}
-  _flashColor: {r: 0, g: 1, b: 1, a: 1}
+  m_Offset: {x: 0, y: -0.06}
+  m_Size: {x: 3.8, y: 3}
+  m_Direction: 1

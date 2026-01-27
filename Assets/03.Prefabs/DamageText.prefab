@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3214794827743616011, guid: 91cddf127c03460499b3d3fdb7297d7f, type: 2}
+  - {fileID: -2816077679043017483, guid: 0e22dc4d3bc19d24aa632a2298a57be3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,8 +109,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 111111
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 91cddf127c03460499b3d3fdb7297d7f, type: 2}
-  m_sharedMaterial: {fileID: -3214794827743616011, guid: 91cddf127c03460499b3d3fdb7297d7f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0e22dc4d3bc19d24aa632a2298a57be3, type: 2}
+  m_sharedMaterial: {fileID: -2816077679043017483, guid: 0e22dc4d3bc19d24aa632a2298a57be3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2762a50134105d5488a61342b03a5f2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageFloater
-  _text: {fileID: 622031073557417223}
+  _damagetext: {fileID: 622031073557417223}
   _moveVelocity: {x: 0, y: 1.2, z: 0}
   _lifeTime: 0.6
   _scalePunch: 1.15
