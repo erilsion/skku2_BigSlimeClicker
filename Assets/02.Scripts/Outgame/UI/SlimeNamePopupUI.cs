@@ -5,20 +5,19 @@ using TMPro;
 
 public class SlimeNamePopupUI : MonoBehaviour
 {
-    [Header("Refs")]
+    [Header("UI")]
     [SerializeField] private CanvasGroup _group;       // 팝업 전체 (딤 포함이면 전체에)
     [SerializeField] private RectTransform _panel;     // 실제 패널
     [SerializeField] private TMP_InputField _input;
     [SerializeField] private Button _confirmButton;
-    [SerializeField] private Button _closeButton;      // 선택(스킵 허용시)
     [SerializeField] private TMP_Text _errorText;      // 선택(없으면 null 가능)
 
-    [Header("Tween")]
+    [Header("트윈")]
     [SerializeField] private float _openDuration = 0.22f;
     [SerializeField] private float _closeDuration = 0.16f;
     [SerializeField] private float _startScale = 0.86f;
 
-    private Sequence _seq;
+    private Sequence _sequence;
     private bool _isOpen;
 
     private void Reset()
@@ -32,10 +31,6 @@ public class SlimeNamePopupUI : MonoBehaviour
         if (_confirmButton != null)
         {
             _confirmButton.onClick.AddListener(Submit);
-        }
-        if (_closeButton != null)
-        {
-            _closeButton.onClick.AddListener(Close);
         }
         HideImmediate();
     }
@@ -52,11 +47,6 @@ public class SlimeNamePopupUI : MonoBehaviour
         {
             Submit();
         }
-        // ESC로 닫을 수 있다.
-        if (_closeButton != null && Input.GetKeyDown(KeyCode.Escape))
-        {
-            Close();
-        }
     }
 
     public void Open(string prefill = "")
@@ -64,7 +54,10 @@ public class SlimeNamePopupUI : MonoBehaviour
         _isOpen = true;
 
         gameObject.SetActive(true);
-        if (_errorText != null) _errorText.gameObject.SetActive(false);
+        if (_errorText != null)
+        {
+            _errorText.gameObject.SetActive(false);
+        }
 
         if (_input != null)
         {
@@ -73,7 +66,7 @@ public class SlimeNamePopupUI : MonoBehaviour
             _input.Select();
         }
 
-        _seq?.Kill(true);
+        _sequence?.Kill(true);
 
         _group.alpha = 0f;
         _group.blocksRaycasts = true;
@@ -81,32 +74,38 @@ public class SlimeNamePopupUI : MonoBehaviour
 
         _panel.localScale = Vector3.one * _startScale;
 
-        _seq = DOTween.Sequence().SetUpdate(true);
-        _seq.Append(_group.DOFade(1f, _openDuration).SetEase(Ease.OutQuad));
-        _seq.Join(_panel.DOScale(1f, _openDuration).SetEase(Ease.OutBack));
+        _sequence = DOTween.Sequence().SetUpdate(true);
+        _sequence.Append(_group.DOFade(1f, _openDuration).SetEase(Ease.OutQuad));
+        _sequence.Join(_panel.DOScale(1f, _openDuration).SetEase(Ease.OutBack));
     }
 
     public void Close()
     {
-        if (!_isOpen) return;
+        if (!_isOpen)
+        {
+            return;
+        }
         _isOpen = false;
 
-        _seq?.Kill(true);
+        _sequence?.Kill(true);
 
         _group.blocksRaycasts = false;
         _group.interactable = false;
 
-        _seq = DOTween.Sequence().SetUpdate(true);
-        _seq.Append(_group.DOFade(0f, _closeDuration).SetEase(Ease.OutQuad));
-        _seq.Join(_panel.DOScale(_startScale, _closeDuration).SetEase(Ease.InQuad));
-        _seq.OnComplete(() => gameObject.SetActive(false));
+        _sequence = DOTween.Sequence().SetUpdate(true);
+        _sequence.Append(_group.DOFade(0f, _closeDuration).SetEase(Ease.OutQuad));
+        _sequence.Join(_panel.DOScale(_startScale, _closeDuration).SetEase(Ease.InQuad));
+        _sequence.OnComplete(() => gameObject.SetActive(false));
     }
 
     private void HideImmediate()
     {
         _isOpen = false;
 
-        if (_seq != null) _seq.Kill(true);
+        if (_sequence != null)
+        {
+            _sequence.Kill(true);
+        }
 
         if (_group != null)
         {
@@ -116,8 +115,9 @@ public class SlimeNamePopupUI : MonoBehaviour
         }
 
         if (_panel != null)
+        {
             _panel.localScale = Vector3.one;
-
+        }
         gameObject.SetActive(false);
     }
 
@@ -156,7 +156,10 @@ public class SlimeNamePopupUI : MonoBehaviour
 
     private void ShowError(string msg)
     {
-        if (_errorText == null) return;
+        if (_errorText == null)
+        {
+            return;
+        }
 
         _errorText.text = msg;
         _errorText.gameObject.SetActive(true);

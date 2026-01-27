@@ -19,24 +19,25 @@ public class SlimeNameLabel : MonoBehaviour
         {
             yield return null;
         }
-        SlimeNameData.Instance.OnNameChanged += Handle;
-        Handle(SlimeNameData.Instance.Name);
+        SlimeNameData.Instance.OnNameChanged += UpdateName;
+        UpdateName(SlimeNameData.Instance.Name);
     }
 
     private void OnDisable()
     {
-        if (SlimeNameData.Instance != null)
+        if (SlimeNameData.Instance == null)
         {
-            SlimeNameData.Instance.OnNameChanged -= Handle;
+            return;
         }
+        SlimeNameData.Instance.OnNameChanged -= UpdateName;
     }
 
-    private void Handle(string name)
+    private void UpdateName(string name)
     {
         if (_nameText == null) 
         {
             return;
         }
-        _nameText.text = string.IsNullOrWhiteSpace(name) ? "이름 없음" : name;
+        _nameText.text = string.IsNullOrWhiteSpace(name) ? "" : name;
     }
 }
