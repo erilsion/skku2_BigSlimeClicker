@@ -5,8 +5,8 @@ public class PotionStock : MonoBehaviour
 {
     public static PotionStock Instance { get; private set; }
 
-    public int Potion { get; private set; }
-    public event Action<int> OnGoldChanged;
+    public double Potion { get; private set; }
+    public event Action<double> OnPotionChanged;
 
     private void Awake()
     {
@@ -18,17 +18,17 @@ public class PotionStock : MonoBehaviour
         Instance = this;
     }
 
-    public void Add(int amount)
+    public void Add(double amount)
     {
         if (amount <= 0)
         {
             return;
         }
         Potion += amount;
-        OnGoldChanged?.Invoke(Potion);
+        OnPotionChanged?.Invoke(Potion);
     }
 
-    public bool TrySpend(int amount)
+    public bool TrySpend(double amount)
     {
         if (amount <= 0) 
         {
@@ -39,7 +39,7 @@ public class PotionStock : MonoBehaviour
             return false;
         }
         Potion -= amount;
-        OnGoldChanged?.Invoke(Potion);
+        OnPotionChanged?.Invoke(Potion);
         return true;
     }
 }

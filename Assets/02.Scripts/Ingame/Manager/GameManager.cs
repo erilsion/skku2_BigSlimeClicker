@@ -6,9 +6,9 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public static GameManager Instance => _instance;
 
-    public int ManualDamage = 10;
-    public int AutoDamage = 3;
-    public int Potion;
+    public double ManualDamage = 10;
+    public double AutoDamage = 3;
+    public double Potion;
 
     private void Awake()
     {
