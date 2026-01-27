@@ -7,6 +7,7 @@ public class PotionStockUI : MonoBehaviour
 {
     [Header("텍스트")]
     [SerializeField] private TMP_Text _stockText;
+    [SerializeField] private GameObject _stockTextParent;
 
     private bool _subscribed;
     private Coroutine _bindCoroutine;
@@ -86,11 +87,11 @@ public class PotionStockUI : MonoBehaviour
 
     public void PlayTween()
     {
-        _stockText.transform.DOKill();
+        _stockTextParent.transform.DOKill();
 
         Sequence sequence = DOTween.Sequence();
 
-        sequence.Append(_stockText.transform.DOScale(new Vector2(_startPressX, _startPressY), _pressedDuration).SetEase(Ease.OutQuad));
-        sequence.Append(_stockText.transform.DOScale(Vector2.one, _endDuration).SetEase(Ease.OutElastic));
+        sequence.Append(_stockTextParent.transform.DOScale(new Vector2(_startPressX, _startPressY), _pressedDuration).SetEase(Ease.OutQuad));
+        sequence.Append(_stockTextParent.transform.DOScale(Vector2.one, _endDuration).SetEase(Ease.OutElastic));
     }
 }
