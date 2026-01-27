@@ -25,6 +25,12 @@ public class EarthScalerFeedback : MonoBehaviour
     [Header("트윈")]
     [SerializeField] private float _tweenDuration = 0.3f;
 
+    private float _shakeDuration = 0.15f;
+    private float _shakeX = 0.12f;
+    private float _shakeY = 0.08f;
+    private int _shakeVibration = 12;
+    private float _shakeRandomDegree = 90f;
+
     private Tween _tween;
     private Coroutine _bindCoroutine;
 
@@ -87,8 +93,17 @@ public class EarthScalerFeedback : MonoBehaviour
         targetPosition.x = xPosition;
 
         _tween = DOTween.Sequence()
-        .Append(_target.DOScale(scale, _tweenDuration))
-        .Join(_target.DOMoveX(xPosition, _tweenDuration))
-        .SetEase(Ease.OutQuad);
+            .Append(_target.DOScale(scale, _tweenDuration))
+            .Join(_target.DOMoveX(xPosition, _tweenDuration))
+            .Join(
+                _target.DOShakePosition(
+                    _shakeDuration,
+                    new Vector3(_shakeX, _shakeY, 0f),
+                    _shakeVibration,
+                    _shakeRandomDegree,
+                    false,
+                    true
+                )
+            );
     }
 }
