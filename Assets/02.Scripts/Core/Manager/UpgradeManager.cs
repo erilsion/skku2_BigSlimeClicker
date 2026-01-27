@@ -6,21 +6,12 @@ public class UpgradeManager : MonoBehaviour
 {
     public static UpgradeManager Instance { get; private set; }
 
-    [Serializable]
-    public class UpgradeConfig
-    {
-        public EClickType id;
-        public double baseCost = 10;
-        public double costGrowth = 1.15;   // 레벨당 가격 증가 배수
-        public double plusPerLevel = 1;    // 레벨당 보너스 증가량(+=)
-    }
+    [SerializeField] private List<UpgradeDefinition> _definitions = new();
 
-    [SerializeField] private UpgradeConfig[] _configs;
+    private readonly Dictionary<EUpgradeType, UpgradeDefinition> _defMap = new();
+    private readonly Dictionary<EUpgradeType, int> _levels = new();
 
-    private readonly Dictionary<EClickType, UpgradeConfig> _configMap = new();
-    private readonly Dictionary<EClickType, int> _levels = new();
-
-    public event Action<EClickType, int> OnUpgradeLevelChanged;
+    public event Action<EUpgradeType, int> OnUpgradeLevelChanged;
 
     private void Awake()
     {
@@ -31,39 +22,71 @@ public class UpgradeManager : MonoBehaviour
         }
         Instance = this;
 
-        _configMap.Clear();
-        foreach (var c in _configs)
+        _defMap.Clear();
+        foreach (var def in _definitions)
         {
-            if (c == null) continue;
-            _configMap[c.id] = c;
-            if (!_levels.ContainsKey(c.id)) _levels[c.id] = 0;
+            if (def == null)
+            {
+                continue;
+            }
+
+            // 중복 방지
+            _defMap[def.UpgradeType] = def;
+
+            if (!_levels.ContainsKey(def.UpgradeType))
+            {
+                _levels[def.UpgradeType] = 0;
+            }
         }
     }
 
-    public int GetLevel(EClickType id) => _levels.TryGetValue(id, out var lv) ? lv : 0;
+    public int GetLevel(EUpgradeType type) => _levels.TryGetValue(type, out var lv) ? lv : 0;
 
-    public double GetCost(EClickType id)
+    public double GetCost(EUpgradeType type)
     {
-        if (!_configMap.TryGetValue(id, out var c)) return double.PositiveInfinity;
-        int lv = GetLevel(id);
+        if (!_defMap.TryGetValue(type, out var def))
+        {
+            return double.PositiveInfinity;
+        }
 
-        // baseCost * growth^lv
-        return c.baseCost * Math.Pow(c.costGrowth, lv);
+        int lv = GetLevel(type);
+        return def.BaseCost * Math.Pow(def.CostGrowth, lv);
     }
 
-    public bool TryBuy(EClickType id)
+    public bool TryBuy(EUpgradeType type)
     {
-        if (!_configMap.TryGetValue(id, out var c)) return false;
+        if (!_defMap.TryGetValue(type, out var def))
+        {
+            return false;
+        }
 
-        double cost = GetCost(id);
-        if (!PotionStock.Instance.TrySpend(cost)) return false;
+        double cost = GetCost(type);
+        if (!PotionStock.Instance.TrySpend(cost))
+        {
+            return false;
+        }
 
-        _levels[id] = GetLevel(id) + 1;
+        int newLv = GetLevel(type) + 1;
+        _levels[type] = newLv;
 
-        if (id == EClickType.Manual) DamageCalculation.Instance.UpgradeManual(c.plusPerLevel);
-        else if (id == EClickType.Auto) DamageCalculation.Instance.UpgradeAuto(c.plusPerLevel);
+        Apply(def);
 
-        OnUpgradeLevelChanged?.Invoke(id, _levels[id]);
+        OnUpgradeLevelChanged?.Invoke(type, newLv);
         return true;
     }
+
+    private void Apply(UpgradeDefinition def)
+    {
+        // 단순 + 누적을 계산한다.
+        if (def.TargetClickType == EClickType.Manual)
+        {
+            DamageCalculation.Instance.UpgradeManual(def.PlusPerLevel);
+        }
+        else
+        {
+            DamageCalculation.Instance.UpgradeAuto(def.PlusPerLevel);
+        }
+    }
+
+    public UpgradeDefinition GetDefinition(EUpgradeType type) => _defMap.TryGetValue(type, out var def) ? def : null;
 }

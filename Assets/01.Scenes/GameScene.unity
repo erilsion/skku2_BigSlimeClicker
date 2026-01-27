@@ -719,6 +719,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 96e9ef5780baa4cd18be1263775c06b7, type: 3}
+    - target: {fileID: 5987900422593365277, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+      propertyPath: _definition
+      value: 
+      objectReference: {fileID: 11400000, guid: 98547ef40b8840b4885d63e184b5fa00, type: 2}
     - target: {fileID: 7496340393758560441, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1173,6 +1177,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 1d85cec7094d14556b7a7c3fdf3a4e1c, type: 3}
+    - target: {fileID: 5987900422593365277, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+      propertyPath: _definition
+      value: 
+      objectReference: {fileID: 11400000, guid: d09b36676be49d9498163fe691425639, type: 2}
     - target: {fileID: 7496340393758560441, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1279,6 +1287,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 3cca03278183d4744959de80b7e129c2, type: 3}
+    - target: {fileID: 5987900422593365277, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+      propertyPath: _definition
+      value: 
+      objectReference: {fileID: 11400000, guid: d09b36676be49d9498163fe691425639, type: 2}
     - target: {fileID: 7496340393758560441, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1749,6 +1761,7 @@ GameObject:
   - component: {fileID: 1465994673}
   - component: {fileID: 1465994672}
   - component: {fileID: 1465994674}
+  - component: {fileID: 1465994675}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1909,6 +1922,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1465994675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465994669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8c14a6524b4314483c998816b5e582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
+  _definitions:
+  - {fileID: 11400000, guid: d09b36676be49d9498163fe691425639, type: 2}
+  - {fileID: 11400000, guid: d09b36676be49d9498163fe691425639, type: 2}
+  - {fileID: 11400000, guid: d09b36676be49d9498163fe691425639, type: 2}
+  - {fileID: 11400000, guid: 98547ef40b8840b4885d63e184b5fa00, type: 2}
+  - {fileID: 11400000, guid: 98547ef40b8840b4885d63e184b5fa00, type: 2}
+  - {fileID: 11400000, guid: 98547ef40b8840b4885d63e184b5fa00, type: 2}
 --- !u!1 &1477015056
 GameObject:
   m_ObjectHideFlags: 0
@@ -2120,6 +2152,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 14e0cda33323542ca813131686325bdd, type: 3}
+    - target: {fileID: 5987900422593365277, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+      propertyPath: _definition
+      value: 
+      objectReference: {fileID: 11400000, guid: 98547ef40b8840b4885d63e184b5fa00, type: 2}
     - target: {fileID: 7496340393758560441, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2441,6 +2477,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 2f9eae816fd4140108313b73a8071911, type: 3}
+    - target: {fileID: 5987900422593365277, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+      propertyPath: _definition
+      value: 
+      objectReference: {fileID: 11400000, guid: 98547ef40b8840b4885d63e184b5fa00, type: 2}
     - target: {fileID: 7496340393758560441, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2626,6 +2666,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: b5cbb2aecfcf84b9daab3b8373172fdb, type: 3}
+    - target: {fileID: 5987900422593365277, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+      propertyPath: _definition
+      value: 
+      objectReference: {fileID: 11400000, guid: d09b36676be49d9498163fe691425639, type: 2}
     - target: {fileID: 7496340393758560441, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

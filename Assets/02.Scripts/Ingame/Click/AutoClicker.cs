@@ -3,34 +3,45 @@
 public class AutoClicker : MonoBehaviour
 {
     // 역할: 정해진 시간 간격마다 Clickable한 대상을 히트한다.
-    [SerializeField] private float _interval;
+    [SerializeField] private float _interval = 3f;
     private float _timer;
 
     private void Update()
     {
         _timer += Time.deltaTime;
 
-        if(_timer >= _interval)  // 1. 시간 간격마다.
+        // 1. 시간 간격마다 발동한다.
+        if (_timer < _interval)
         {
-            _timer = 0;
+            return;
+        }
+        _timer -= _interval;
 
-            // 2. Clickable 게임 오브젝트를 모두 찾아온다.
-            GameObject[] clickables = GameObject.FindGameObjectsWithTag("Clickable");
-            foreach (GameObject clickable in clickables)
+        // 2. Clickable 게임 오브젝트를 모두 찾아온다.
+        var clickables = ClickableRegistry.List;
+        if (clickables.Count == 0) 
+        {
+            return;
+        }
+        double damage = DamageCalculation.Instance.GetAutoDamage();
+
+        ClickInfo clickInfo = new ClickInfo
+        {
+            ClickType = EClickType.Auto,
+            Damage = damage
+        };
+
+        // 3. 클릭한다.
+        for (int i = 0; i < clickables.Count; i++)
+        {
+            var clickable = clickables[i];
+            if (clickable == null)
             {
-                // 3. 클릭한다.
-                IClickable clickableScript = clickable.GetComponent<IClickable>();
-                if (clickableScript != null)
-                {
-                    ClickInfo clickInfo = new ClickInfo
-                    {
-                        ClickType = EClickType.Auto,
-                        Damage = DamageCalculation.Instance.GetAutoDamage()
-                    };
-                    clickInfo.Position = clickable.transform.position;
-                    clickableScript.OnClick(clickInfo);
-                }
+                continue;
             }
+
+            clickInfo.Position = clickable.Position;
+            clickable.OnClick(clickInfo);
         }
     }
 }
