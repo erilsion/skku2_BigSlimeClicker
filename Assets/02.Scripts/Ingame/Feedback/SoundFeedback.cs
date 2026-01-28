@@ -4,8 +4,8 @@ public class SoundFeedback : MonoBehaviour, IFeedback
 {
     [SerializeField] private AudioSource _audio;
 
-    private float _lowPitch = 0.8f;
-    private float _highPitch = 1.2f;
+    private float _lowPitch = 1f;
+    private float _highPitch = 1.3f;
 
     public void Play(ClickInfo clickInfo)
     {
