@@ -11,7 +11,7 @@ public class CurrencyManager : MonoBehaviour
     //             ㄴ 비즈니스 로직 (게임 로직): 데이터 사용에 대한 핵심 규칙이다.
 
     // 재화 데이터들(배열로 관리한다).
-    private double[] _currencies = new double[(int)ECurrencyType.Count];
+    private Currency[] _currencies = new Currency[(int)ECurrencyType.Count];
 
     public static event Action OnDataChanged;
 
@@ -29,43 +29,41 @@ public class CurrencyManager : MonoBehaviour
 
     private void Start()
     {
-        _currencies = _repository.Load().Currencies;
+        double[] currencyValues = _repository.Load().Currencies;
+        for (int i = 0; i < _currencies.Length; i++)
+        {
+            _currencies[i] = currencyValues[i];
+        }
     }
 
     // 1. 재화를 조회한다.
-    public double Get(ECurrencyType currencyType)
+    public Currency Get(ECurrencyType currencyType)
     {
         return _currencies[(int)currencyType];
     }
 
     // 어쩔 수 없이 재화 조회 편의 기능은 있어야 한다.
-    public double Potion => Get(ECurrencyType.Potion);
-    // public double Gem => Get(ECurrencyType.Gem); 등등 새로운 재화 생기면 enum에 추가하고 확장 가능하다.
+    public Currency Potion => Get(ECurrencyType.Potion);
+    // public Currency Gem => Get(ECurrencyType.Gem); 등등 새로운 재화 생기면 enum에 추가하고 확장 가능하다.
 
     // 2. 재화를 추가한다.
-    public void Add(ECurrencyType type, double amount)
+    public void Add(ECurrencyType type, Currency amount)
     {
         _currencies[(int)type] += amount;
 
-        _repository.Save(new CurrencySaveData()
-        {
-            Currencies = _currencies
-        });
+        Save();
 
         OnDataChanged?.Invoke();
     }
 
     // 3. 재화를 소모한다.
-    public bool TrySpend(ECurrencyType type, double amount)
+    public bool TrySpend(ECurrencyType type, Currency amount)
     {
         if(_currencies[(int)type] >= amount)
         {
             _currencies[(int)type] -= amount;
 
-            _repository.Save(new CurrencySaveData()
-            {
-                Currencies = _currencies
-            });
+            Save();
 
             OnDataChanged?.Invoke();
             return true;
@@ -74,9 +72,20 @@ public class CurrencyManager : MonoBehaviour
     }
 
     // 4. 돈이 있으세요?
-    public bool CanAfford(ECurrencyType type, double amount)
+    public bool CanAfford(ECurrencyType type, Currency amount)
     {
         return _currencies[(int)type] >= amount;
+    }
+
+    private void Save()
+    {
+        var saveData = new CurrencySaveData();
+        saveData.Currencies = new double[_currencies.Length];
+        for (int i = 0; i < _currencies.Length; i++)
+        {
+            saveData.Currencies[i] = (double)_currencies[i];
+        }
+        _repository.Save(saveData);
     }
 
     // 도대체 관리라는 책임은 어디까지인가?

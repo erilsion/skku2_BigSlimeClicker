@@ -85,7 +85,10 @@ public class PotionStockUI : MonoBehaviour
         _stockText.text = potion.FormattedString();
     }
 
-public void PlayTween()
+    // 최종 사용자 입장에서는 double은 그냥 숫자일 뿐인지 '재화'인지 모른다.
+    // 규칙1. 재화는 0 미만일 수 없다. 그런데 지금은 음수가 가능해진다.
+    // 규칙2. 재화를 표현할 때 무조건 FormattedString()을 써야 한다.
+    public void PlayTween()
     {
         _stockTextParent.transform.DOKill();
 

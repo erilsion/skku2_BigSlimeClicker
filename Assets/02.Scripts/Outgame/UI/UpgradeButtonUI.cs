@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 
-public class UpgradeRowUI : MonoBehaviour
+public class UpgradeButtonUI : MonoBehaviour
 {
     [Header("데이터")]
     [SerializeField] private UpgradeDefinition _definition;
