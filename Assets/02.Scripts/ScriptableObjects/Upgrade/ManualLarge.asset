@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ab6c7f13ceb1e44eace95e6cde96449, type: 3}
-  m_Name: ManualSmall
+  m_Name: ManualLarge
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeDefinition
-  UpgradeType: 0
+  UpgradeType: 2
   TargetClickType: 0
-  DisplayName: "\uAE68\uB057\uD55C \uBB3C"
-  BaseCost: 100
+  DisplayName: "\uD669\uAE08\uBB3C"
+  BaseCost: 3000
   CostGrowth: 1.15
-  PlusPerLevel: 10
+  PlusPerLevel: 200
