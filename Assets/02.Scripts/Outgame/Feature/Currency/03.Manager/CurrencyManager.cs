@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 // 오직 재화만 관리하는 클래스이다.
@@ -34,6 +35,7 @@ public class CurrencyManager : MonoBehaviour
         {
             _currencies[i] = currencyValues[i];
         }
+        OnDataChanged?.Invoke();
     }
 
     // 1. 재화를 조회한다.
@@ -49,9 +51,16 @@ public class CurrencyManager : MonoBehaviour
     // 2. 재화를 추가한다.
     public void Add(ECurrencyType type, Currency amount)
     {
+        if (amount <= 0)
+        {
+            return;
+        }
         _currencies[(int)type] += amount;
 
-        Save();
+        _repository.Save(new CurrencySaveData
+        {
+            Currencies = _currencies.Select(x => (double)x).ToArray()
+        });
 
         OnDataChanged?.Invoke();
     }

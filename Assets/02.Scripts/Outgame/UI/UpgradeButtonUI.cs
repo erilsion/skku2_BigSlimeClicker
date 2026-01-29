@@ -40,9 +40,14 @@ public class UpgradeButtonUI : MonoBehaviour
             return;
         }
 
-        if (UpgradeManager.Instance.CanLevelUp(_upgrade.UpgradeDefinition.UpgradeType))
+        bool success = UpgradeManager.Instance.TryLevelUp(_upgrade.UpgradeDefinition.UpgradeType);
+        if (success)
         {
-            // todo. 이펙트, 애니메이션, 트위닝 등
+            // todo: 성공 이펙트/사운드
+        }
+        else
+        {
+            // todo: 실패 피드백(재화 부족/최대 레벨)
         }
     }
 }

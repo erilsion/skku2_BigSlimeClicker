@@ -386,7 +386,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1970863688109309466}
-  - component: {fileID: 1479405925689998423}
+  - component: {fileID: 5576782995153405205}
   m_Layer: 0
   m_Name: PotionStockBar
   m_TagString: Untagged
@@ -417,7 +417,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -88}
   m_SizeDelta: {x: 640, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1479405925689998423
+--- !u!114 &5576782995153405205
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
