@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using static System.Net.Mime.MediaTypeNames;
 
 public class UpgradeButtonUI : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class UpgradeButtonUI : MonoBehaviour
     [Header("UI")]
     [SerializeField] private Button _buyButton;
     [SerializeField] private TMP_Text _nameText;
+    [SerializeField] private TMP_Text _bonusText;
     [SerializeField] private TMP_Text _levelText;
     [SerializeField] private TMP_Text _costText;
 
@@ -24,6 +26,8 @@ public class UpgradeButtonUI : MonoBehaviour
 
     private void Start()
     {
+        double bonus = UpgradeManager.Instance.GetBonus(_definition.UpgradeType);
+        _bonusText.text = $"{bonus}";
         Refresh();
     }
 
@@ -101,11 +105,12 @@ public class UpgradeButtonUI : MonoBehaviour
 
         if (_levelText != null)
         {
-            _levelText.text = $"Lv:{level}";
+            _levelText.text = $"Lv:{ level}";
         }
         if (_costText != null)
         {
-            _costText.text = $"{cost:0}";
+            _costText.text = cost.FormattedString();
+            _costText.text = $"Cost:{ cost}";
         }
 
         // 구매 가능 여부를 체크한다.
