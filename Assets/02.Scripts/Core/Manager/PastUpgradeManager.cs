@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 
-public class UpgradeManager : MonoBehaviour
+public class PastUpgradeManager : MonoBehaviour
 {
-    public static UpgradeManager Instance { get; private set; }
+    public static PastUpgradeManager Instance { get; private set; }
 
     [SerializeField] private List<UpgradeDefinition> _definitions = new();
 
     private readonly Dictionary<EUpgradeType, UpgradeDefinition> _defMap = new();
     private readonly Dictionary<EUpgradeType, int> _levels = new();
+    private readonly Dictionary<EUpgradeType, double> _bonuses = new();
 
     public event Action<EUpgradeType, int> OnUpgradeLevelChanged;
 
@@ -41,6 +42,8 @@ public class UpgradeManager : MonoBehaviour
     }
 
     public int GetLevel(EUpgradeType type) => _levels.TryGetValue(type, out var lv) ? lv : 0;
+
+    public double GetBonus(EUpgradeType type) => _bonuses.TryGetValue(type, out var bonus) ? bonus : 0;
 
     public double GetCost(EUpgradeType type)
     {

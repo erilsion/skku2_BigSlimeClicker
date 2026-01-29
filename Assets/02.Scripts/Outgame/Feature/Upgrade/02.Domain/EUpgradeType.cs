@@ -8,5 +8,7 @@
     // Auto 계열
     AutoSmall,
     AutoMedium,
-    AutoLarge
+    AutoLarge,
+
+    Count
 }

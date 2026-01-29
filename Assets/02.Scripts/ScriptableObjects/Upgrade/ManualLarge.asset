@@ -16,5 +16,5 @@ MonoBehaviour:
   TargetClickType: 0
   DisplayName: "\uD669\uAE08\uBB3C"
   BaseCost: 3000
-  CostGrowth: 1.15
-  PlusPerLevel: 200
+  CostGrowth: 1.22
+  PlusPerLevel: 40

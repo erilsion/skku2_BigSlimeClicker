@@ -17,4 +17,4 @@ MonoBehaviour:
   DisplayName: "\uAE68\uB057\uD55C \uBB3C"
   BaseCost: 100
   CostGrowth: 1.15
-  PlusPerLevel: 10
+  PlusPerLevel: 5

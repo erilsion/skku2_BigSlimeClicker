@@ -15,6 +15,6 @@ MonoBehaviour:
   UpgradeType: 3
   TargetClickType: 1
   DisplayName: "\uBC84\uC12F"
-  BaseCost: 500
-  CostGrowth: 1.15
-  PlusPerLevel: 80
+  BaseCost: 2000
+  CostGrowth: 1.2
+  PlusPerLevel: 5
