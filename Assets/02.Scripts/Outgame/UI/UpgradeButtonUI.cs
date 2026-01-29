@@ -26,7 +26,7 @@ public class UpgradeButtonUI : MonoBehaviour
 
     private void Start()
     {
-        double bonus = UpgradeManager.Instance.GetBonus(_definition.UpgradeType);
+        double bonus = PastUpgradeManager.Instance.GetBonus(_definition.UpgradeType);
         _bonusText.text = $"{bonus}";
         Refresh();
     }
@@ -38,9 +38,9 @@ public class UpgradeButtonUI : MonoBehaviour
         {
             PotionStock.Instance.OnPotionChanged += HandlePotionChanged;
         }
-        if (UpgradeManager.Instance != null)
+        if (PastUpgradeManager.Instance != null)
         {
-            UpgradeManager.Instance.OnUpgradeLevelChanged += HandleUpgradeChanged;
+            PastUpgradeManager.Instance.OnUpgradeLevelChanged += HandleUpgradeChanged;
         }
         Refresh();
     }
@@ -52,9 +52,9 @@ public class UpgradeButtonUI : MonoBehaviour
         {
             PotionStock.Instance.OnPotionChanged -= HandlePotionChanged;
         }
-        if (UpgradeManager.Instance != null)
+        if (PastUpgradeManager.Instance != null)
         {
-            UpgradeManager.Instance.OnUpgradeLevelChanged -= HandleUpgradeChanged;
+            PastUpgradeManager.Instance.OnUpgradeLevelChanged -= HandleUpgradeChanged;
         }
     }
 
@@ -64,7 +64,7 @@ public class UpgradeButtonUI : MonoBehaviour
         {
             return;
         }
-        UpgradeManager.Instance.TryBuy(_definition.UpgradeType);
+        PastUpgradeManager.Instance.TryBuy(_definition.UpgradeType);
         // Refresh를 즉시 반영 및 호출한다.
         Refresh();
     }
@@ -84,7 +84,7 @@ public class UpgradeButtonUI : MonoBehaviour
 
     private void Refresh()
     {
-        if (_definition == null || UpgradeManager.Instance == null || PotionStock.Instance == null)
+        if (_definition == null || PastUpgradeManager.Instance == null || PotionStock.Instance == null)
         {
             // 데이터가 없으면 버튼을 잠근다.
             if (_buyButton != null)
@@ -99,8 +99,8 @@ public class UpgradeButtonUI : MonoBehaviour
             ? _definition.UpgradeType.ToString()
             : _definition.DisplayName;
 
-        int level = UpgradeManager.Instance.GetLevel(_definition.UpgradeType);
-        double cost = UpgradeManager.Instance.GetCost(_definition.UpgradeType);
+        int level = PastUpgradeManager.Instance.GetLevel(_definition.UpgradeType);
+        double cost = PastUpgradeManager.Instance.GetCost(_definition.UpgradeType);
         double potion = PotionStock.Instance.Potion;
 
         if (_levelText != null)

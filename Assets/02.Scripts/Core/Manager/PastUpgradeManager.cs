@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-public class UpgradeManager : MonoBehaviour
+public class PastUpgradeManager : MonoBehaviour
 {
-    public static UpgradeManager Instance { get; private set; }
+    public static PastUpgradeManager Instance { get; private set; }
 
     [SerializeField] private List<UpgradeDefinition> _definitions = new();
 
