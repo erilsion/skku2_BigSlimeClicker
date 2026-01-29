@@ -684,7 +684,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6105078740582965373, guid: bfbb9ee41f006814c96ce5b7aae7e5ed, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 309.32
       objectReference: {fileID: 0}
     - target: {fileID: 6105078740582965373, guid: bfbb9ee41f006814c96ce5b7aae7e5ed, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2202,6 +2202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5efafc25b88c4a1408ee935882c04aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PotionStock
+  <Potion>k__BackingField: 0
 --- !u!114 &1465994673
 MonoBehaviour:
   m_ObjectHideFlags: 0
