@@ -22,6 +22,11 @@ public class UpgradeButtonUI : MonoBehaviour
         _buyButton.onClick.AddListener(OnClickBuy);
     }
 
+    private void Start()
+    {
+        Refresh();
+    }
+
     private void OnEnable()
     {
         // 이벤트를 구독한다.
@@ -96,7 +101,7 @@ public class UpgradeButtonUI : MonoBehaviour
 
         if (_levelText != null)
         {
-            _levelText.text = $"Lv. {level}";
+            _levelText.text = $"Lv:{level}";
         }
         if (_costText != null)
         {

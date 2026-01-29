@@ -15,6 +15,6 @@ MonoBehaviour:
   UpgradeType: 1
   TargetClickType: 0
   DisplayName: "\uC601\uC591\uC81C"
-  BaseCost: 800
-  CostGrowth: 1.15
-  PlusPerLevel: 100
+  BaseCost: 500
+  CostGrowth: 1.18
+  PlusPerLevel: 15
