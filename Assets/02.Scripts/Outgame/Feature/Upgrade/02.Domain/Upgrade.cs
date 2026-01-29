@@ -9,26 +9,24 @@ public class Upgrade
 {
     // 기획 데이터 (기획자가 정한 값) => UpgradeSpecData로 뺐다.
     // 1. 기획 테이블의 데이터를 가져온다.
-    public readonly UpgradeSpecData SpecData;
+    public readonly UpgradeDefinitionSO UpgradeDefinition;
 
     // 런타임 데이터 (게임 중간에 바뀌는 데이터) (플레이어가 만들어가는 값)
     public int Level {  get; private set; }
 
     // 업그레이드 비용
-    public Currency Cost => SpecData.BaseCost + Math.Pow(SpecData.CostMultiplier, Level);  // 지수 공식: 기본 비용 + 증가량 ^ 레벨
-    public double Damage => SpecData.BaseDamage + Level * SpecData.DamageMultiplier;     // 선형 공식: 기본 비용 + 레벨 * 증가량
-    public bool IsMaxLevel => Level >= SpecData.MaxLevel;
+    public Currency Cost => UpgradeDefinition.BaseCost + Math.Pow(UpgradeDefinition.CostGrowth, Level);  // 지수 공식: 기본 비용 + 증가량 ^ 레벨
+    public double Bonus => Level * UpgradeDefinition.PlusPerLevel;     // 선형 공식: 기본 비용 + 레벨 * 증가량
+    public bool IsMaxLevel => Level >= UpgradeDefinition.MaxLevel;
 
     // 2. 핵심 규칙(유효성)을 작성한다.
-    public Upgrade(UpgradeSpecData specData)
+    public Upgrade(UpgradeDefinitionSO upgradeDefinition)
     {
-        if (specData.MaxLevel < 0) throw new ArgumentException($"최대 레벨은 0보다 커야 합니다: {specData.MaxLevel}");
-        if (specData.BaseCost < 0) throw new ArgumentException($"기본 비용은 0보다 커야 합니다: {specData.BaseCost}");
-        if (specData.BaseDamage < 0) throw new ArgumentException($"기본 데미지는 0보다 커야 합니다: {specData.BaseDamage}");
-        if (specData.CostMultiplier < 0) throw new ArgumentException($"비용 증가량은 0보다 커야 합니다: {specData.CostMultiplier}");
-        if (specData.DamageMultiplier < 0) throw new ArgumentException($"데미지 증가량은 0보다 커야 합니다: {specData.DamageMultiplier}");
-        if (string.IsNullOrEmpty(specData.Name)) throw new ArgumentException("이름은 비어있을 수 없습니다");
-        // if (string.IsNullOrEmpty(specData.Description)) throw new ArgumentException("설명은 비어있을 수 없습니다"); 추후 생기면 추가
+        UpgradeDefinition = upgradeDefinition;
+
+        if (UpgradeDefinition.BaseCost < 0) throw new ArgumentException($"기본 비용은 0보다 커야 합니다: {UpgradeDefinition.BaseCost}");
+        if (UpgradeDefinition.CostGrowth <= 0) throw new ArgumentException($"비용 증가량은 0보다 커야 합니다: {UpgradeDefinition.CostGrowth}");
+        if (UpgradeDefinition.PlusPerLevel < 0) throw new ArgumentException($"레벨 당 증가량은 0보다 커야 합니다: {UpgradeDefinition.PlusPerLevel}");
     }
 
     public bool TryLevelUp()

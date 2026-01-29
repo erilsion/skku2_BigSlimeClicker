@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/UpgradeDefinition")]
-public class UpgradeDefinition : ScriptableObject
+public class UpgradeDefinitionSO : ScriptableObject
 {
     [Header("ID")]
     public EUpgradeType UpgradeType;
@@ -18,4 +18,7 @@ public class UpgradeDefinition : ScriptableObject
 
     [Header("효과")]
     public double PlusPerLevel = 1; // 단순 + 누적
+
+    [Header("레벨 최대치")]
+    public int MaxLevel = 0;
 }

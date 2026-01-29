@@ -6,9 +6,9 @@ public class PastUpgradeManager : MonoBehaviour
 {
     public static PastUpgradeManager Instance { get; private set; }
 
-    [SerializeField] private List<UpgradeDefinition> _definitions = new();
+    [SerializeField] private List<UpgradeDefinitionSO> _definitions = new();
 
-    private readonly Dictionary<EUpgradeType, UpgradeDefinition> _defMap = new();
+    private readonly Dictionary<EUpgradeType, UpgradeDefinitionSO> _defMap = new();
     private readonly Dictionary<EUpgradeType, int> _levels = new();
     private readonly Dictionary<EUpgradeType, double> _bonuses = new();
 
@@ -78,7 +78,7 @@ public class PastUpgradeManager : MonoBehaviour
         return true;
     }
 
-    private void Apply(UpgradeDefinition def)
+    private void Apply(UpgradeDefinitionSO def)
     {
         // 단순 + 누적을 계산한다.
         if (def.TargetClickType == EClickType.Manual)
@@ -91,5 +91,5 @@ public class PastUpgradeManager : MonoBehaviour
         }
     }
 
-    public UpgradeDefinition GetDefinition(EUpgradeType type) => _defMap.TryGetValue(type, out var def) ? def : null;
+    public UpgradeDefinitionSO GetDefinition(EUpgradeType type) => _defMap.TryGetValue(type, out var def) ? def : null;
 }

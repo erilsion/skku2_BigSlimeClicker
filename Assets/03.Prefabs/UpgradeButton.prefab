@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7496340393758560441}
   - component: {fileID: 6704209360707257537}
-  - component: {fileID: 6508218970566176355}
   - component: {fileID: 5682035095126954415}
+  - component: {fileID: 5613963849340655875}
   m_Layer: 5
   m_Name: UpgradeButton
   m_TagString: Untagged
@@ -51,24 +51,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 582278895148046000}
   m_CullTransparentMesh: 1
---- !u!114 &6508218970566176355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 582278895148046000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 441acb36f9a9cc342bf1efc13fc1a884, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UpgradeButtonUI
-  _definition: {fileID: 0}
-  _buyButton: {fileID: 5682035095126954415}
-  _nameText: {fileID: 4831782559217800251}
-  _bonusText: {fileID: 0}
-  _levelText: {fileID: 4098867173287026658}
-  _costText: {fileID: 7187868017173482619}
 --- !u!114 &5682035095126954415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +95,24 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5613963849340655875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582278895148046000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11adec18668adca4fad76b8a040f954e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeButtonUI
+  _nameText: {fileID: 4831782559217800251}
+  _bonusText: {fileID: 2120136851144491305}
+  _levelText: {fileID: 4098867173287026658}
+  _costText: {fileID: 7187868017173482619}
+  _upgradeButton: {fileID: 5682035095126954415}
+  _type: 0
 --- !u!1 &779489298609965928
 GameObject:
   m_ObjectHideFlags: 0

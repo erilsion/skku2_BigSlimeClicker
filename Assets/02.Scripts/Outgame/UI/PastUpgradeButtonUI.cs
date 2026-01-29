@@ -1,0 +1,121 @@
+﻿using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class PastUpgradeButtonUI : MonoBehaviour
+{
+    [Header("데이터")]
+    [SerializeField] private UpgradeDefinitionSO _definition;
+
+    [Header("UI")]
+    [SerializeField] private Button _buyButton;
+    [SerializeField] private TMP_Text _nameText;
+    [SerializeField] private TMP_Text _bonusText;
+    [SerializeField] private TMP_Text _levelText;
+    [SerializeField] private TMP_Text _costText;
+
+    private void Awake()
+    {
+        if (_buyButton == null)
+        {
+            _buyButton = GetComponent<Button>();
+        }
+        _buyButton.onClick.AddListener(OnClickBuy);
+    }
+
+    private void Start()
+    {
+        double bonus = PastUpgradeManager.Instance.GetBonus(_definition.UpgradeType);
+        _bonusText.text = $"{bonus}";
+        Refresh();
+    }
+
+    private void OnEnable()
+    {
+        // 이벤트를 구독한다.
+        if (PotionStock.Instance != null)
+        {
+            PotionStock.Instance.OnPotionChanged += HandlePotionChanged;
+        }
+        if (PastUpgradeManager.Instance != null)
+        {
+            PastUpgradeManager.Instance.OnUpgradeLevelChanged += HandleUpgradeChanged;
+        }
+        Refresh();
+    }
+
+    private void OnDisable()
+    {
+        // 이벤트를 해제한다.
+        if (PotionStock.Instance != null)
+        {
+            PotionStock.Instance.OnPotionChanged -= HandlePotionChanged;
+        }
+        if (PastUpgradeManager.Instance != null)
+        {
+            PastUpgradeManager.Instance.OnUpgradeLevelChanged -= HandleUpgradeChanged;
+        }
+    }
+
+    private void OnClickBuy()
+    {
+        if (_definition == null)
+        {
+            return;
+        }
+        PastUpgradeManager.Instance.TryBuy(_definition.UpgradeType);
+        // Refresh를 즉시 반영 및 호출한다.
+        Refresh();
+    }
+
+    private void HandlePotionChanged(double _)
+    {
+        Refresh();
+    }
+
+    private void HandleUpgradeChanged(EUpgradeType type, int _)
+    {
+        if (_definition != null && _definition.UpgradeType == type)
+        {
+            Refresh();
+        }
+    }
+
+    private void Refresh()
+    {
+        if (_definition == null || PastUpgradeManager.Instance == null || PotionStock.Instance == null)
+        {
+            // 데이터가 없으면 버튼을 잠근다.
+            if (_buyButton != null)
+            {
+                _buyButton.interactable = false;
+            }
+            return;
+        }
+
+        // 텍스트를 표기한다.
+        if (_nameText != null) _nameText.text = string.IsNullOrEmpty(_definition.DisplayName)
+            ? _definition.UpgradeType.ToString()
+            : _definition.DisplayName;
+
+        int level = PastUpgradeManager.Instance.GetLevel(_definition.UpgradeType);
+        double cost = PastUpgradeManager.Instance.GetCost(_definition.UpgradeType);
+        double potion = PotionStock.Instance.Potion;
+
+        if (_levelText != null)
+        {
+            _levelText.text = $"Lv:{ level}";
+        }
+        if (_costText != null)
+        {
+            _costText.text = cost.FormattedString();
+            _costText.text = $"Cost:{ cost}";
+        }
+
+        // 구매 가능 여부를 체크한다.
+        if (_buyButton != null)
+        {
+            _buyButton.interactable = (potion >= cost);
+        }
+    }
+}
