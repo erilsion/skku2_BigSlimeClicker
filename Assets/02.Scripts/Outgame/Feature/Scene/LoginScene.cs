@@ -62,6 +62,32 @@ public class LoginScene : MonoBehaviour
         _registerButton.gameObject.SetActive(_mode == SceneMode.Register);
     }
 
+    public void OnEmailTextChange(string email)
+    {
+        bool result = true;
+
+        if (string.IsNullOrEmpty(email))
+        {
+            result = false;
+            _messageText.text = "이메일이 비어있어요!";
+        }
+        if (!_isValidEmail(email))
+        {
+            result = false;
+            _messageText.text = "이메일 형식이 아니에요!!";
+        }
+        if(result)
+        {
+            _loginButton.enabled = true;
+            _messageText.text = "완벽한 이메일이에요!";
+        }
+        else
+        {
+            _loginButton.enabled = false;
+            _messageText.text = "이메일이 올바르지 않아요.";
+        }
+    }
+
     private void Login()
     {
         string email = _emailInputField.text;
@@ -104,7 +130,7 @@ public class LoginScene : MonoBehaviour
         }
         else
         {
-            _messageText.text = $"회원가입에 실패했습니다.";
+            _messageText.text = $"회원가입에 실패했어요...";
         }
     }
 
