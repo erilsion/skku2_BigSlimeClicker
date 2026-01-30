@@ -23,9 +23,9 @@ public class LoginScene : MonoBehaviour
     [SerializeField] private Button _gotoLoginButton;
     [SerializeField] private Button _registerButton;
 
-    [SerializeField] private TextMeshProUGUI _messageTextUI;
+    [SerializeField] private TextMeshProUGUI _messageText;
 
-    [SerializeField] private TMP_InputField _idInputField;
+    [SerializeField] private TMP_InputField _emailInputField;
     [SerializeField] private TMP_InputField _passwordInputField;
     [SerializeField] private TMP_InputField _passwordConfirmInputField;
 
@@ -54,7 +54,7 @@ public class LoginScene : MonoBehaviour
 
     private void Refresh()
     {
-        // 2차 비밀번호 오브젝트는 회원가입 모드일때만 노출
+        // 2차 비밀번호 오브젝트는 회원가입 모드일때만 노출된다.
         _passwordConfirmObject.SetActive(_mode == SceneMode.Register);
         _gotoRegisterButton.gameObject.SetActive(_mode == SceneMode.Login);
         _loginButton.gameObject.SetActive(_mode == SceneMode.Login);
@@ -64,94 +64,48 @@ public class LoginScene : MonoBehaviour
 
     private void Login()
     {
-        // 로그인
-        // 1. 아이디 입력을 확인한다.
-        string id = _idInputField.text;
-        if (string.IsNullOrEmpty(id))
-        {
-            _messageTextUI.text = "아이디 또는 비밀번호가 틀렸습니다. 확인해주세요.";
-            return;
-        }
-
-        // 2. 비밀번호 입력을 확인한다.
+        string email = _emailInputField.text;
         string password = _passwordInputField.text;
-        if (string.IsNullOrEmpty(password))
-        {
-            _messageTextUI.text = "아이디 또는 비밀번호가 틀렸습니다. 확인해주세요.";
-            return;
-        }
 
-        // 3. 실제 저장된 아이디-비밀번호 계정이 있는지 확인한다.
-        // 3-1. 아이디가 있는지 확인한다.
-        if (!PlayerPrefs.HasKey(id))
-        {
-            _messageTextUI.text = "아이디 또는 비밀번호가 틀렸습니다. 확인해주세요.";
-            return;
-        }
-
-        string encrypted = PlayerPrefs.GetString(id);
+        string encrypted = PlayerPrefs.GetString(email);
         string decryptedPassword = AESCrypto.Decrypt(encrypted);
 
-        if (decryptedPassword != password)
+        var result = AccountManager.Instance.TryLogin(email, password);
+        if (result.Success)
         {
-            _messageTextUI.text = "아이디 또는 비밀번호가 틀렸습니다. 확인해주세요.";
-            return;
+            PlayerPrefs.SetString("LastLoginID", email);
+            PlayerPrefs.Save();
+            SceneManager.LoadScene("GameScene");
         }
-
-        PlayerPrefs.SetString("LastLoginID", id);
-        PlayerPrefs.Save();
-
-        // 4. 있다면 씬 이동
-        // 동기 -> 유저가 대기하도록 한다.
-        SceneManager.LoadScene(1);
+        else
+        {
+            _messageText.text = $"아이디와 패스워드를 확인해주세요.";
+        }
     }
 
     private void Register()
     {
-        string id = _idInputField.text;
-        if (string.IsNullOrEmpty(id))
-        {
-            _messageTextUI.text = "아이디를 입력해주세요.";
-            return;
-        }
-        if (!_isValidEmail(id))
-        {
-            _messageTextUI.text = "아이디는 이메일 형식이어야 합니다.";
-            return;
-        }
-
+        string email = _emailInputField.text;
         string password = _passwordInputField.text;
-        if (string.IsNullOrEmpty(password))
-        {
-            _messageTextUI.text = "패스워드를 입력해주세요.";
-            return;
-        }
-        if (!_isValidPassword(password))
-        {
-            _messageTextUI.text = "패스워드는 7~20자, 대/소문자 각 1개 이상, 숫자 1개 이상, 특수문자 1개 이상 입력해주세요.";
-            return;
-        }
-
-        // 2차 비밀번호 입력을 확인한다.
         string password2 = _passwordConfirmInputField.text;
         if (string.IsNullOrEmpty(password2) || password != password2)
         {
-            _messageTextUI.text = "패스워드를 다시 확인해주세요.";
+            _messageText.text = "패스워드를 다시 확인해주세요.";
             return;
         }
 
-        // 중복 아이디를 확인한다.
-        if (PlayerPrefs.HasKey(id))
+        var result = AccountManager.Instance.TryLogin(email, password);
+        if (result.Success)
         {
-            _messageTextUI.text = "중복된 아이디입니다.";
-            return;
+            string encryptedPassword = AESCrypto.Encrypt(password);
+            PlayerPrefs.SetString(email, encryptedPassword);
+            PlayerPrefs.Save();
+            GotoLogin();
         }
-
-        string encryptedPassword = AESCrypto.Encrypt(password);
-        PlayerPrefs.SetString(id, encryptedPassword);
-        PlayerPrefs.Save();
-
-        GotoLogin();
+        else
+        {
+            _messageText.text = $"회원가입에 실패했습니다.";
+        }
     }
 
     private void GotoLogin()
@@ -170,12 +124,12 @@ public class LoginScene : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("LastLoginID"))
         {
-            _idInputField.text = PlayerPrefs.GetString("LastLoginID");
+            _emailInputField.text = PlayerPrefs.GetString("LastLoginID");
             _passwordInputField.text = string.Empty;
         }
         else
         {
-            _idInputField.text = string.Empty;
+            _emailInputField.text = string.Empty;
         }
     }
 }
