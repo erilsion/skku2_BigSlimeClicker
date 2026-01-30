@@ -5,9 +5,8 @@ public class DamageCalculation : MonoBehaviour
 {
     public static DamageCalculation Instance { get; private set; }
 
-    [Header("기본 재화 획득량")]
-    [SerializeField] private double _manualBase = 1000;
-    [SerializeField] private double _autoBase = 100;
+    private double _manualBase;
+    private double _autoBase;
 
     // 업그레이드 시 사용하는 정보이다.
     public double ManualBonus { get; private set; }
@@ -17,12 +16,18 @@ public class DamageCalculation : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
         Instance = this;
+    }
+
+    public void Initialize(double manualBase, double autoBase)
+    {
+        _manualBase = manualBase;
+        _autoBase = autoBase;
     }
 
     public double GetManualDamage() => _manualBase + ManualBonus;

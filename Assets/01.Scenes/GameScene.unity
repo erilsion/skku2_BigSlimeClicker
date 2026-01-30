@@ -2148,7 +2148,6 @@ GameObject:
   - component: {fileID: 1465994671}
   - component: {fileID: 1465994670}
   - component: {fileID: 1465994673}
-  - component: {fileID: 1465994672}
   - component: {fileID: 1465994674}
   - component: {fileID: 1465994676}
   - component: {fileID: 1465994678}
@@ -2172,8 +2171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d412a6f10d5d5aa47a9675fd745e9ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  ManualDamage: 1500
-  AutoDamage: 500
+  _manualDamage: 1000
+  _autoDamage: 100
   Potion: 0
 --- !u!4 &1465994671
 Transform:
@@ -2190,19 +2189,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1465994672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1465994669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5efafc25b88c4a1408ee935882c04aba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PotionStock
-  <Potion>k__BackingField: 0
 --- !u!114 &1465994673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2215,8 +2201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 815b0e0569d365448815b60972f1646e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageCalculation
-  _manualBase: 1500
-  _autoBase: 500
 --- !u!82 &1465994674
 AudioSource:
   m_ObjectHideFlags: 0
