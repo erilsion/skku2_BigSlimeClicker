@@ -7,8 +7,14 @@ public class LocalUpgradeRepository : IUpgradeRepository
         for (int i = 0; i < (int)EUpgradeType.Count; i++)
         {
             var type = (EUpgradeType)i;
-            PlayerPrefs.SetString(type.ToString(), saveData.Upgrades[i].ToString("G17"));
+            PlayerPrefs.SetString(
+                type.ToString(),
+                saveData.Upgrades[i].ToString("G17",
+                System.Globalization.CultureInfo.InvariantCulture)
+            );
         }
+
+        PlayerPrefs.Save();
     }
 
     public UpgradeSaveData Load()
@@ -17,12 +23,16 @@ public class LocalUpgradeRepository : IUpgradeRepository
 
         for (int i = 0; i < (int)EUpgradeType.Count; i++)
         {
-            if (PlayerPrefs.HasKey(i.ToString()))
+            var type = (EUpgradeType)i;
+            string key = type.ToString();
+
+            if (PlayerPrefs.HasKey(key))
             {
-                data.Upgrades[i] = double.Parse(PlayerPrefs.GetString(i.ToString(), "0"));
+                data.Upgrades[i] =
+                    double.Parse(PlayerPrefs.GetString(key),
+                    System.Globalization.CultureInfo.InvariantCulture);
             }
         }
-
         return data;
     }
 }

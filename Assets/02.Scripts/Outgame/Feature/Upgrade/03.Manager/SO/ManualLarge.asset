@@ -18,3 +18,4 @@ MonoBehaviour:
   BaseCost: 3000
   CostGrowth: 1.22
   PlusPerLevel: 40
+  MaxLevel: 999

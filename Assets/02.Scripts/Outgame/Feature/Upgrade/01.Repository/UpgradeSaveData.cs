@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class UpgradeSaveData : MonoBehaviour
+[Serializable]
+public class UpgradeSaveData
 {
     public double[] Upgrades;
 

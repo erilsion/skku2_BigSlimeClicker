@@ -20,5 +20,5 @@ public class UpgradeDefinitionSO : ScriptableObject
     public double PlusPerLevel = 1; // 단순 + 누적
 
     [Header("레벨 최대치")]
-    public int MaxLevel = 0;
+    public int MaxLevel = 999;
 }

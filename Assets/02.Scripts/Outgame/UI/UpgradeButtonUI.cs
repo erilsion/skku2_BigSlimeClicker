@@ -24,8 +24,8 @@ public class UpgradeButtonUI : MonoBehaviour
         _upgrade = upgrade;
 
         _nameText.text = upgrade.UpgradeDefinition.DisplayName.ToString();
-        _levelText.text = upgrade.Level.ToString("N1");
-        _costText.text = upgrade.Cost.ToString();
+        _levelText.text = "Lv: " + upgrade.Level.ToString("N0");
+        _costText.text = "Cost: " + upgrade.Cost.ToString();
 
         bool canLevelUp = UpgradeManager.Instance.CanLevelUp(upgrade.UpgradeDefinition.UpgradeType);
 

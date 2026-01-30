@@ -29,19 +29,41 @@ public class DamageCalculation : MonoBehaviour
         _manualBase = manualBase;
         _autoBase = autoBase;
     }
+    private void OnEnable()
+    {
+        UpgradeManager.OnDataChanged += RecalculateBonus;
+    }
+
+    private void OnDisable()
+    {
+        UpgradeManager.OnDataChanged -= RecalculateBonus;
+    }
 
     public double GetManualDamage() => _manualBase + ManualBonus;
     public double GetAutoDamage() => _autoBase + AutoBonus;
 
-    public void UpgradeManual(double plus)
+    private void RecalculateBonus()
     {
-        ManualBonus += plus;
-        OnBonusChanged?.Invoke();
-    }
+        ManualBonus = 0;
+        AutoBonus = 0;
 
-    public void UpgradeAuto(double plus)
-    {
-        AutoBonus += plus;
+        foreach (var upgrade in UpgradeManager.Instance.GetAll())
+        {
+            switch (upgrade.UpgradeDefinition.UpgradeType)
+            {
+                case EUpgradeType.ManualSmall:
+                case EUpgradeType.ManualMedium:
+                case EUpgradeType.ManualLarge:
+                    ManualBonus += upgrade.Bonus;
+                    break;
+
+                case EUpgradeType.AutoSmall:
+                case EUpgradeType.AutoMedium:
+                case EUpgradeType.AutoLarge:
+                    AutoBonus += upgrade.Bonus;
+                    break;
+            }
+        }
         OnBonusChanged?.Invoke();
     }
 }

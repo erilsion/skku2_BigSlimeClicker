@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 // '업그레이드'라는 게임 콘텐츠의 도메인 클래스이다.
 // 도메인이란 핵심 데이터와 규칙을 말한다.
@@ -37,5 +38,14 @@ public class Upgrade
         }
         Level++;
         return true;
+    }
+
+    public void RestoreLevel(int savedLevel)
+    {
+        Level = Math.Clamp(
+            savedLevel,
+            0,
+            UpgradeDefinition.MaxLevel
+        );
     }
 }

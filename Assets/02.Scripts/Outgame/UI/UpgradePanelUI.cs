@@ -41,7 +41,9 @@ public class UpgradePanelUI : MonoBehaviour
         foreach (var upgrade in UpgradeManager.Instance.GetAll())
         {
             if (_uiMap.TryGetValue(upgrade.UpgradeDefinition.UpgradeType, out var ui))
+            {
                 ui.Refresh(upgrade);
+            }
         }
     }
 }
