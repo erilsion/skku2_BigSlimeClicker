@@ -14,11 +14,15 @@ public class UpgradeManager : MonoBehaviour
     public Upgrade Get(EUpgradeType type) => _upgrades[type];
     public List<Upgrade> GetAll() => _upgrades.Values.ToList();
 
+    private IUpgradeRepository _repository;
+
     private void Awake()
     {
         Instance = this;
-        _upgrades.Clear();
 
+        _repository = new LocalUpgradeRepository();
+
+        _upgrades.Clear();
         foreach (var definition in _definitionTable.Definitions)
         {
             if (definition == null || _definitionTable.Definitions == null)
@@ -31,7 +35,8 @@ public class UpgradeManager : MonoBehaviour
             }
             _upgrades.Add(definition.UpgradeType, new Upgrade(definition));
         }
-        OnDataChanged.Invoke();
+
+        OnDataChanged?.Invoke();
     }
 
     public bool CanLevelUp(EUpgradeType type)
