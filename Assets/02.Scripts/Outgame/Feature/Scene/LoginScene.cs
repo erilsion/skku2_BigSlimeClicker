@@ -1,0 +1,181 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TMPro;
+using System.Text.RegularExpressions;
+
+public class LoginScene : MonoBehaviour
+{
+    // 로그인씬 (로그인/회원가입) -> 게임씬
+
+    private enum SceneMode
+    {
+        Login,
+        Register
+    }
+
+    private SceneMode _mode = SceneMode.Login;
+
+    // 비밀번호 확인 오브젝트
+    [SerializeField] private GameObject _passwordConfirmObject;
+    [SerializeField] private Button _gotoRegisterButton;
+    [SerializeField] private Button _loginButton;
+    [SerializeField] private Button _gotoLoginButton;
+    [SerializeField] private Button _registerButton;
+
+    [SerializeField] private TextMeshProUGUI _messageTextUI;
+
+    [SerializeField] private TMP_InputField _idInputField;
+    [SerializeField] private TMP_InputField _passwordInputField;
+    [SerializeField] private TMP_InputField _passwordConfirmInputField;
+
+    private const string EmailPattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
+
+    private const string PasswordPattern = @"^(?=.{7,20}$)(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':""\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':""\\|,.<>\/?]+$";
+
+    private bool _isValidEmail(string email) => Regex.IsMatch(email, EmailPattern);
+
+    private bool _isValidPassword(string pw) => Regex.IsMatch(pw, PasswordPattern);
+
+    private void Start()
+    {
+        AddButtonEvents();
+        LoadLastLoginID();
+        Refresh();
+    }
+
+    private void AddButtonEvents()
+    {
+        _gotoRegisterButton.onClick.AddListener(GotoRegister);
+        _loginButton.onClick.AddListener(Login);
+        _gotoLoginButton.onClick.AddListener(GotoLogin);
+        _registerButton.onClick.AddListener(Register);
+    }
+
+    private void Refresh()
+    {
+        // 2차 비밀번호 오브젝트는 회원가입 모드일때만 노출
+        _passwordConfirmObject.SetActive(_mode == SceneMode.Register);
+        _gotoRegisterButton.gameObject.SetActive(_mode == SceneMode.Login);
+        _loginButton.gameObject.SetActive(_mode == SceneMode.Login);
+        _gotoLoginButton.gameObject.SetActive(_mode == SceneMode.Register);
+        _registerButton.gameObject.SetActive(_mode == SceneMode.Register);
+    }
+
+    private void Login()
+    {
+        // 로그인
+        // 1. 아이디 입력을 확인한다.
+        string id = _idInputField.text;
+        if (string.IsNullOrEmpty(id))
+        {
+            _messageTextUI.text = "아이디 또는 비밀번호가 틀렸습니다. 확인해주세요.";
+            return;
+        }
+
+        // 2. 비밀번호 입력을 확인한다.
+        string password = _passwordInputField.text;
+        if (string.IsNullOrEmpty(password))
+        {
+            _messageTextUI.text = "아이디 또는 비밀번호가 틀렸습니다. 확인해주세요.";
+            return;
+        }
+
+        // 3. 실제 저장된 아이디-비밀번호 계정이 있는지 확인한다.
+        // 3-1. 아이디가 있는지 확인한다.
+        if (!PlayerPrefs.HasKey(id))
+        {
+            _messageTextUI.text = "아이디 또는 비밀번호가 틀렸습니다. 확인해주세요.";
+            return;
+        }
+
+        string encrypted = PlayerPrefs.GetString(id);
+        string decryptedPassword = AESCrypto.Decrypt(encrypted);
+
+        if (decryptedPassword != password)
+        {
+            _messageTextUI.text = "아이디 또는 비밀번호가 틀렸습니다. 확인해주세요.";
+            return;
+        }
+
+        PlayerPrefs.SetString("LastLoginID", id);
+        PlayerPrefs.Save();
+
+        // 4. 있다면 씬 이동
+        // 동기 -> 유저가 대기하도록 한다.
+        SceneManager.LoadScene(1);
+    }
+
+    private void Register()
+    {
+        string id = _idInputField.text;
+        if (string.IsNullOrEmpty(id))
+        {
+            _messageTextUI.text = "아이디를 입력해주세요.";
+            return;
+        }
+        if (!_isValidEmail(id))
+        {
+            _messageTextUI.text = "아이디는 이메일 형식이어야 합니다.";
+            return;
+        }
+
+        string password = _passwordInputField.text;
+        if (string.IsNullOrEmpty(password))
+        {
+            _messageTextUI.text = "패스워드를 입력해주세요.";
+            return;
+        }
+        if (!_isValidPassword(password))
+        {
+            _messageTextUI.text = "패스워드는 7~20자, 대/소문자 각 1개 이상, 숫자 1개 이상, 특수문자 1개 이상 입력해주세요.";
+            return;
+        }
+
+        // 2차 비밀번호 입력을 확인한다.
+        string password2 = _passwordConfirmInputField.text;
+        if (string.IsNullOrEmpty(password2) || password != password2)
+        {
+            _messageTextUI.text = "패스워드를 다시 확인해주세요.";
+            return;
+        }
+
+        // 중복 아이디를 확인한다.
+        if (PlayerPrefs.HasKey(id))
+        {
+            _messageTextUI.text = "중복된 아이디입니다.";
+            return;
+        }
+
+        string encryptedPassword = AESCrypto.Encrypt(password);
+        PlayerPrefs.SetString(id, encryptedPassword);
+        PlayerPrefs.Save();
+
+        GotoLogin();
+    }
+
+    private void GotoLogin()
+    {
+        _mode = SceneMode.Login;
+        Refresh();
+    }
+
+    private void GotoRegister()
+    {
+        _mode = SceneMode.Register;
+        Refresh();
+    }
+
+    private void LoadLastLoginID()
+    {
+        if (PlayerPrefs.HasKey("LastLoginID"))
+        {
+            _idInputField.text = PlayerPrefs.GetString("LastLoginID");
+            _passwordInputField.text = string.Empty;
+        }
+        else
+        {
+            _idInputField.text = string.Empty;
+        }
+    }
+}
