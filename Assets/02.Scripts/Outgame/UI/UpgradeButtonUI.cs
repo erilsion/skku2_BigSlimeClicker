@@ -4,6 +4,15 @@ using UnityEngine.UI;
 
 public class UpgradeButtonUI : MonoBehaviour
 {
+
+private void Awake()
+    {
+        if (_upgradeButton != null)
+        {
+            _upgradeButton.onClick.AddListener(LevelUp);
+        }
+    }
+
     [Header("텍스트")]
     [SerializeField] private TMP_Text _nameText;
     [SerializeField] private TMP_Text _bonusText;
@@ -33,10 +42,11 @@ public class UpgradeButtonUI : MonoBehaviour
         _upgradeButton.interactable = canLevelUp;
     }
 
-    public void LevelUp()
+public void LevelUp()
     {
         if (_upgrade == null)
         {
+            Debug.LogWarning("Upgrade is null! Button not initialized.");
             return;
         }
 

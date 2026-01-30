@@ -24,10 +24,16 @@ public class DamageCalculation : MonoBehaviour
         Instance = this;
     }
 
-    public void Initialize(double manualBase, double autoBase)
+public void Initialize(double manualBase, double autoBase)
     {
         _manualBase = manualBase;
         _autoBase = autoBase;
+        
+        // 초기화 후 보너스를 재계산한다.
+        if (UpgradeManager.Instance != null)
+        {
+            RecalculateBonus();
+        }
     }
     private void OnEnable()
     {
@@ -42,8 +48,13 @@ public class DamageCalculation : MonoBehaviour
     public double GetManualDamage() => _manualBase + ManualBonus;
     public double GetAutoDamage() => _autoBase + AutoBonus;
 
-    private void RecalculateBonus()
+private void RecalculateBonus()
     {
+        if (UpgradeManager.Instance == null)
+        {
+            return;
+        }
+        
         ManualBonus = 0;
         AutoBonus = 0;
 
