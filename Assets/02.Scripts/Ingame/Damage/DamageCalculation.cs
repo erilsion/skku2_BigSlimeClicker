@@ -5,8 +5,8 @@ public class DamageCalculation : MonoBehaviour
 {
     public static DamageCalculation Instance { get; private set; }
 
-    private double _manualBase;
-    private double _autoBase;
+    [SerializeField] private double _manualBase = 10f;
+    [SerializeField] private double _autoBase = 0f;
 
     // 업그레이드 시 사용하는 정보이다.
     public double ManualBonus { get; private set; }
@@ -24,17 +24,6 @@ public class DamageCalculation : MonoBehaviour
         Instance = this;
     }
 
-public void Initialize(double manualBase, double autoBase)
-    {
-        _manualBase = manualBase;
-        _autoBase = autoBase;
-        
-        // 초기화 후 보너스를 재계산한다.
-        if (UpgradeManager.Instance != null)
-        {
-            RecalculateBonus();
-        }
-    }
     private void OnEnable()
     {
         UpgradeManager.OnDataChanged += RecalculateBonus;
