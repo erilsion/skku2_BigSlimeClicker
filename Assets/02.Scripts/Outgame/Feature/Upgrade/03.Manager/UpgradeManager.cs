@@ -20,7 +20,7 @@ public class UpgradeManager : MonoBehaviour
     {
         Instance = this;
 
-        _repository = new LocalUpgradeRepository();
+        _repository = new LocalUpgradeRepository(AccountManager.Instance.Email);
         var saveData = _repository.Load();
 
         _upgrades.Clear();
@@ -28,7 +28,7 @@ public class UpgradeManager : MonoBehaviour
         {
             if (definition == null || _definitionTable.Definitions == null)
             {
-                throw new Exception("UpgradeDefinitionTableSO가 비어있습니다: {definition.UpgradeType}");
+                throw new Exception($"UpgradeDefinitionTableSO가 비어있습니다: {definition.UpgradeType}");
             }
             if (_upgrades.ContainsKey(definition.UpgradeType))
             {

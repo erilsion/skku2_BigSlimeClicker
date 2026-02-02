@@ -6,8 +6,6 @@ using System.Text.RegularExpressions;
 
 public class LoginScene : MonoBehaviour
 {
-    // 로그인씬 (로그인/회원가입) -> 게임씬
-
     private enum SceneMode
     {
         Login,
@@ -39,9 +37,16 @@ public class LoginScene : MonoBehaviour
 
     private void Start()
     {
+        _messageText.text = "어서오세요!";
+        if (BGMManager.Instance != null)
+        {
+            BGMManager.Instance.PlayBGM();
+        }
         AddButtonEvents();
         LoadLastLoginID();
         Refresh();
+        // 로그인 버튼은 기본적으로 활성화 상태로 시작한다.
+        _loginButton.interactable = true;
     }
 
     private void AddButtonEvents()
@@ -62,75 +67,65 @@ public class LoginScene : MonoBehaviour
         _registerButton.gameObject.SetActive(_mode == SceneMode.Register);
     }
 
-    public void OnEmailTextChange(string email)
-    {
-        bool result = true;
-
-        if (string.IsNullOrEmpty(email))
-        {
-            result = false;
-            _messageText.text = "이메일이 비어있어요!";
-        }
-        if (!_isValidEmail(email))
-        {
-            result = false;
-            _messageText.text = "이메일 형식이 아니에요!!";
-        }
-        if(result)
-        {
-            _loginButton.enabled = true;
-            _messageText.text = "완벽한 이메일이에요!";
-        }
-        else
-        {
-            _loginButton.enabled = false;
-            _messageText.text = "이메일이 올바르지 않아요.";
-        }
-    }
-
     private void Login()
     {
-        string email = _emailInputField.text;
+        string email = _emailInputField.text.Trim();
         string password = _passwordInputField.text;
 
-        string encrypted = PlayerPrefs.GetString(email);
-        string decryptedPassword = AESCrypto.Decrypt(encrypted);
-
-        var result = AccountManager.Instance.TryLogin(email, password);
-        if (result.Success)
+        // 로그인 버튼 클릭 시 검증한다.
+        if (string.IsNullOrEmpty(email))
         {
-            PlayerPrefs.SetString("LastLoginID", email);
-            PlayerPrefs.Save();
-            SceneManager.LoadScene("GameScene");
+            _messageText.text = "이메일이 비어있어요!";
+            return;
         }
-        else
-        {
-            _messageText.text = $"아이디와 패스워드를 확인해주세요.";
-        }
-    }
 
-    private void Register()
-    {
-        string email = _emailInputField.text;
-        string password = _passwordInputField.text;
-        string password2 = _passwordConfirmInputField.text;
-        if (string.IsNullOrEmpty(password2) || password != password2)
+        if (!_isValidEmail(email))
         {
-            _messageText.text = "패스워드를 다시 확인해주세요.";
+            _messageText.text = "이메일 형식이 올바르지 않아요!";
+            return;
+        }
+
+        if (string.IsNullOrEmpty(password))
+        {
+            _messageText.text = "비밀번호를 입력해주세요!";
             return;
         }
 
         var result = AccountManager.Instance.TryLogin(email, password);
         if (result.Success)
         {
-            string encryptedPassword = AESCrypto.Encrypt(password);
-            PlayerPrefs.SetString(email, encryptedPassword);
+            _messageText.text = "로그인 성공!";
+            PlayerPrefs.SetString("LastLoginID", email);
             PlayerPrefs.Save();
+            SceneManager.LoadSceneAsync("LoadingScene");
+        }
+        else
+        {
+            _messageText.text = result.ErrorMessage;
+        }
+    }
+
+    private void Register()
+    {
+        string email = _emailInputField.text.Trim();
+        string password = _passwordInputField.text;
+        string password2 = _passwordConfirmInputField.text;
+
+        if (string.IsNullOrEmpty(password2) || password != password2)
+        {
+            _messageText.text = "패스워드를 다시 확인해주세요!";
+            return;
+        }
+
+        var result = AccountManager.Instance.TryRegister(email, password);
+        if (result.Success)
+        {
+            _messageText.text = "회원가입에 성공했어요!";
             GotoLogin();
         }
         else
         {
-            _messageText.text = $"회원가입에 실패했어요...";
+            _messageText.text = result.ErrorMessage;
         }
     }
 

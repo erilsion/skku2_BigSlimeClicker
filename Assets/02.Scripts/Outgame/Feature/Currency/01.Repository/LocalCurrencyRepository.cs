@@ -7,6 +7,13 @@
 // 코드가 깔끔해지고 유지 보수가 쉬워진다.
 public class LocalCurrencyRepository: ICurrencyRepository
 {
+    private readonly string _userId;
+
+    public LocalCurrencyRepository(string userId)
+    {
+        _userId = userId;
+    }
+
     public void Save(CurrencySaveData saveData)
     {
         // 어떻게든 Save한다.

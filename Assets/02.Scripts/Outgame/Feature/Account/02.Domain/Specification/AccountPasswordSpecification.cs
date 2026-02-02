@@ -1,10 +1,10 @@
 ﻿using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class AccountPasswordSpecification : MonoBehaviour
+public class AccountPasswordSpecification
 {
     // ── 정규표현식 (컴파일하여 성능 최적화) ──
-    private const string PasswordPattern = @"^(?=.{6,16}$)(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':""\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':""\\|,.<>\/?]+$";
+    private const string PasswordPattern = @"^(?=.{6,16}$)(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]+$";
 
     private bool _isValidPassword(string password) => Regex.IsMatch(password, PasswordPattern);
 
@@ -19,7 +19,7 @@ public class AccountPasswordSpecification : MonoBehaviour
         }
         if (!_isValidPassword(password))
         {
-            _errorMessage = "패스워드 형식이 올바르지 않아요!";
+            _errorMessage = "패스워드는 대문자와 숫자를 1개 이상 포함한 6자 이상 16자 이하의 영어로 설정해 주세요!";
             return false;
         }
         return true;
