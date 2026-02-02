@@ -36,6 +36,10 @@ public class LoadingScene : MonoBehaviour
             if (ao.progress >= _ninetyPercent)
             {
                 ao.allowSceneActivation = true;
+                if (BGMManager.Instance != null)
+                {
+                    BGMManager.Instance.StopBGM();
+                }
             }
 
             yield return null;

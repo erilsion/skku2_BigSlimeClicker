@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 83292647}
   - component: {fileID: 83292648}
+  - component: {fileID: 83292649}
   m_Layer: 0
   m_Name: LoadingScene
   m_TagString: Untagged
@@ -165,6 +166,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LoadingScene
   _progressFilled: {fileID: 1116495125}
   _progressText: {fileID: 479387435}
+--- !u!81 &83292649
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 83292646}
+  m_Enabled: 1
 --- !u!1 &132610214
 GameObject:
   m_ObjectHideFlags: 0

@@ -37,6 +37,11 @@ public class LoginScene : MonoBehaviour
 
     private void Start()
     {
+        _messageText.text = "어서오세요!";
+        if (BGMManager.Instance != null)
+        {
+            BGMManager.Instance.PlayBGM();
+        }
         AddButtonEvents();
         LoadLastLoginID();
         Refresh();
