@@ -20,8 +20,14 @@ public class LocalCurrencyRepository: ICurrencyRepository
         for (int i = 0; i < (int)ECurrencyType.Count; i++)
         {
             var type = (ECurrencyType)i;
-            PlayerPrefs.SetString(type.ToString(), saveData.Currencies[i].ToString("G17"));
+
+            // 잔액
+            PlayerPrefs.SetString(MakeBalanceKey(type), saveData.Currencies[i].ToString("G17"));
+
+            // 누적 획득량
+            PlayerPrefs.SetString(MakeEarnedKey(type), saveData.EarnedTotals[i].ToString("G17"));
         }
+        PlayerPrefs.Save();
     }
 
     public CurrencySaveData Load()
@@ -31,12 +37,33 @@ public class LocalCurrencyRepository: ICurrencyRepository
 
         for (int i = 0; i < (int)ECurrencyType.Count; i++)
         {
-            if (PlayerPrefs.HasKey(i.ToString()))
+            var type = (ECurrencyType)i;
+
+            // 잔액
+            string balanceKey = MakeBalanceKey(type);
+            if (PlayerPrefs.HasKey(balanceKey))
             {
-                data.Currencies[i] = double.Parse(PlayerPrefs.GetString(i.ToString(), "0"));
+                data.Currencies[i] = double.Parse(PlayerPrefs.GetString(balanceKey, "0"));
+            }
+
+            // 누적 획득량
+            string earnedKey = MakeEarnedKey(type);
+            if (PlayerPrefs.HasKey(earnedKey))
+            {
+                data.EarnedTotals[i] = double.Parse(PlayerPrefs.GetString(earnedKey, "0"));
             }
         }
 
         return data;
+    }
+
+    private string MakeBalanceKey(ECurrencyType type)
+    {
+        return $"{_userId}_Currency_{type}_Balance";
+    }
+
+    private string MakeEarnedKey(ECurrencyType type)
+    {
+        return $"{_userId}_Currency_{type}_Earned";
     }
 }
