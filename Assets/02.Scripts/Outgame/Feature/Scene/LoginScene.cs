@@ -40,7 +40,8 @@ public class LoginScene : MonoBehaviour
         AddButtonEvents();
         LoadLastLoginID();
         Refresh();
-        ValidateInputs(); // 초기 로드 시 입력 필드 검증
+        // 로그인 버튼은 기본적으로 활성화 상태로 시작한다.
+        _loginButton.interactable = true;
     }
 
     private void AddButtonEvents()
@@ -61,56 +62,29 @@ public class LoginScene : MonoBehaviour
         _registerButton.gameObject.SetActive(_mode == SceneMode.Register);
     }
 
-    public void OnEmailTextChange(string email)
-    {
-        ValidateInputs();
-    }
-
-    public void OnPasswordTextChange(string password)
-    {
-        ValidateInputs();
-    }
-
-    private void ValidateInputs()
+    private void Login()
     {
         string email = _emailInputField.text.Trim();
         string password = _passwordInputField.text;
 
-        // 로그인 모드일 때만 검증한다.
-        if (_mode != SceneMode.Login)
-        {
-            return;
-        }
-
+        // 로그인 버튼 클릭 시 검증한다.
         if (string.IsNullOrEmpty(email))
         {
             _messageText.text = "이메일이 비어있어요!";
-            _loginButton.interactable = false;
             return;
         }
 
         if (!_isValidEmail(email))
         {
             _messageText.text = "이메일 형식이 올바르지 않아요!";
-            _loginButton.interactable = false;
             return;
         }
 
         if (string.IsNullOrEmpty(password))
         {
             _messageText.text = "비밀번호를 입력해주세요!";
-            _loginButton.interactable = false;
             return;
         }
-
-        _messageText.text = "로그인 가능해요!";
-        _loginButton.interactable = true;
-    }
-
-    private void Login()
-    {
-        string email = _emailInputField.text;
-        string password = _passwordInputField.text;
 
         string encrypted = PlayerPrefs.GetString(email);
         string decryptedPassword = AESCrypto.Decrypt(encrypted);
@@ -118,6 +92,7 @@ public class LoginScene : MonoBehaviour
         var result = AccountManager.Instance.TryLogin(email, password);
         if (result.Success)
         {
+            _messageText.text = "로그인 성공!";
             PlayerPrefs.SetString("LastLoginID", email);
             PlayerPrefs.Save();
             SceneManager.LoadSceneAsync(1);
@@ -156,8 +131,6 @@ public class LoginScene : MonoBehaviour
     {
         _mode = SceneMode.Login;
         Refresh();
-        // 로그인 모드로 전환 시 검증한다.
-        ValidateInputs();
     }
 
     private void GotoRegister()
