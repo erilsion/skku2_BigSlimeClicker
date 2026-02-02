@@ -2,6 +2,13 @@
 
 public class LocalUpgradeRepository : IUpgradeRepository
 {
+    private readonly string _userId;
+
+    public LocalUpgradeRepository(string userId)
+    {
+        _userId = userId;
+    }
+
     public void Save(UpgradeSaveData saveData)
     {
         for (int i = 0; i < (int)EUpgradeType.Count; i++)

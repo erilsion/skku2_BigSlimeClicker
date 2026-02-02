@@ -22,12 +22,15 @@ public class LocalAccountRepository : IAccountRepository
             };
         }
 
+        // 암호화를 시킨다.
+        string hashedPassword = AESCrypto.Encrypt(password);
+
         // 성공하면 저장한다.
-        PlayerPrefs.SetString(email, password);
+        PlayerPrefs.SetString(email, hashedPassword);
         return new AuthResult
         {
             Success = true,
-            Account = new Account(email, password)
+            Account = new Account(email, hashedPassword)
         };
     }
 
@@ -45,7 +48,9 @@ public class LocalAccountRepository : IAccountRepository
 
         // 비밀번호가 틀렸다면 실패한다.
         string myPassword = PlayerPrefs.GetString(email);
-        if (myPassword != password)
+        string decryptedPassword = AESCrypto.Decrypt(myPassword);
+
+        if (decryptedPassword != password)
         {
             return new AuthResult
             {

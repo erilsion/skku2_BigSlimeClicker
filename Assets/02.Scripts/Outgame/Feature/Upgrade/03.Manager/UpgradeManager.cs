@@ -20,7 +20,7 @@ public class UpgradeManager : MonoBehaviour
     {
         Instance = this;
 
-        _repository = new LocalUpgradeRepository();
+        _repository = new LocalUpgradeRepository(AccountManager.Instance.Email);
         var saveData = _repository.Load();
 
         _upgrades.Clear();
