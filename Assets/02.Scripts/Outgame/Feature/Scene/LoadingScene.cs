@@ -6,7 +6,7 @@ using TMPro;
 
 public class LoadingScene : MonoBehaviour
 {
-    [SerializeField] private Slider _progressSlider;
+    [SerializeField] private Image _progressFilled;
     [SerializeField] private TextMeshProUGUI _progressText;
     private int _hundred = 100;
     private float _ninetyPercent = 0.9f;
@@ -22,7 +22,7 @@ public class LoadingScene : MonoBehaviour
     {
         // 비동기 -> 유저가 다른 일을 하는 동안 불러온다.
         // 씬 로드 상황에 대한 데이터를 가지고 있는 객체를 반환한다.
-        AsyncOperation ao = SceneManager.LoadSceneAsync(0);
+        AsyncOperation ao = SceneManager.LoadSceneAsync(2);
 
         // 로드되는 씬의 모습이 화면에 안 보이게 한다.
         ao.allowSceneActivation = false;
@@ -30,7 +30,7 @@ public class LoadingScene : MonoBehaviour
         // 로드가 완료될 때까지
         while (!ao.isDone)
         {
-            _progressSlider.value = ao.progress;
+            _progressFilled.fillAmount = ao.progress;
             _progressText.text = $"{ao.progress * _hundred}%";
 
             if (ao.progress >= _ninetyPercent)

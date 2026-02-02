@@ -64,28 +64,24 @@ public class LoginScene : MonoBehaviour
 
     public void OnEmailTextChange(string email)
     {
-        bool result = true;
+        email = email.Trim();
 
         if (string.IsNullOrEmpty(email))
         {
-            result = false;
             _messageText.text = "이메일이 비어있어요!";
+            _loginButton.interactable = false;
+            return;
         }
+
         if (!_isValidEmail(email))
         {
-            result = false;
-            _messageText.text = "이메일 형식이 아니에요!!";
+            _messageText.text = "이메일 형식이 올바르지 않아요!";
+            _loginButton.interactable = false;
+            return;
         }
-        if(result)
-        {
-            _loginButton.enabled = true;
-            _messageText.text = "완벽한 이메일이에요!";
-        }
-        else
-        {
-            _loginButton.enabled = false;
-            _messageText.text = "이메일이 올바르지 않아요.";
-        }
+
+        _messageText.text = "완벽한 이메일이에요!";
+        _loginButton.interactable = true;
     }
 
     private void Login()
@@ -101,7 +97,7 @@ public class LoginScene : MonoBehaviour
         {
             PlayerPrefs.SetString("LastLoginID", email);
             PlayerPrefs.Save();
-            SceneManager.LoadScene("GameScene");
+            SceneManager.LoadSceneAsync(1);
         }
         else
         {
@@ -111,26 +107,25 @@ public class LoginScene : MonoBehaviour
 
     private void Register()
     {
-        string email = _emailInputField.text;
+        string email = _emailInputField.text.Trim();
         string password = _passwordInputField.text;
         string password2 = _passwordConfirmInputField.text;
+
         if (string.IsNullOrEmpty(password2) || password != password2)
         {
-            _messageText.text = "패스워드를 다시 확인해주세요.";
+            _messageText.text = "패스워드를 다시 확인해주세요!";
             return;
         }
 
-        var result = AccountManager.Instance.TryLogin(email, password);
+        var result = AccountManager.Instance.TryRegister(email, password);
         if (result.Success)
         {
-            string encryptedPassword = AESCrypto.Encrypt(password);
-            PlayerPrefs.SetString(email, encryptedPassword);
-            PlayerPrefs.Save();
+            _messageText.text = "회원가입 성공!";
             GotoLogin();
         }
         else
         {
-            _messageText.text = $"회원가입에 실패했어요...";
+            _messageText.text = result.ErrorMessage;
         }
     }
 
