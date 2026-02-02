@@ -13,14 +13,12 @@ public class EarthScalerFeedback : MonoBehaviour
     [Header("스케일")]
     [SerializeField] private float _maxScale = 1f;
     [SerializeField] private float _minScale = 0.001f;
-
-    private float _scalePow = 0.6f;
+    [SerializeField] private float _scalePow = 0.6f;
 
     [Header("X축 이동")]
     [SerializeField] private float _startX = 16.6f;
     [SerializeField] private float _endX = 4.8f;
-
-    private float _xCurvePower = 1.4f;
+    [SerializeField] private float _xCurvePower = 1.4f;
 
     [Header("트윈")]
     [SerializeField] private float _tweenDuration = 0.3f;
@@ -33,6 +31,7 @@ public class EarthScalerFeedback : MonoBehaviour
 
     private Tween _tween;
     private Coroutine _bindCoroutine;
+    private bool _subscribed;
 
     private void Awake()
     {
@@ -53,12 +52,16 @@ public class EarthScalerFeedback : MonoBehaviour
 
     private IEnumerator Bind_Coroutine()
     {
-        while (PotionStock.Instance == null)
+        while (CurrencyManager.Instance == null)
         {
             yield return null;
         }
-        PotionStock.Instance.OnPotionChanged += OnPotionChanged;
-        OnPotionChanged(PotionStock.Instance.Potion);
+        if (!_subscribed)
+        {
+            _subscribed = true;
+            CurrencyManager.OnDataChanged += HandleCurrencyChanged;
+        }
+        HandleCurrencyChanged();
         _bindCoroutine = null;
     }
 
@@ -69,15 +72,22 @@ public class EarthScalerFeedback : MonoBehaviour
             StopCoroutine(_bindCoroutine);
             _bindCoroutine = null;
         }
-        if (PotionStock.Instance != null)
+        if (_subscribed)
         {
-            PotionStock.Instance.OnPotionChanged -= OnPotionChanged;
+            CurrencyManager.OnDataChanged -= HandleCurrencyChanged;
+            _subscribed = false;
         }
         _tween?.Kill();
     }
 
-    private void OnPotionChanged(double potion)
+    private void HandleCurrencyChanged()
     {
+        if (CurrencyManager.Instance == null)
+        {
+            return;
+        }
+
+        double potion = (double)CurrencyManager.Instance.Get(ECurrencyType.Potion);
         float t = Mathf.Clamp01((float)(potion / _maxPotion));
 
         // 초반에 줄어드는 게 티나도록 체감을 조절한다.

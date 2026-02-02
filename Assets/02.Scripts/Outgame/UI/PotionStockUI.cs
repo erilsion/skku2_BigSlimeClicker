@@ -9,6 +9,8 @@ public class PotionStockUI : MonoBehaviour
     [SerializeField] private TMP_Text _stockText;
     [SerializeField] private GameObject _stockTextParent;
 
+    private ECurrencyType _type = ECurrencyType.Potion;
+
     private bool _subscribed;
     private Coroutine _bindCoroutine;
 
@@ -17,16 +19,16 @@ public class PotionStockUI : MonoBehaviour
     private float _pressedDuration = 0.12f;
     private float _endDuration = 0.12f;
 
-    private void Start()
+    private void Awake()
     {
-        if (PotionStock.Instance == null)
+        if (_stockText == null)
         {
-            return;
+            _stockText = GetComponent<TMP_Text>();
         }
-        PotionStock.Instance.OnPotionChanged += OnStockChanged;
-
-        // 켜질 때 현재 값도 바로 반영한다.
-        OnStockChanged(PotionStock.Instance.Potion);
+        if (_stockTextParent == null)
+        {
+            _stockTextParent = _stockText != null ? _stockText.gameObject : gameObject;
+        }
     }
 
     private void OnEnable()
@@ -41,7 +43,7 @@ public class PotionStockUI : MonoBehaviour
 
     private IEnumerator BindWhenReady_Coroutine()
     {
-        while (PotionStock.Instance == null)
+        while (CurrencyManager.Instance == null)
         {
             yield return null;
         }
@@ -52,8 +54,8 @@ public class PotionStockUI : MonoBehaviour
         }
 
         _subscribed = true;
-        PotionStock.Instance.OnPotionChanged += OnStockChanged;
-        OnStockChanged(PotionStock.Instance.Potion);
+        CurrencyManager.OnDataChanged += HandleCurrencyChanged;
+        HandleCurrencyChanged();
 
         // 여기까지 오면 역할 끝났으니 코루틴을 정리한다.
         _bindCoroutine = null;
@@ -67,22 +69,32 @@ public class PotionStockUI : MonoBehaviour
             _bindCoroutine = null;
         }
 
-        if (_subscribed && PotionStock.Instance != null)
+        if (_subscribed)
         {
-            PotionStock.Instance.OnPotionChanged -= OnStockChanged;
+            CurrencyManager.OnDataChanged -= HandleCurrencyChanged;
         }
 
         _subscribed = false;
+
+        if (_stockTextParent != null)
+        {
+            _stockTextParent.transform.DOKill();
+        }
     }
 
-    private void OnStockChanged(double potion)
+    private void HandleCurrencyChanged()
     {
-        if (_stockText == null)
+        if (_stockText == null || CurrencyManager.Instance == null)
         {
             return;
         }
+
         PlayTween();
-        _stockText.text = potion.FormattedString();
+
+        var value = CurrencyManager.Instance.Get(_type);
+
+        _stockText.text = ((double)value).FormattedString();
+        _stockText.text = value.ToString();
     }
 
     // 최종 사용자 입장에서는 double은 그냥 숫자일 뿐인지 '재화'인지 모른다.
@@ -90,6 +102,11 @@ public class PotionStockUI : MonoBehaviour
     // 규칙2. 재화를 표현할 때 무조건 FormattedString()을 써야 한다.
     public void PlayTween()
     {
+        if (_stockTextParent == null)
+        {
+            return;
+        }
+
         _stockTextParent.transform.DOKill();
 
         Sequence sequence = DOTween.Sequence();

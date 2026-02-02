@@ -119,144 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &8595750
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8595751}
-  - component: {fileID: 8595753}
-  - component: {fileID: 8595752}
-  m_Layer: 5
-  m_Name: Text (TMP)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &8595751
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8595750}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1831224811}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -413}
-  m_SizeDelta: {x: 1000, y: 120}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8595752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8595750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "\uC2AC\uB77C\uC784\uC744 \uC9C0\uAD6C\uBCF4\uB2E4 \uD06C\uAC8C \uB9CC\uB4DC\uC138\uC694!\n\uC5C5\uADF8\uB808\uC774\uB4DC\uB294
-    \uC544\uC9C1 \uC548 \uB3FC\uC694..."
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 91cddf127c03460499b3d3fdb7297d7f, type: 2}
-  m_sharedMaterial: {fileID: -3214794827743616011, guid: 91cddf127c03460499b3d3fdb7297d7f, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 52
-  m_fontSizeBase: 52
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_characterHorizontalScale: 1
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &8595753
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8595750}
-  m_CullTransparentMesh: 1
 --- !u!1 &72883080
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,6 +775,10 @@ PrefabInstance:
       propertyPath: m_text
       value: "\uBC84\uC12F"
       objectReference: {fileID: 0}
+    - target: {fileID: 5613963849340655875, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+      propertyPath: _type
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5760230736392125515, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1059,6 +925,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7496340393758560441, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
   m_PrefabInstance: {fileID: 671849312}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &671849314 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5613963849340655875, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+  m_PrefabInstance: {fileID: 671849312}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11adec18668adca4fad76b8a040f954e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeButtonUI
 --- !u!1 &728769387
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,6 +1226,7 @@ GameObject:
   m_Component:
   - component: {fileID: 845733156}
   - component: {fileID: 845733157}
+  - component: {fileID: 845733158}
   m_Layer: 5
   m_Name: ClickerUpgrade
   m_TagString: Untagged
@@ -1407,6 +1285,25 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &845733158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845733155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 203a682a8a617764aac0be60d77902f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradePanelUI
+  _upgradeButtonsUI:
+  - {fileID: 6654271992675689821}
+  - {fileID: 963731012}
+  - {fileID: 1076905868}
+  - {fileID: 671849314}
+  - {fileID: 2079539008}
+  - {fileID: 1697878377}
 --- !u!1001 &963731010
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1478,6 +1375,10 @@ PrefabInstance:
     - target: {fileID: 4831782559217800251, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_text
       value: "\uC601\uC591\uC81C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5613963849340655875, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+      propertyPath: _type
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5760230736392125515, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_Sprite
@@ -1625,6 +1526,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7496340393758560441, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
   m_PrefabInstance: {fileID: 963731010}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &963731012 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5613963849340655875, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+  m_PrefabInstance: {fileID: 963731010}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11adec18668adca4fad76b8a040f954e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeButtonUI
 --- !u!1001 &1076905866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1696,6 +1608,10 @@ PrefabInstance:
     - target: {fileID: 4831782559217800251, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_text
       value: "\uAFC0"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5613963849340655875, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+      propertyPath: _type
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5760230736392125515, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_Sprite
@@ -1843,6 +1759,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7496340393758560441, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
   m_PrefabInstance: {fileID: 1076905866}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1076905868 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5613963849340655875, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+  m_PrefabInstance: {fileID: 1076905866}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11adec18668adca4fad76b8a040f954e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeButtonUI
 --- !u!1 &1220800231
 GameObject:
   m_ObjectHideFlags: 0
@@ -2219,12 +2146,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1465994671}
-  - component: {fileID: 1465994670}
   - component: {fileID: 1465994673}
-  - component: {fileID: 1465994672}
   - component: {fileID: 1465994674}
-  - component: {fileID: 1465994675}
   - component: {fileID: 1465994676}
+  - component: {fileID: 1465994678}
+  - component: {fileID: 1465994677}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2232,21 +2158,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1465994670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1465994669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d412a6f10d5d5aa47a9675fd745e9ce7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  ManualDamage: 1500
-  AutoDamage: 500
-  Potion: 0
 --- !u!4 &1465994671
 Transform:
   m_ObjectHideFlags: 0
@@ -2262,18 +2173,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1465994672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1465994669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5efafc25b88c4a1408ee935882c04aba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PotionStock
 --- !u!114 &1465994673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2286,8 +2185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 815b0e0569d365448815b60972f1646e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageCalculation
-  _manualBase: 1500
-  _autoBase: 500
 --- !u!82 &1465994674
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2385,25 +2282,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1465994675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1465994669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c8c14a6524b4314483c998816b5e582, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
-  _definitions:
-  - {fileID: 11400000, guid: d09b36676be49d9498163fe691425639, type: 2}
-  - {fileID: 11400000, guid: a1b2c3d4e5f6789012345678901234ab, type: 2}
-  - {fileID: 11400000, guid: b2c3d4e5f67890123456789012345bcd, type: 2}
-  - {fileID: 11400000, guid: 98547ef40b8840b4885d63e184b5fa00, type: 2}
-  - {fileID: 11400000, guid: c3d4e5f678901234567890123456cdef, type: 2}
-  - {fileID: 11400000, guid: d4e5f6789012345678901234567def01, type: 2}
 --- !u!114 &1465994676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2417,6 +2295,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AutoClicker
   _interval: 3
+--- !u!114 &1465994677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465994669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3e30ddffa5623044a027de57ec86b1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CurrencyManager
+--- !u!114 &1465994678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465994669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbae4eef790938f4c9ca57b63e145120, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
+  _definitionTable: {fileID: 11400000, guid: 0194a7da40dd07842ae1eb0745c17d6b, type: 2}
 --- !u!1 &1477015056
 GameObject:
   m_ObjectHideFlags: 0
@@ -2684,6 +2587,10 @@ PrefabInstance:
       propertyPath: m_text
       value: "\uACE0\uAE30"
       objectReference: {fileID: 0}
+    - target: {fileID: 5613963849340655875, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+      propertyPath: _type
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5760230736392125515, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2830,6 +2737,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7496340393758560441, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
   m_PrefabInstance: {fileID: 1697878375}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1697878377 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5613963849340655875, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+  m_PrefabInstance: {fileID: 1697878375}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11adec18668adca4fad76b8a040f954e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeButtonUI
 --- !u!1 &1760609095
 GameObject:
   m_ObjectHideFlags: 0
@@ -3038,7 +2956,6 @@ RectTransform:
   - {fileID: 1682812772}
   - {fileID: 845733156}
   - {fileID: 1807592155}
-  - {fileID: 8595751}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3117,6 +3034,10 @@ PrefabInstance:
     - target: {fileID: 4831782559217800251, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_text
       value: "\uC54C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5613963849340655875, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+      propertyPath: _type
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5760230736392125515, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
       propertyPath: m_Sprite
@@ -3264,6 +3185,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7496340393758560441, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
   m_PrefabInstance: {fileID: 2079539006}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2079539008 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5613963849340655875, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+  m_PrefabInstance: {fileID: 2079539006}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11adec18668adca4fad76b8a040f954e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeButtonUI
 --- !u!1 &2112268141
 GameObject:
   m_ObjectHideFlags: 0
@@ -3585,6 +3517,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7496340393758560441, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
   m_PrefabInstance: {fileID: 6654271992675689819}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6654271992675689821 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5613963849340655875, guid: 4e40b2f22fa0dba4d809d46fd253e6a3, type: 3}
+  m_PrefabInstance: {fileID: 6654271992675689819}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11adec18668adca4fad76b8a040f954e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeButtonUI
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

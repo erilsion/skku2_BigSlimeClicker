@@ -15,11 +15,11 @@ public class CameraShakeFeedback : MonoBehaviour, IFeedback
 
     private void PlayCameraShake()
     {
-        if (PotionStock.Instance == null)
+        if (CurrencyManager.Instance == null)
         {
             return;
         }
-        double potion = PotionStock.Instance.Potion;
+        double potion = (double)CurrencyManager.Instance.Potion;
 
         float t = Mathf.Clamp01((float)(potion / _maxPotion));
         t = Mathf.Pow(t, _powerPow); // Earth / Scale 연출과 통일

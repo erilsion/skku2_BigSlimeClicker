@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ab6c7f13ceb1e44eace95e6cde96449, type: 3}
+  m_Name: ManualSmall
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeDefinition
+  UpgradeType: 0
+  TargetClickType: 0
+  DisplayName: "\uAE68\uB057\uD55C \uBB3C"
+  BaseCost: 100
+  CostGrowth: 1.15
+  PlusPerLevel: 5
+  MaxLevel: 999

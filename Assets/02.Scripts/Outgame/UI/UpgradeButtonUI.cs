@@ -1,122 +1,63 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 public class UpgradeButtonUI : MonoBehaviour
 {
-    [Header("데이터")]
-    [SerializeField] private UpgradeDefinition _definition;
 
-    [Header("UI")]
-    [SerializeField] private Button _buyButton;
+private void Awake()
+    {
+        if (_upgradeButton != null)
+        {
+            _upgradeButton.onClick.AddListener(LevelUp);
+        }
+    }
+
+    [Header("텍스트")]
     [SerializeField] private TMP_Text _nameText;
     [SerializeField] private TMP_Text _bonusText;
     [SerializeField] private TMP_Text _levelText;
     [SerializeField] private TMP_Text _costText;
 
-    private void Awake()
+    [Header("버튼")]
+    [SerializeField] private Button _upgradeButton;
+
+    [Header("타입")]
+    [SerializeField] private EUpgradeType _type;
+    public EUpgradeType Type => _type;
+
+    private Upgrade _upgrade;
+
+    public void Refresh(Upgrade upgrade)
     {
-        if (_buyButton == null)
-        {
-            _buyButton = GetComponent<Button>();
-        }
-        _buyButton.onClick.AddListener(OnClickBuy);
+        _upgrade = upgrade;
+
+        _nameText.text = upgrade.UpgradeDefinition.DisplayName.ToString();
+        _levelText.text = "Lv: " + upgrade.Level.ToString("N0");
+        _costText.text = "Cost: " + upgrade.Cost.ToString();
+
+        bool canLevelUp = UpgradeManager.Instance.CanLevelUp(upgrade.UpgradeDefinition.UpgradeType);
+
+        _costText.color = canLevelUp ? Color.white : Color.red;
+        _upgradeButton.interactable = canLevelUp;
     }
 
-    private void Start()
+public void LevelUp()
     {
-        double bonus = PastUpgradeManager.Instance.GetBonus(_definition.UpgradeType);
-        _bonusText.text = $"{bonus}";
-        Refresh();
-    }
-
-    private void OnEnable()
-    {
-        // 이벤트를 구독한다.
-        if (PotionStock.Instance != null)
+        if (_upgrade == null)
         {
-            PotionStock.Instance.OnPotionChanged += HandlePotionChanged;
-        }
-        if (PastUpgradeManager.Instance != null)
-        {
-            PastUpgradeManager.Instance.OnUpgradeLevelChanged += HandleUpgradeChanged;
-        }
-        Refresh();
-    }
-
-    private void OnDisable()
-    {
-        // 이벤트를 해제한다.
-        if (PotionStock.Instance != null)
-        {
-            PotionStock.Instance.OnPotionChanged -= HandlePotionChanged;
-        }
-        if (PastUpgradeManager.Instance != null)
-        {
-            PastUpgradeManager.Instance.OnUpgradeLevelChanged -= HandleUpgradeChanged;
-        }
-    }
-
-    private void OnClickBuy()
-    {
-        if (_definition == null)
-        {
-            return;
-        }
-        PastUpgradeManager.Instance.TryBuy(_definition.UpgradeType);
-        // Refresh를 즉시 반영 및 호출한다.
-        Refresh();
-    }
-
-    private void HandlePotionChanged(double _)
-    {
-        Refresh();
-    }
-
-    private void HandleUpgradeChanged(EUpgradeType type, int _)
-    {
-        if (_definition != null && _definition.UpgradeType == type)
-        {
-            Refresh();
-        }
-    }
-
-    private void Refresh()
-    {
-        if (_definition == null || PastUpgradeManager.Instance == null || PotionStock.Instance == null)
-        {
-            // 데이터가 없으면 버튼을 잠근다.
-            if (_buyButton != null)
-            {
-                _buyButton.interactable = false;
-            }
+            Debug.LogWarning("Upgrade is null! Button not initialized.");
             return;
         }
 
-        // 텍스트를 표기한다.
-        if (_nameText != null) _nameText.text = string.IsNullOrEmpty(_definition.DisplayName)
-            ? _definition.UpgradeType.ToString()
-            : _definition.DisplayName;
-
-        int level = PastUpgradeManager.Instance.GetLevel(_definition.UpgradeType);
-        double cost = PastUpgradeManager.Instance.GetCost(_definition.UpgradeType);
-        double potion = PotionStock.Instance.Potion;
-
-        if (_levelText != null)
+        bool success = UpgradeManager.Instance.TryLevelUp(_upgrade.UpgradeDefinition.UpgradeType);
+        if (success)
         {
-            _levelText.text = $"Lv:{ level}";
+            // todo: 성공 이펙트/사운드
         }
-        if (_costText != null)
+        else
         {
-            _costText.text = cost.FormattedString();
-            _costText.text = $"Cost:{ cost}";
-        }
-
-        // 구매 가능 여부를 체크한다.
-        if (_buyButton != null)
-        {
-            _buyButton.interactable = (potion >= cost);
+            // todo: 실패 피드백(재화 부족/최대 레벨)
         }
     }
 }
