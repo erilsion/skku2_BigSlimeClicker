@@ -91,20 +91,17 @@ public class LoginScene : MonoBehaviour
             return;
         }
 
-        string encrypted = PlayerPrefs.GetString(email);
-        string decryptedPassword = AESCrypto.Decrypt(encrypted);
-
         var result = AccountManager.Instance.TryLogin(email, password);
         if (result.Success)
         {
             _messageText.text = "로그인 성공!";
             PlayerPrefs.SetString("LastLoginID", email);
             PlayerPrefs.Save();
-            SceneManager.LoadSceneAsync(1);
+            SceneManager.LoadSceneAsync("LoadingScene");
         }
         else
         {
-            _messageText.text = $"아이디와 패스워드를 확인해주세요!";
+            _messageText.text = result.ErrorMessage;
         }
     }
 

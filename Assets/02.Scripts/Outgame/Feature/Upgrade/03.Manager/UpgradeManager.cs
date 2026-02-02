@@ -28,7 +28,7 @@ public class UpgradeManager : MonoBehaviour
         {
             if (definition == null || _definitionTable.Definitions == null)
             {
-                throw new Exception("UpgradeDefinitionTableSO가 비어있습니다: {definition.UpgradeType}");
+                throw new Exception($"UpgradeDefinitionTableSO가 비어있습니다: {definition.UpgradeType}");
             }
             if (_upgrades.ContainsKey(definition.UpgradeType))
             {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-public class LocalAccountRepository : IAccountRepository
+public class LocalAccountRepository : MonoBehaviour, IAccountRepository
 {
     public bool IsEmailAvailable(string email)
     {

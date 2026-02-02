@@ -13,12 +13,14 @@ public class AccountManager : MonoBehaviour
     public bool IsLogin => _currentAccount != null;
     public string Email => _currentAccount?.Email ?? string.Empty;
 
+    [Header("레포지토리 제공자")]
+    [SerializeField] private GameObject _repositoryProvider;
     private IAccountRepository _repository;
 
     private void Awake()
     {
         Instance = this;
-        _repository = new LocalAccountRepository();
+        _repository = _repositoryProvider.GetComponent<IAccountRepository>();
     }
 
     public AuthResult TryLogin(string email, string password)

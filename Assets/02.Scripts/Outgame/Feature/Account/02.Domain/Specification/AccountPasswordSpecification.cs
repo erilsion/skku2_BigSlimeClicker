@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class AccountPasswordSpecification : MonoBehaviour
+public class AccountPasswordSpecification
 {
     // ── 정규표현식 (컴파일하여 성능 최적화) ──
     private const string PasswordPattern = @"^(?=.{6,16}$)(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]+$";

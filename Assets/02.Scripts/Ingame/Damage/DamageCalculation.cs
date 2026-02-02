@@ -49,19 +49,13 @@ private void RecalculateBonus()
 
         foreach (var upgrade in UpgradeManager.Instance.GetAll())
         {
-            switch (upgrade.UpgradeDefinition.UpgradeType)
+            if (upgrade.UpgradeDefinition.TargetClickType == EClickType.Manual)
             {
-                case EUpgradeType.ManualSmall:
-                case EUpgradeType.ManualMedium:
-                case EUpgradeType.ManualLarge:
-                    ManualBonus += upgrade.Bonus;
-                    break;
-
-                case EUpgradeType.AutoSmall:
-                case EUpgradeType.AutoMedium:
-                case EUpgradeType.AutoLarge:
-                    AutoBonus += upgrade.Bonus;
-                    break;
+                ManualBonus += upgrade.Bonus;
+            }
+            else
+            {
+                AutoBonus += upgrade.Bonus;
             }
         }
         OnBonusChanged?.Invoke();

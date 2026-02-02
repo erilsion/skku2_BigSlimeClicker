@@ -23,7 +23,9 @@ public class BGMManager : MonoBehaviour
     public void PlayBGM()
     {
         if (!audioSource.isPlaying)
+        {
             audioSource.Play();
+        }
     }
 
     public void StopBGM()
