@@ -13,19 +13,19 @@ public class AccountManager : MonoBehaviour
     public bool IsLogin => _currentAccount != null;
     public string Email => _currentAccount?.Email ?? string.Empty;
 
-    // [SerializeField] private TextMeshProUGUI _messageText;
+    private IAccountRepository _repository;
 
     private void Awake()
     {
         Instance = this;
+        _repository = new LocalAccountRepository();
     }
 
     public AuthResult TryLogin(string email, string password)
     {
-        Account account = null;
         try
         {
-            account = new Account(email, password);
+            Account account = new Account(email, password);
         }
         catch (Exception ex)
         {
@@ -33,49 +33,67 @@ public class AccountManager : MonoBehaviour
             return new AuthResult
             {
                 Success = false,
-                ErrorMessage = "아이디 혹은 비밀번호를 확인해주세요!"
+                ErrorMessage = ex.Message
             };
         }
-        // 가입한 적 없다면 실패한다.
-        if (!PlayerPrefs.HasKey(email))
+
+        AuthResult result = _repository.Login(email, password);
+        if (result.Success)
+        {
+            _currentAccount = result.Account;
+            return new AuthResult
+            {
+                Success = true,
+                Account = _currentAccount
+            };
+        }
+        else
         {
             return new AuthResult
             {
                 Success = false,
-                ErrorMessage = "가입한 적이 없는 계정이에요!"
+                ErrorMessage = result.ErrorMessage
             };
         }
-        return new AuthResult
-        {
-            Success = false,
-            ErrorMessage = "로그인에 실패했어요!"
-        };
     }
 
-    public bool TryRegister(string email, string password) 
+    public AuthResult TryRegister(string email, string password) 
     {
-        if (PlayerPrefs.HasKey(email))
-        {
-            return false;
-        }
-
+        // 유효성 검사를 한다.
         try
         {
             Account account = new Account(email, password);
         }
         catch(Exception ex)
         {
-            // 유효성 검증 통과 못 하면 실패한다.
-            return false;
+            return new AuthResult
+            {
+                Success = false,
+                ErrorMessage = ex.Message
+            };
         }
 
         // 성공하면 저장한다.
-        PlayerPrefs.SetString(email, password);
-        return true; 
+        AuthResult result = _repository.Register(email, password);
+        if (result.Success)
+        {
+            return new AuthResult
+            {
+                Success = true,
+            };
+        }
+        else
+        {
+            return new AuthResult
+            {
+                Success = false,
+                ErrorMessage = result.ErrorMessage
+            };
+        }
     }
 
     public void Logout()
     {
-
+        _repository.Logout();
     }
 }
