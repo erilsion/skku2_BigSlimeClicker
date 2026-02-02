@@ -87,7 +87,7 @@ public class EarthScalerFeedback : MonoBehaviour
             return;
         }
 
-        double potion = (double)CurrencyManager.Instance.Get(ECurrencyType.Potion);
+        double potion = (double)CurrencyManager.Instance.GetEarnedTotal(ECurrencyType.Potion);
         float t = Mathf.Clamp01((float)(potion / _maxPotion));
 
         // 초반에 줄어드는 게 티나도록 체감을 조절한다.

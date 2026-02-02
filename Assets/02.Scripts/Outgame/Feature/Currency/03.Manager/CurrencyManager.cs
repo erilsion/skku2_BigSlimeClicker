@@ -13,6 +13,7 @@ public class CurrencyManager : MonoBehaviour
 
     // 재화 데이터들(배열로 관리한다).
     private Currency[] _currencies = new Currency[(int)ECurrencyType.Count];
+    private Currency[] _earnedTotals = new Currency[(int)ECurrencyType.Count];
 
     public static event Action OnDataChanged;
 
@@ -30,10 +31,14 @@ public class CurrencyManager : MonoBehaviour
 
     private void Start()
     {
-        double[] currencyValues = _repository.Load().Currencies;
+        var loaded = _repository.Load();
         for (int i = 0; i < _currencies.Length; i++)
         {
-            _currencies[i] = currencyValues[i];
+            _currencies[i] = loaded.Currencies[i];
+        }
+        for (int i = 0; i < _earnedTotals.Length; i++)
+        {
+            _earnedTotals[i] = loaded.EarnedTotals[i];
         }
         OnDataChanged?.Invoke();
     }
@@ -42,6 +47,10 @@ public class CurrencyManager : MonoBehaviour
     public Currency Get(ECurrencyType currencyType)
     {
         return _currencies[(int)currencyType];
+    }
+    public Currency GetEarnedTotal(ECurrencyType type)
+    {
+        return _earnedTotals[(int)type];
     }
 
     // 어쩔 수 없이 재화 조회 편의 기능은 있어야 한다.
@@ -56,11 +65,9 @@ public class CurrencyManager : MonoBehaviour
             return;
         }
         _currencies[(int)type] += amount;
+        _earnedTotals[(int)type] += amount;
 
-        _repository.Save(new CurrencySaveData
-        {
-            Currencies = _currencies.Select(x => (double)x).ToArray()
-        });
+        Save();
 
         OnDataChanged?.Invoke();
     }
@@ -88,11 +95,16 @@ public class CurrencyManager : MonoBehaviour
 
     private void Save()
     {
-        var saveData = new CurrencySaveData();
-        saveData.Currencies = new double[_currencies.Length];
+        var saveData = new CurrencySaveData
+        {
+            Currencies = new double[_currencies.Length],
+            EarnedTotals = new double[_earnedTotals.Length],
+        };
+
         for (int i = 0; i < _currencies.Length; i++)
         {
             saveData.Currencies[i] = (double)_currencies[i];
+            saveData.EarnedTotals[i] = (double)_earnedTotals[i];
         }
         _repository.Save(saveData);
     }
