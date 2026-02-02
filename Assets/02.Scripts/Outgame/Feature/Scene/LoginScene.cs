@@ -6,8 +6,6 @@ using System.Text.RegularExpressions;
 
 public class LoginScene : MonoBehaviour
 {
-    // 로그인씬 (로그인/회원가입) -> 게임씬
-
     private enum SceneMode
     {
         Login,
@@ -42,6 +40,7 @@ public class LoginScene : MonoBehaviour
         AddButtonEvents();
         LoadLastLoginID();
         Refresh();
+        ValidateInputs(); // 초기 로드 시 입력 필드 검증
     }
 
     private void AddButtonEvents()
@@ -64,7 +63,24 @@ public class LoginScene : MonoBehaviour
 
     public void OnEmailTextChange(string email)
     {
-        email = email.Trim();
+        ValidateInputs();
+    }
+
+    public void OnPasswordTextChange(string password)
+    {
+        ValidateInputs();
+    }
+
+    private void ValidateInputs()
+    {
+        string email = _emailInputField.text.Trim();
+        string password = _passwordInputField.text;
+
+        // 로그인 모드일 때만 검증한다.
+        if (_mode != SceneMode.Login)
+        {
+            return;
+        }
 
         if (string.IsNullOrEmpty(email))
         {
@@ -80,7 +96,14 @@ public class LoginScene : MonoBehaviour
             return;
         }
 
-        _messageText.text = "완벽한 이메일이에요!";
+        if (string.IsNullOrEmpty(password))
+        {
+            _messageText.text = "비밀번호를 입력해주세요!";
+            _loginButton.interactable = false;
+            return;
+        }
+
+        _messageText.text = "로그인 가능해요!";
         _loginButton.interactable = true;
     }
 
@@ -101,7 +124,7 @@ public class LoginScene : MonoBehaviour
         }
         else
         {
-            _messageText.text = $"아이디와 패스워드를 확인해주세요.";
+            _messageText.text = $"아이디와 패스워드를 확인해주세요!";
         }
     }
 
@@ -120,7 +143,7 @@ public class LoginScene : MonoBehaviour
         var result = AccountManager.Instance.TryRegister(email, password);
         if (result.Success)
         {
-            _messageText.text = "회원가입 성공!";
+            _messageText.text = "회원가입에 성공했어요!";
             GotoLogin();
         }
         else
@@ -133,6 +156,8 @@ public class LoginScene : MonoBehaviour
     {
         _mode = SceneMode.Login;
         Refresh();
+        // 로그인 모드로 전환 시 검증한다.
+        ValidateInputs();
     }
 
     private void GotoRegister()
