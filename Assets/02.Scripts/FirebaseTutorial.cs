@@ -2,11 +2,14 @@
 using Firebase;
 using Firebase.Extensions;
 using Firebase.Auth;
+using NUnit.Framework;
+using Firebase.Firestore;
 
 public class FirebaseTutorial : MonoBehaviour
 {
     private FirebaseApp _app = null;
     private FirebaseAuth _auth = null;
+    private FirebaseFirestore _db = null;
 
     private void Start()
     {
@@ -16,8 +19,9 @@ public class FirebaseTutorial : MonoBehaviour
             if(task.Result == DependencyStatus.Available)
             {
                 // 1. 파이어베이스 연결에 성공했다.
-                _app = FirebaseApp.DefaultInstance;    // 파이어베이스 앱
-                _auth = FirebaseAuth.DefaultInstance;  // 파이어베이스 인증
+                _app = FirebaseApp.DefaultInstance;      // 파이어베이스 앱 모듈 가져오기
+                _auth = FirebaseAuth.DefaultInstance;    // 파이어베이스 인증 모듈 가져오기
+                _db = FirebaseFirestore.DefaultInstance; // 파이어베이스 데이터베이스 모듈 가져오기
                 Debug.Log("Firebase 초기화 성공");
             }
             else 
@@ -29,7 +33,7 @@ public class FirebaseTutorial : MonoBehaviour
 
     public void Register(string email, string password)
     {
-        _auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+        _auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
             if (task.IsCanceled)
             {
                 Debug.LogError("회원 가입이 취소되었습니다.");
@@ -49,7 +53,7 @@ public class FirebaseTutorial : MonoBehaviour
 
     private void Login(string email, string password)
     {
-        _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+        _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
             if (task.IsCanceled || task.IsFaulted)
             {
                 Debug.LogError("로그인에 실패했습니다: " + task.Exception);
@@ -85,6 +89,23 @@ public class FirebaseTutorial : MonoBehaviour
         }
     }
 
+    private void SaveDog()
+    {
+        Dog Dog = new Dog("뽀삐", 4);
+
+        _db.Collection("Dogs").AddAsync(Dog).ContinueWithOnMainThread(task => {
+            if (task.IsCompletedSuccessfully)
+            {
+                string documentId = task.Result.Id;
+                Debug.Log("저장에 성공했습니다." + documentId);
+            }
+            else
+            {
+                Debug.LogError("저장에 실패했습니다: " + task.Exception);
+            }
+        });
+    }
+
     private void Update()
     {
         if(_app == null)
@@ -106,6 +127,10 @@ public class FirebaseTutorial : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             CheckLoginStatus();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            SaveDog();
         }
     }
 }
