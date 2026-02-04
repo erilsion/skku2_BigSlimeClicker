@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.Text.RegularExpressions;
+using Cysharp.Threading.Tasks;
 
 public class LoginScene : MonoBehaviour
 {
@@ -91,13 +92,13 @@ public class LoginScene : MonoBehaviour
             return;
         }
 
-        var result = AccountManager.Instance.TryLogin(email, password);
+        var result = await AccountManager.Instance.TryLogin(email, password);
         if (result.Success)
         {
             _messageText.text = "로그인 성공!";
             PlayerPrefs.SetString("LastLoginID", email);
             PlayerPrefs.Save();
-            SceneManager.LoadSceneAsync("LoadingScene");
+            await SceneManager.LoadSceneAsync("LoadingScene");
         }
         else
         {
@@ -105,7 +106,7 @@ public class LoginScene : MonoBehaviour
         }
     }
 
-    private void Register()
+    private async void Register()
     {
         string email = _emailInputField.text.Trim();
         string password = _passwordInputField.text;
@@ -117,7 +118,7 @@ public class LoginScene : MonoBehaviour
             return;
         }
 
-        var result = AccountManager.Instance.TryRegister(email, password);
+        var result = await AccountManager.Instance.TryRegister(email, password);
         if (result.Success)
         {
             _messageText.text = "회원가입에 성공했어요!";

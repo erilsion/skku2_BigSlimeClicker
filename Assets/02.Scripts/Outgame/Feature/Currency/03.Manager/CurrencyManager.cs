@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 // 오직 재화만 관리하는 클래스이다.
 // 클린 아키텍처에서는 '서비스'라는 이름을 쓴다. (그러나 게임에서는 보통 '매니저'라고 표현한다.)
@@ -26,12 +26,13 @@ public class CurrencyManager : MonoBehaviour
     {
         Instance = this;
 
-        _repository = new LocalCurrencyRepository(AccountManager.Instance.Email);
+        // _repository = new LocalCurrencyRepository(AccountManager.Instance.Email);
+        _repository = new FirebaseCurrencyRepository();
     }
 
-    private void Start()
+    private async void Start()
     {
-        var loaded = _repository.Load();
+        var loaded = await _repository.Load();
         for (int i = 0; i < _currencies.Length; i++)
         {
             _currencies[i] = loaded.Currencies[i];
@@ -106,7 +107,7 @@ public class CurrencyManager : MonoBehaviour
             saveData.Currencies[i] = (double)_currencies[i];
             saveData.EarnedTotals[i] = (double)_earnedTotals[i];
         }
-        _repository.Save(saveData);
+        _repository.Save(saveData).Forget();
     }
 
     // 도대체 관리라는 책임은 어디까지인가?
