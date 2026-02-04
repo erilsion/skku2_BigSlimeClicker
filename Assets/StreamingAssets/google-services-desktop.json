@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "727171227761",
+    "project_id": "bigslimeclicker",
+    "storage_bucket": "bigslimeclicker.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727171227761:android:2500a20e08c0b8c5cb3bd0",
+        "android_client_info": {
+          "package_name": "com.skku_say.big_slime_clicker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDUiH0JUtOTYHe5bjlGm_u094F73hhJJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

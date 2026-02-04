@@ -5,8 +5,8 @@ public class ScaleTweeningFeedback : MonoBehaviour, IFeedback
 {
     [SerializeField] private ClickSlime _owner;
 
-    private float _startPressX = 1.4f;
-    private float _startPressY = 0.7f;
+    private float _startPressX = 1.56f;
+    private float _startPressY = 0.54f;
     private float _pressedDuration = 0.1f;
     private float _stayDuration = 0.04f;
     private float _endDuration = 0.24f;

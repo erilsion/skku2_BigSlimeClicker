@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 // 데이터의 영속성(저장과 불러오기)에 대한 책임은 '레포지토리'가 가지고 있다.
 // ㄴ 비즈니스 로직과 분리한다.
@@ -14,7 +15,7 @@ public class LocalCurrencyRepository: ICurrencyRepository
         _userId = userId;
     }
 
-    public void Save(CurrencySaveData saveData)
+    public async UniTaskVoid Save(CurrencySaveData saveData)
     {
         // 어떻게든 Save한다.
         for (int i = 0; i < (int)ECurrencyType.Count; i++)
@@ -30,7 +31,7 @@ public class LocalCurrencyRepository: ICurrencyRepository
         PlayerPrefs.Save();
     }
 
-    public CurrencySaveData Load()
+    public async UniTask<CurrencySaveData> Load()
     {
         // 어떻게든 Load한다.
         CurrencySaveData data = CurrencySaveData.Default;
