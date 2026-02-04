@@ -1,10 +1,10 @@
-﻿using Firebase;
+﻿using Cysharp.Threading.Tasks;
+using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
 using Firebase.Firestore;
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class FirebaseTutorial : MonoBehaviour
@@ -52,7 +52,7 @@ public class FirebaseTutorial : MonoBehaviour
         Debug.Log("현재 CPU 번호" + Thread.CurrentThread.ManagedThreadId);
     }
 
-    private async Task InitFirebase()
+    private async UniTask InitFirebase()
     {
         // 콜백 함수: 특정 이벤트가 발생하고 나면 자동으로 호출되는 함수이다.
         // 접속에 최소 1MS 이상의 시간이 걸릴 수 있다.
@@ -65,7 +65,7 @@ public class FirebaseTutorial : MonoBehaviour
         // 작업이 완료되고 나서 유니티가 실행 중인 CPU1에서 작업을 이어나가는 게 아니라 CPU2에서
         // MonoBehaviour 작업을 이어나가려고 하면 CPU2는 유니티를 모르기 때문에 뻗어버린다.
         // 이것을 유니티는 쓰레드 세이프하지 않다고 표현한다. 그래서 Task 사용을 지양한다.
-        DependencyStatus status = await FirebaseApp.CheckAndFixDependenciesAsync();
+        DependencyStatus status = await FirebaseApp.CheckAndFixDependenciesAsync().AsUniTask();
 
         try
         {
@@ -108,11 +108,11 @@ public class FirebaseTutorial : MonoBehaviour
         });
     }
 
-    private async Task Login(string email, string password)
+    private async UniTask Login(string email, string password)
     {
         try
         {
-            Firebase.Auth.AuthResult authResult = await _auth.SignInWithEmailAndPasswordAsync(email, password);
+            Firebase.Auth.AuthResult authResult = await _auth.SignInWithEmailAndPasswordAsync(email, password).AsUniTask();
             Debug.LogFormat("로그인에 성공했습니다: {0} ({1})", authResult.User.Email, authResult.User.UserId);
         }
         catch (FirebaseException e)
@@ -147,7 +147,7 @@ public class FirebaseTutorial : MonoBehaviour
         }
     }
 
-    private async Task SaveDog(string name, int age)
+    private async UniTask SaveDog(string name, int age)
     {
         Dog Dog = new Dog(name, age);
 
@@ -157,7 +157,7 @@ public class FirebaseTutorial : MonoBehaviour
 
         try
         {
-            DocumentReference reference = await _db.Collection("Dogs").AddAsync(Dog);
+            DocumentReference reference = await _db.Collection("Dogs").AddAsync(Dog).AsUniTask();
             Debug.Log("저장에 성공했습니다." + reference.Id);
         }
         catch (FirebaseException e)
