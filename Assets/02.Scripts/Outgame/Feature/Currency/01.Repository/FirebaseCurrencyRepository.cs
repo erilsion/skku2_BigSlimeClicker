@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FirebaseCurrentyRepository : ICurrencyRepository
+public class FirebaseCurrencyRepository : ICurrencyRepository
 {
     public void Save(CurrencySaveData saveData)
     {
