@@ -29,12 +29,17 @@ public class FirebaseCurrencyRepository : ICurrencyRepository
         {
             string email = _auth.CurrentUser.Email;
             DocumentSnapshot snapshot = await _db.Collection(Currency_Collection_Name).Document(email).GetSnapshotAsync();
-            return snapshot.ConvertTo<CurrencySaveData>();
+            CurrencySaveData data = snapshot.ConvertTo<CurrencySaveData>();
+            if(data != null)
+            {
+                return data;
+            }
+            return CurrencySaveData.Default;
         }
         catch (Exception e)
         {
             Debug.LogError($"Currency 불러오기에 실패했습니다" + e.Message);
+            return CurrencySaveData.Default;
         }
-        return CurrencySaveData.Default;
     }    
 }
