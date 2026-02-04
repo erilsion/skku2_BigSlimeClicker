@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 public class UpgradeManager : MonoBehaviour
 {
@@ -19,9 +20,12 @@ public class UpgradeManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        _repository = new FirebaseUpgradeRepository();
+    }
 
-        _repository = new LocalUpgradeRepository(AccountManager.Instance.Email);
-        var saveData = _repository.Load();
+    private async void Start()
+    {
+        var saveData = await _repository.Load();
 
         _upgrades.Clear();
         foreach (var definition in _definitionTable.Definitions)
@@ -34,8 +38,8 @@ public class UpgradeManager : MonoBehaviour
             {
                 throw new Exception($"중복된 업그레이드 정의입니다: {definition.UpgradeType}");
             }
-            var upgrade = new Upgrade(definition);
 
+            var upgrade = new Upgrade(definition);
             int index = (int)definition.UpgradeType;
             upgrade.RestoreLevel((int)saveData.Upgrades[index]);
 
