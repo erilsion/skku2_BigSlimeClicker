@@ -3,7 +3,9 @@
 public class BGMManager : MonoBehaviour
 {
     public static BGMManager Instance;
-    private AudioSource audioSource;
+
+    [Header("오디오 소스")]
+    [SerializeField] private AudioSource audioSource;
 
     private void Awake()
     {

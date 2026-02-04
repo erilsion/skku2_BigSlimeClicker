@@ -67,7 +67,7 @@ public class LoginScene : MonoBehaviour
         _registerButton.gameObject.SetActive(_mode == SceneMode.Register);
     }
 
-    private void Login()
+    private async void Login()
     {
         string email = _emailInputField.text.Trim();
         string password = _passwordInputField.text;

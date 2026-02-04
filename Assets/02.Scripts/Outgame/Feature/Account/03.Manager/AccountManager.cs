@@ -1,5 +1,5 @@
-﻿using System;
-using TMPro;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using UnityEngine;
 
 // 매니저의 역할
@@ -20,10 +20,13 @@ public class AccountManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        _repository = _repositoryProvider.GetComponent<IAccountRepository>();
+
+        DontDestroyOnLoad(this.gameObject);
+
+        _repository = new FirebaseAccountRepository();
     }
 
-    public AuthResult TryLogin(string email, string password)
+    public async UniTask<AccountResult> TryLogin(string email, string password)
     {
         try
         {
@@ -32,34 +35,24 @@ public class AccountManager : MonoBehaviour
         catch (Exception ex)
         {
             // 유효성 검증 통과 못 하면 실패한다.
-            return new AuthResult
+            return new AccountResult
             {
                 Success = false,
                 ErrorMessage = ex.Message
             };
         }
 
-        AuthResult result = _repository.Login(email, password);
+        AccountResult result = await _repository.Login(email, password);
+
         if (result.Success)
         {
             _currentAccount = result.Account;
-            return new AuthResult
-            {
-                Success = true,
-                Account = _currentAccount
-            };
         }
-        else
-        {
-            return new AuthResult
-            {
-                Success = false,
-                ErrorMessage = result.ErrorMessage
-            };
-        }
+
+        return result;
     }
 
-    public AuthResult TryRegister(string email, string password) 
+    public async UniTask<AccountResult> TryRegister(string email, string password) 
     {
         // 유효성 검사를 한다.
         try
@@ -68,7 +61,7 @@ public class AccountManager : MonoBehaviour
         }
         catch(Exception ex)
         {
-            return new AuthResult
+            return new AccountResult
             {
                 Success = false,
                 ErrorMessage = ex.Message
@@ -76,17 +69,17 @@ public class AccountManager : MonoBehaviour
         }
 
         // 성공하면 저장한다.
-        AuthResult result = _repository.Register(email, password);
+        AccountResult result = await _repository.Register(email, password);
         if (result.Success)
         {
-            return new AuthResult
+            return new AccountResult
             {
                 Success = true,
             };
         }
         else
         {
-            return new AuthResult
+            return new AccountResult
             {
                 Success = false,
                 ErrorMessage = result.ErrorMessage
