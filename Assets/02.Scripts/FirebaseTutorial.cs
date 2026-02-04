@@ -1,8 +1,11 @@
-﻿using UnityEngine;
-using Firebase;
-using Firebase.Extensions;
+﻿using Firebase;
 using Firebase.Auth;
+using Firebase.Extensions;
 using Firebase.Firestore;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using UnityEngine;
 
 public class FirebaseTutorial : MonoBehaviour
 {
@@ -12,44 +15,61 @@ public class FirebaseTutorial : MonoBehaviour
 
     [SerializeField] private TMPro.TMP_Text _progressText;
 
-    private void Start()
+    private async void Start()
     {
         // 이 씬이 시작되면 아래 내용을 단계적으로 수행한다.
         // 각 단계마다 ProgressText의 내용이 바뀐다. (ex. 로그아웃 완료)
         // 각 단계마다 Debug.Log로 완료를 알린다.
 
+        Debug.Log("현재 CPU 번호" + Thread.CurrentThread.ManagedThreadId);
+
         // 1. 파이어베이스 초기화
-        InitFirebase();
+        await InitFirebase();
         _progressText.text = "파이어베이스 초기화 완료";
         Debug.Log("파이어베이스 초기화 완료");
+
+        Debug.Log("현재 CPU 번호" + Thread.CurrentThread.ManagedThreadId);
 
         // 2. 로그아웃
         Logout();
         _progressText.text = "로그아웃 완료";
         Debug.Log("로그아웃 완료");
 
+        Debug.Log("현재 CPU 번호" + Thread.CurrentThread.ManagedThreadId);
+
         // 3. 재로그인
-        Login("erilsion@skku.re.kr", "12345678");
+        await Login("erilsion@skku.re.kr", "12345678");
         _progressText.text = "로그인 완료";
         Debug.Log("로그인 완료");
 
+        Debug.Log("현재 CPU 번호" + Thread.CurrentThread.ManagedThreadId);
+
         // 4. 강아지 추가 (전제조건: 파이어스토어 규칙에 로그인한 사람만 글 쓰기 가능)
-        SaveDog("해피", 10);
+        await SaveDog("해피", 10);
         _progressText.text = "강아지 추가 완료";
         Debug.Log("강아지 추가 완료");
+
+        Debug.Log("현재 CPU 번호" + Thread.CurrentThread.ManagedThreadId);
     }
 
-    private void InitFirebase()
+    private async Task InitFirebase()
     {
         // 콜백 함수: 특정 이벤트가 발생하고 나면 자동으로 호출되는 함수이다.
         // 접속에 최소 1MS 이상의 시간이 걸릴 수 있다.
 
         // 유니티는 MonoBehaviour 실행에 있어서 싱글 쓰레드를 사용한다.
         // Task 타입: 비동기에 대한 진행사항과 완료되었을 때의 결과값을 가지고 있는 객체이다.
-        // 1. Task - 단점이 무엇인가 (메인쓰레드로 돌아오지 않을 확률이 크다.)
-        // 2. Unity만의 Task: UniTask
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
-            if (task.Result == DependencyStatus.Available)
+        // - 결과값을 Result로 가지고 있고, 진행사항 및 에러값을 또 가지고 있다.
+
+        // 이 작업은 유니티가 실행 중 CPU1에게 작업시킬 수도 있고, CPU2에게 작업시킬 수도 있다.
+        // 작업이 완료되고 나서 유니티가 실행 중인 CPU1에서 작업을 이어나가는 게 아니라 CPU2에서
+        // MonoBehaviour 작업을 이어나가려고 하면 CPU2는 유니티를 모르기 때문에 뻗어버린다.
+        // 이것을 유니티는 쓰레드 세이프하지 않다고 표현한다. 그래서 Task 사용을 지양한다.
+        DependencyStatus status = await FirebaseApp.CheckAndFixDependenciesAsync();
+
+        try
+        {
+            if (status == DependencyStatus.Available)
             {
                 // 1. 파이어베이스 연결에 성공했다.
                 _app = FirebaseApp.DefaultInstance;      // 파이어베이스 앱 모듈 가져오기
@@ -57,11 +77,15 @@ public class FirebaseTutorial : MonoBehaviour
                 _db = FirebaseFirestore.DefaultInstance; // 파이어베이스 데이터베이스 모듈 가져오기
                 Debug.Log("Firebase 초기화에 성공했습니다.");
             }
-            else
-            {
-                Debug.LogError($"Firebase 초기화 실패: {task.Result}");
-            }
-        });
+        }
+        catch(FirebaseException e)
+        {
+            Debug.LogError($"Firebase 초기화 실패: {e.Message}");
+        }
+        catch(Exception e)
+        {
+            Debug.LogError($"실패: {e.Message}");
+        }
     }
 
     public void Register(string email, string password)
@@ -84,23 +108,24 @@ public class FirebaseTutorial : MonoBehaviour
         });
     }
 
-    private void Login(string email, string password)
+    private async Task Login(string email, string password)
     {
-        _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
-            if (task.IsCanceled || task.IsFaulted)
-            {
-                Debug.LogError("로그인에 실패했습니다: " + task.Exception);
-                return;
-            }
-
-            Firebase.Auth.AuthResult result = task.Result;
-
-            // 로그인에 성공하면 반환되는 결과값의 유저와 auth 모듈의 CurrentUser가 둘 다 로그인한 유저로 같다.
-            FirebaseUser resultuser = _auth.CurrentUser;
-            FirebaseUser user = _auth.CurrentUser;
-
-            Debug.LogFormat("로그인에 성공했습니다: {0} ({1})", result.User.Email, result.User.UserId);
-        });
+        try
+        {
+            Firebase.Auth.AuthResult authResult = await _auth.SignInWithEmailAndPasswordAsync(email, password);
+            Debug.LogFormat("로그인에 성공했습니다: {0} ({1})", authResult.User.Email, authResult.User.UserId);
+        }
+        catch (FirebaseException e)
+        {
+            Debug.LogError("파이어베이스 로그인에 실패했습니다: " + e.Message);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("로그인에 실패했습니다: " + e.Message);
+        }
+        // 로그인에 성공하면 반환되는 결과값의 유저와 auth 모듈의 CurrentUser가 둘 다 로그인한 유저로 같다.
+        FirebaseUser resultuser = _auth.CurrentUser;
+        FirebaseUser user = _auth.CurrentUser;
     }
 
     private void Logout()
@@ -122,7 +147,7 @@ public class FirebaseTutorial : MonoBehaviour
         }
     }
 
-    private void SaveDog(string name, int age)
+    private async Task SaveDog(string name, int age)
     {
         Dog Dog = new Dog(name, age);
 
@@ -130,19 +155,19 @@ public class FirebaseTutorial : MonoBehaviour
         // Add: 추가한다.
         // Set: 기존에 있으면 수정하고, 없으면 추가한다.
 
-        // _db.Collection("Dogs").AddAsync(Dog).ContinueWithOnMainThread(task => {  아이디를 지정하지 않을 때
-        _db.Collection("Dogs").Document("강아지들").SetAsync(Dog).ContinueWithOnMainThread(task => {
-            if (task.IsCompletedSuccessfully)
-            {
-                // string documentId = task.Result.Id;
-                // Debug.Log("저장에 성공했습니다." + documentId);
-                Debug.Log("저장에 성공했습니다.");
-            }
-            else
-            {
-                Debug.LogError("저장에 실패했습니다: " + task.Exception);
-            }
-        });
+        try
+        {
+            DocumentReference reference = await _db.Collection("Dogs").AddAsync(Dog);
+            Debug.Log("저장에 성공했습니다." + reference.Id);
+        }
+        catch (FirebaseException e)
+        {
+            Debug.LogError("파이어베이스 저장에 실패했습니다: " + e.Message);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("저장에 실패했습니다: " + e.Message);
+        }
     }
 
     private void LoadMyDog()
