@@ -1,10 +1,13 @@
-﻿using System;
+using Firebase.Firestore;
+using System;
 using UnityEngine;
 
 [Serializable]
+[FirestoreData]
 public class UpgradeSaveData
 {
-    public double[] Upgrades;
+    [FirestoreProperty]
+    public double[] Upgrades { get; set; }
 
     public static UpgradeSaveData Default => new UpgradeSaveData()
     {
