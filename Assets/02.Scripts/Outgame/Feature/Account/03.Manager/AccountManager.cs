@@ -31,14 +31,14 @@ public class AccountManager : MonoBehaviour
 
     private async UniTask StartAsync()
     {
-        await TryAutoLogin();
+        await TryLoadAccountData();
     }
 
-    private async UniTask TryAutoLogin()
+    private async UniTask TryLoadAccountData()
     {
         var savedData = await _repository.Load();
 
-        if (savedData == null || string.IsNullOrEmpty(savedData.Email))
+        if (savedData == null || string.IsNullOrEmpty(savedData.Email) || string.IsNullOrEmpty(savedData.EncryptedPassword))
         {
             Debug.LogWarning("자동 로그인 데이터가 없어요.");
             return;
@@ -55,7 +55,7 @@ public class AccountManager : MonoBehaviour
             return;
         }
 
-        var result = await TryLogin(savedData.Email, savedData.EncryptedPassword);
+        var result = await TryLogin(savedData.Email, plainPassword);
         if (result.Success)
         {
             Debug.Log("자동 로그인 성공!");
