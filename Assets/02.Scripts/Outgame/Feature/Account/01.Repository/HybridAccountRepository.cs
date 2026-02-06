@@ -1,12 +1,44 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class HybridAccountRepository
+public class HybridAccountRepository : IAccountRepository
 {
     private readonly LocalAccountRepository _local;
     private readonly FirebaseAccountRepository _firebase;
 
     private int _saveCounter = 0;
+
+    public HybridAccountRepository()
+    {
+        _local = new LocalAccountRepository();
+        _firebase = new FirebaseAccountRepository();
+    }
+
+    public bool IsEmailAvailable(string email)
+    {
+        return _local.IsEmailAvailable(email);
+    }
+
+    public async UniTask<AccountResult> Register(string email, string password)
+    {
+        var result = await _firebase.Register(email, password);
+        if (result.Success)
+        {
+            await _local.Register(email, password);
+        }
+        return result;
+    }
+
+    public async UniTask<AccountResult> Login(string email, string password)
+    {
+        return await _firebase.Login(email, password);
+    }
+
+    public void Logout()
+    {
+        _firebase.Logout();
+        _local.Logout();
+    }
 
     public async UniTask Save(AccountSaveData data)
     {
@@ -15,7 +47,7 @@ public class HybridAccountRepository
         _saveCounter++;
 
         // 5번 이후 그 뒤에 Firebase에 저장한다.
-        if (_saveCounter > 5)
+        if (_saveCounter >= 5)
         {
             await _firebase.Save(data);
             _saveCounter = 0;

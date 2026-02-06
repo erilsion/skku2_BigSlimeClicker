@@ -23,7 +23,7 @@ public class AccountManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
 
-        _repository = new FirebaseAccountRepository();
+        _repository = new HybridAccountRepository();
     }
 
     public async UniTask<AccountResult> TryLogin(string email, string password)
