@@ -77,38 +77,4 @@ public class FirebaseAccountRepository : IAccountRepository
     {
         _auth.SignOut();
     }
-
-    public async UniTask Save(AccountSaveData data)
-    {
-        // Timestamp(Ticks)을 추가한다.
-        data.Timestamp = DateTime.UtcNow.Ticks;
-
-        string email = _auth.CurrentUser.Email;
-        await _db.Collection("Account").Document(email).SetAsync(data);
-    }
-
-    public async UniTask<AccountSaveData> Load()
-    {
-        try
-        {
-            if (_auth.CurrentUser == null || string.IsNullOrEmpty(_auth.CurrentUser.Email))
-            {
-                Debug.LogError("로그인된 유저가 없습니다.");
-                return AccountSaveData.Default;
-            }
-            string email = _auth.CurrentUser.Email;
-            DocumentSnapshot snapshot = await _db.Collection("Account").Document(email).GetSnapshotAsync();
-            AccountSaveData data = snapshot.ConvertTo<AccountSaveData>();
-            if (data != null)
-            {
-                return data;
-            }
-            return AccountSaveData.Default;
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"Account 불러오기에 실패했습니다" + e.Message);
-            return AccountSaveData.Default;
-        }
-    }
 }

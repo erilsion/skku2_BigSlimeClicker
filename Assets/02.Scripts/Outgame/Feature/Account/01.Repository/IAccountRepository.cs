@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public interface IAccountRepository
@@ -7,6 +7,4 @@ public interface IAccountRepository
     UniTask<AccountResult> Register(string email, string password);
     UniTask<AccountResult> Login(string email, string password);
     void Logout();
-    UniTask Save(AccountSaveData data);
-    UniTask<AccountSaveData> Load();
 }

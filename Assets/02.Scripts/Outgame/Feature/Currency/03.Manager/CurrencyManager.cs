@@ -26,8 +26,8 @@ public class CurrencyManager : MonoBehaviour
     {
         Instance = this;
 
-        // _repository = new LocalCurrencyRepository(AccountManager.Instance.Email);
         _repository = new FirebaseCurrencyRepository();
+        // _repository = new LocalCurrencyRepository(AccountManager.Instance.Email);
     }
 
     private void Start()

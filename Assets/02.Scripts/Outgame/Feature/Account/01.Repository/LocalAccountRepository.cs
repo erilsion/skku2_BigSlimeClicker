@@ -71,35 +71,4 @@ public class LocalAccountRepository : IAccountRepository
     {
         Debug.Log("로그아웃 됐습니다.");
     }
-
-    public async UniTask Save(AccountSaveData data)
-    {
-        // Timestamp(Ticks)을 추가한다.
-        data.Timestamp = DateTime.UtcNow.Ticks;
-
-        PlayerPrefs.SetString("AccountEmail", data.Email);
-        PlayerPrefs.SetString("AccountPassword", data.EncryptedPassword);
-        PlayerPrefs.SetString("AccountTimestamp", data.Timestamp.ToString());
-        PlayerPrefs.Save();
-        await UniTask.CompletedTask;
-    }
-
-    public async UniTask<AccountSaveData> Load()
-    {
-        AccountSaveData data = AccountSaveData.Default;
-
-        if (PlayerPrefs.HasKey("AccountEmail"))
-        {
-            data.Email = PlayerPrefs.GetString("AccountEmail");
-        }
-        if (PlayerPrefs.HasKey("AccountPassword"))
-        {
-            data.EncryptedPassword = PlayerPrefs.GetString("AccountPassword");
-        }
-        if (PlayerPrefs.HasKey("AccountTimestamp"))
-        {
-            data.Timestamp = long.Parse(PlayerPrefs.GetString("AccountTimestamp"));
-        }
-        return await UniTask.FromResult(data);
-    }
 }
