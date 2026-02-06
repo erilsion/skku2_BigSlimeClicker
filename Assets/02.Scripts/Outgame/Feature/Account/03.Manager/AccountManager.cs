@@ -13,14 +13,16 @@ public class AccountManager : MonoBehaviour
     public bool IsLogin => _currentAccount != null;
     public string Email => _currentAccount?.Email ?? string.Empty;
 
-    private IAccountRepository _repository;
+    private IAccountRepository _accountRepository;
+    private IGameSaveRepository _gameSaveRepository;
 
     private void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
 
-        _repository = new HybridRepository();
+        _accountRepository = new HybridRepository();
+        _gameSaveRepository = new HybridRepository();
     }
 
     public async UniTask<AccountResult> TryLogin(string email, string password)
@@ -39,7 +41,7 @@ public class AccountManager : MonoBehaviour
             };
         }
 
-        AccountResult result = await _repository.Login(email, password);
+        AccountResult result = await _accountRepository.Login(email, password);
 
         if (result.Success)
         {
@@ -74,7 +76,7 @@ public class AccountManager : MonoBehaviour
         }
 
         // 성공하면 저장한다.
-        AccountResult result = await _repository.Register(email, password);
+        AccountResult result = await _accountRepository.Register(email, password);
         if (result.Success)
         {
             return new AccountResult
@@ -94,6 +96,6 @@ public class AccountManager : MonoBehaviour
 
     public void Logout()
     {
-        _repository.Logout();
+        _accountRepository.Logout();
     }
 }

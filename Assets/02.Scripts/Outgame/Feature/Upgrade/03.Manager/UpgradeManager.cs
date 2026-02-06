@@ -26,7 +26,6 @@ public class UpgradeManager : MonoBehaviour
     private void Start()
     {
         StartAsync().Forget();
-
     }
 
     private async UniTask StartAsync()
