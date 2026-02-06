@@ -13,17 +13,57 @@ public class AccountManager : MonoBehaviour
     public bool IsLogin => _currentAccount != null;
     public string Email => _currentAccount?.Email ?? string.Empty;
 
-    [Header("레포지토리 제공자")]
-    [SerializeField] private GameObject _repositoryProvider;
     private IAccountRepository _repository;
 
     private void Awake()
     {
         Instance = this;
-
         DontDestroyOnLoad(this.gameObject);
 
         _repository = new HybridAccountRepository();
+    }
+
+    private void Start()
+    {
+        // UniTask와 관련된 초기화 패턴 관리 용도이다.
+        StartAsync().Forget();
+    }
+
+    private async UniTask StartAsync()
+    {
+        await TryAutoLogin();
+    }
+
+    private async UniTask TryAutoLogin()
+    {
+        var savedData = await _repository.Load();
+
+        if (savedData == null || string.IsNullOrEmpty(savedData.Email))
+        {
+            Debug.LogWarning("자동 로그인 데이터가 없어요.");
+            return;
+        }
+
+        string plainPassword;
+        try
+        {
+            plainPassword = AESCrypto.Decrypt(savedData.EncryptedPassword);
+        }
+        catch
+        {
+            Debug.LogWarning("저장된 비밀번호 복호화에 실패했어요. 자동로그인을 스킵할게요!");
+            return;
+        }
+
+        var result = await TryLogin(savedData.Email, savedData.EncryptedPassword);
+        if (result.Success)
+        {
+            Debug.Log("자동 로그인 성공!");
+        }
+        else
+        {
+            Debug.LogWarning("자동 로그인 실패: " + result.ErrorMessage);
+        }
     }
 
     public async UniTask<AccountResult> TryLogin(string email, string password)
@@ -46,7 +86,15 @@ public class AccountManager : MonoBehaviour
 
         if (result.Success)
         {
-            _currentAccount = result.Account;
+            _currentAccount = new Account(email, password);
+
+            // 자동로그인용 (AES) 데이터를 저장한다.
+            var saveData = new AccountSaveData
+            {
+                Email = email,
+                EncryptedPassword = AESCrypto.Encrypt(password),
+            };
+            await _repository.Save(saveData);
         }
 
         return result;

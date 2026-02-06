@@ -46,7 +46,7 @@ public class HybridAccountRepository : IAccountRepository
         await _local.Save(data);
         _saveCounter++;
 
-        // 5번 이후 그 뒤에 Firebase에 저장한다.
+        // 5번 이후 그 뒤에 Firebase에 한 번 저장한다.
         if (_saveCounter >= 5)
         {
             await _firebase.Save(data);
@@ -56,14 +56,7 @@ public class HybridAccountRepository : IAccountRepository
 
     public async UniTask<AccountSaveData> Load()
     {
-        // 병렬로 둘 다 로드한다.
-        var localTask = _local.Load();
-        var firebaseTask = _firebase.Load();
-
-        await UniTask.WhenAll(localTask, firebaseTask);
-
-        var localData = await localTask;
-        var firebaseData = await firebaseTask;
+        var (localData, firebaseData) = await UniTask.WhenAll(_local.Load(), _firebase.Load());
 
         // Timestamp 비교해서 최신 것을 반환한다.
         return GetLatestData(localData, firebaseData);

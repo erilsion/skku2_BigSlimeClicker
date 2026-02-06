@@ -16,7 +16,7 @@ public class FirebaseAccountRepository : IAccountRepository
 
     public bool IsEmailAvailable(string email)
     {
-        if (PlayerPrefs.HasKey(email))
+        if (_auth.CurrentUser.Email == email)
         {
             return false;
         }
@@ -91,6 +91,11 @@ public class FirebaseAccountRepository : IAccountRepository
     {
         try
         {
+            if (_auth.CurrentUser == null || string.IsNullOrEmpty(_auth.CurrentUser.Email))
+            {
+                Debug.LogError("로그인된 유저가 없습니다.");
+                return AccountSaveData.Default;
+            }
             string email = _auth.CurrentUser.Email;
             DocumentSnapshot snapshot = await _db.Collection("Account").Document(email).GetSnapshotAsync();
             AccountSaveData data = snapshot.ConvertTo<AccountSaveData>();

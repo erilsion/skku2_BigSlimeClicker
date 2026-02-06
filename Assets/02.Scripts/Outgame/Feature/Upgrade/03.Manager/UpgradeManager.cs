@@ -23,7 +23,18 @@ public class UpgradeManager : MonoBehaviour
         _repository = new FirebaseUpgradeRepository();
     }
 
-    private async void Start()
+    private void Start()
+    {
+        StartAsync().Forget();
+
+    }
+
+    private async UniTask StartAsync()
+    { 
+        await TryLoadUpgradeData();
+    }
+
+    private async UniTask TryLoadUpgradeData()
     {
         var saveData = await _repository.Load();
 
@@ -45,7 +56,6 @@ public class UpgradeManager : MonoBehaviour
 
             _upgrades.Add(definition.UpgradeType, upgrade);
         }
-
         OnDataChanged?.Invoke();
     }
 

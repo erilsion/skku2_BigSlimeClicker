@@ -30,7 +30,17 @@ public class CurrencyManager : MonoBehaviour
         _repository = new FirebaseCurrencyRepository();
     }
 
-    private async void Start()
+    private void Start()
+    {
+        StartAsync().Forget();
+    }
+
+    private async UniTask StartAsync()
+    {
+        await TryLoadCurrencyData();
+    }
+
+    private async UniTask TryLoadCurrencyData()
     {
         var loaded = await _repository.Load();
         for (int i = 0; i < _currencies.Length; i++)
