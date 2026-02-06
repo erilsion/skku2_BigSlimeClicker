@@ -83,4 +83,23 @@ public class LocalAccountRepository : MonoBehaviour, IAccountRepository
         PlayerPrefs.Save();
         await UniTask.CompletedTask;
     }
+
+    public async UniTask<AccountSaveData> Load()
+    {
+        AccountSaveData data = AccountSaveData.Default;
+
+        if (PlayerPrefs.HasKey("AccountEmail"))
+        {
+            data.Email = PlayerPrefs.GetString("AccountEmail");
+        }
+        if (PlayerPrefs.HasKey("AccountPassword"))
+        {
+            data.EncryptedPassword = PlayerPrefs.GetString("AccountPassword");
+        }
+        if (PlayerPrefs.HasKey("AccountTimestamp"))
+        {
+            data.Timestamp = long.Parse(PlayerPrefs.GetString("AccountTimestamp"));
+        }
+        return await UniTask.FromResult(data);
+    }
 }

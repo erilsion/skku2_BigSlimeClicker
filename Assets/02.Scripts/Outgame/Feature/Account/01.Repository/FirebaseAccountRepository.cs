@@ -86,4 +86,24 @@ public class FirebaseAccountRepository : IAccountRepository
         string email = _auth.CurrentUser.Email;
         await _db.Collection("Account").Document(email).SetAsync(data);
     }
+
+    public async UniTask<AccountSaveData> Load()
+    {
+        try
+        {
+            string email = _auth.CurrentUser.Email;
+            DocumentSnapshot snapshot = await _db.Collection("Account").Document(email).GetSnapshotAsync();
+            AccountSaveData data = snapshot.ConvertTo<AccountSaveData>();
+            if (data != null)
+            {
+                return data;
+            }
+            return AccountSaveData.Default;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Account 불러오기에 실패했습니다" + e.Message);
+            return AccountSaveData.Default;
+        }
+    }
 }
