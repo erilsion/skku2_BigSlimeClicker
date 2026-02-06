@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using System;
 using UnityEngine;
 
 public class LocalAccountRepository : MonoBehaviour, IAccountRepository
@@ -69,5 +70,17 @@ public class LocalAccountRepository : MonoBehaviour, IAccountRepository
     public void Logout()
     {
         Debug.Log("로그아웃 됐습니다.");
+    }
+
+    public async UniTask Save(AccountSaveData data)
+    {
+        // Timestamp(Ticks)을 추가한다.
+        data.Timestamp = DateTime.UtcNow.Ticks;
+
+        PlayerPrefs.SetString("AccountEmail", data.Email);
+        PlayerPrefs.SetString("AccountPassword", data.EncryptedPassword);
+        PlayerPrefs.SetString("AccountTimestamp", data.Timestamp.ToString());
+        PlayerPrefs.Save();
+        await UniTask.CompletedTask;
     }
 }

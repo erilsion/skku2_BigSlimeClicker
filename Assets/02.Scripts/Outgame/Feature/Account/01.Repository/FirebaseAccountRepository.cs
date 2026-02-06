@@ -1,11 +1,12 @@
 ﻿using Cysharp.Threading.Tasks;
-using Firebase;
 using Firebase.Auth;
+using Firebase.Firestore;
 using System;
 using UnityEngine;
 
 public class FirebaseAccountRepository : IAccountRepository
 {
+    private FirebaseFirestore _db = FirebaseFirestore.DefaultInstance;
     private FirebaseAuth _auth;
 
     public FirebaseAccountRepository()
@@ -75,5 +76,14 @@ public class FirebaseAccountRepository : IAccountRepository
     public void Logout()
     {
         _auth.SignOut();
+    }
+
+    public async UniTask Save(AccountSaveData data)
+    {
+        // Timestamp(Ticks)을 추가한다.
+        data.Timestamp = DateTime.UtcNow.Ticks;
+
+        string email = _auth.CurrentUser.Email;
+        await _db.Collection("Account").Document(email).SetAsync(data);
     }
 }
