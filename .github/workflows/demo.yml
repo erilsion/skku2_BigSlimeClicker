@@ -89,16 +89,18 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook
           payload: |
-            text: "✅ WebGL 빌드 & 배포 성공"
-            blocks:
-              - type: section
-                text:
-                  type: mrkdwn
-                  text: |
-                    ✅ *${{ github.repository }}* 빌드 & 배포 완료!
-                    📝 커밋: ${{ github.event.head_commit.message }}
-                    👤 작성자: ${{ github.actor }}
-                    🌐 <https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/|플레이하기>
+            {
+              "text": "✅ WebGL 빌드 & 배포 성공",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "✅ *${{ github.repository }}* 빌드 & 배포 완료!\n📝 커밋: ${{ github.event.head_commit.message }}\n👤 작성자: ${{ github.actor }}\n🌐 <https://skkupsh.itch.io/card-factory|플레이하기>"
+                  }
+                }
+              ]
+            }
 
       # 9. 슬랙 알림 (실패)
       - name: Slack Notification (Failure)
@@ -108,13 +110,15 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook
           payload: |
-            text: "❌ WebGL 빌드 실패"
-            blocks:
-              - type: section
-                text:
-                  type: mrkdwn
-                  text: |
-                    🔥 *${{ github.repository }}* 빌드 실패!
-                    📝 커밋: ${{ github.event.head_commit.message }}
-                    👤 작성자: ${{ github.actor }}
-                    🔗 <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|로그 확인>
+            {
+              "text": "❌ WebGL 빌드 실패",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🔥 *${{ github.repository }}* 빌드 실패!\n📝 커밋: ${{ github.event.head_commit.message }}\n👤 작성자: ${{ github.actor }}\n🔗 <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|로그 확인>"
+                  }
+                }
+              ]
+            }
