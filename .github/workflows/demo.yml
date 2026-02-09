@@ -35,14 +35,18 @@ jobs:
             Library-Windows-
             Library-
       
+      # Unity Personal 라이선스 복원
+      - name: Activate Unity License
+        run: |
+          echo "${{ secrets.UNITY_LICENSE }}" | base64 --decode > Unity_lic.ulf
+
       # 3. Unity 빌드 (데스크탑)
       - name: Build Windows
         uses: game-ci/unity-builder@v4
         env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: Unity_lic.ulf
         with:
+          unityVersion: 6000.3.2f1
           targetPlatform: StandaloneWindows64
       
       # 4. 빌드 결과물 업로드
