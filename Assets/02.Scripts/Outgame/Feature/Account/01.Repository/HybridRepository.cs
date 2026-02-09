@@ -35,40 +35,50 @@ public class HybridRepository : IAccountRepository, IGameSaveRepository
         {
             await _localAccount.Register(email, password);
         }
-#endif
-        var result = await _localAccount.Register(email, password);
         return result;
+#else
+        {
+            var result = await _localAccount.Register(email, password);
+            return result;
+        }
+#endif
     }
 
     public async UniTask<AccountResult> Login(string email, string password)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
         return await _firebaseAccount.Login(email, password);
-#endif
         return await _localAccount.Login(email, password);
+#else
+        return await _localAccount.Login(email, password);
+#endif
     }
 
     public void Logout()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
         _firebaseAccount.Logout();
-#endif
         _localAccount.Logout();
+#else
+        _localAccount.Logout();
+#endif
     }
 
     public async UniTask Save(GameSaveData data)
     {
+#if UNITY_WEBGL && !UNITY_EDITOR
         // 로컬에 저장한다.
         await _localGameSave.Save(data);
         _saveCounter++;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
         // 5번 이후 그 뒤에 Firebase에 한 번 저장한다.
         if (_saveCounter >= 5)
         {
             await _firebaseGameSave.Save(data);
             _saveCounter = 0;
         }
+#else
+        await _localGameSave.Save(data);
 #endif
     }
 
@@ -79,10 +89,10 @@ public class HybridRepository : IAccountRepository, IGameSaveRepository
 
         // Timestamp 비교해서 최신 것을 반환한다.
         return GetLatestData(localData, firebaseData);
-#endif
-
+#else
         var localData = await _localGameSave.Load();
         return localData;
+#endif
     }
 
     private GameSaveData GetLatestData(GameSaveData local, GameSaveData firebase)
