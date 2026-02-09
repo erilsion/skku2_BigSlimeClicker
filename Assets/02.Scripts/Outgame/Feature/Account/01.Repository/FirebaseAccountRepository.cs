@@ -1,11 +1,12 @@
 ﻿using Cysharp.Threading.Tasks;
-using Firebase;
 using Firebase.Auth;
+using Firebase.Firestore;
 using System;
 using UnityEngine;
 
 public class FirebaseAccountRepository : IAccountRepository
 {
+    private FirebaseFirestore _db = FirebaseFirestore.DefaultInstance;
     private FirebaseAuth _auth;
 
     public FirebaseAccountRepository()
@@ -15,7 +16,7 @@ public class FirebaseAccountRepository : IAccountRepository
 
     public bool IsEmailAvailable(string email)
     {
-        if (PlayerPrefs.HasKey(email))
+        if (_auth.CurrentUser.Email == email)
         {
             return false;
         }

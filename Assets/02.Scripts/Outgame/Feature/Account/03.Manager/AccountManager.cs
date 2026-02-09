@@ -13,17 +13,16 @@ public class AccountManager : MonoBehaviour
     public bool IsLogin => _currentAccount != null;
     public string Email => _currentAccount?.Email ?? string.Empty;
 
-    [Header("레포지토리 제공자")]
-    [SerializeField] private GameObject _repositoryProvider;
-    private IAccountRepository _repository;
+    private IAccountRepository _accountRepository;
+    private IGameSaveRepository _gameSaveRepository;
 
     private void Awake()
     {
         Instance = this;
-
         DontDestroyOnLoad(this.gameObject);
 
-        _repository = new FirebaseAccountRepository();
+        _accountRepository = new HybridRepository();
+        _gameSaveRepository = new HybridRepository();
     }
 
     public async UniTask<AccountResult> TryLogin(string email, string password)
@@ -42,11 +41,19 @@ public class AccountManager : MonoBehaviour
             };
         }
 
-        AccountResult result = await _repository.Login(email, password);
+        AccountResult result = await _accountRepository.Login(email, password);
 
         if (result.Success)
         {
-            _currentAccount = result.Account;
+            _currentAccount = new Account(email, password);
+
+            // AES 데이터를 저장한다.
+            var saveData = new AccountSaveData
+            {
+                Email = email,
+                EncryptedPassword = AESCrypto.Encrypt(password),
+            };
+            return result;
         }
 
         return result;
@@ -69,7 +76,7 @@ public class AccountManager : MonoBehaviour
         }
 
         // 성공하면 저장한다.
-        AccountResult result = await _repository.Register(email, password);
+        AccountResult result = await _accountRepository.Register(email, password);
         if (result.Success)
         {
             return new AccountResult
@@ -89,6 +96,6 @@ public class AccountManager : MonoBehaviour
 
     public void Logout()
     {
-        _repository.Logout();
+        _accountRepository.Logout();
     }
 }
