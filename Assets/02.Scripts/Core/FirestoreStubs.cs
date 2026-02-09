@@ -1,5 +1,5 @@
 ﻿
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if !UNITY_WEBGL || UNITY_EDITOR
 namespace Firebase.Firestore
 {
     [System.AttributeUsage(System.AttributeTargets.Class | System.AttributeTargets.Struct)]

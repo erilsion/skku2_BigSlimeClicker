@@ -5,7 +5,7 @@ public class HybridRepository : IAccountRepository, IGameSaveRepository
 {
     private readonly LocalAccountRepository _localAccount;
     private readonly LocalGameSaveRepository _localGameSave;
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if !UNITY_WEBGL || UNITY_EDITOR
     private readonly FirebaseAccountRepository _firebaseAccount;
     private readonly FirebaseGameSaveRepository _firebaseGameSave;
 #endif
@@ -16,7 +16,7 @@ public class HybridRepository : IAccountRepository, IGameSaveRepository
     {
         _localAccount = new LocalAccountRepository();
         _localGameSave = new LocalGameSaveRepository();
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if !UNITY_WEBGL || UNITY_EDITOR
         _firebaseAccount = new FirebaseAccountRepository();
         _firebaseGameSave = new FirebaseGameSaveRepository();
 #endif
@@ -29,7 +29,7 @@ public class HybridRepository : IAccountRepository, IGameSaveRepository
 
     public async UniTask<AccountResult> Register(string email, string password)
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if !UNITY_WEBGL || UNITY_EDITOR
         var result = await _firebaseAccount.Register(email, password);
         if (result.Success)
         {
@@ -46,7 +46,7 @@ public class HybridRepository : IAccountRepository, IGameSaveRepository
 
     public async UniTask<AccountResult> Login(string email, string password)
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if !UNITY_WEBGL || UNITY_EDITOR
         return await _firebaseAccount.Login(email, password);
         return await _localAccount.Login(email, password);
 #else
@@ -56,7 +56,7 @@ public class HybridRepository : IAccountRepository, IGameSaveRepository
 
     public void Logout()
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if !UNITY_WEBGL || UNITY_EDITOR
         _firebaseAccount.Logout();
         _localAccount.Logout();
 #else
@@ -66,7 +66,7 @@ public class HybridRepository : IAccountRepository, IGameSaveRepository
 
     public async UniTask Save(GameSaveData data)
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if !UNITY_WEBGL || UNITY_EDITOR
         // 로컬에 저장한다.
         await _localGameSave.Save(data);
         _saveCounter++;
@@ -84,7 +84,7 @@ public class HybridRepository : IAccountRepository, IGameSaveRepository
 
     public async UniTask<GameSaveData> Load()
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if !UNITY_WEBGL || UNITY_EDITOR
         var (localData, firebaseData) = await UniTask.WhenAll(_localGameSave.Load(), _firebaseGameSave.Load());
 
         // Timestamp 비교해서 최신 것을 반환한다.

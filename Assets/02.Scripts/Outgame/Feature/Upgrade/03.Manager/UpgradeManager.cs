@@ -27,7 +27,7 @@ public class UpgradeManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if !UNITY_WEBGL || UNITY_EDITOR
                 _repository = new FirebaseUpgradeRepository();
 #else
         _repository = new LocalUpgradeRepository(_userId);

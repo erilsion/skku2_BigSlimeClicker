@@ -26,7 +26,7 @@ public class CurrencyManager : MonoBehaviour
     {
         Instance = this;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if !UNITY_WEBGL || UNITY_EDITOR
                 _repository = new FirebaseCurrencyRepository();
 #else
                 _repository = new LocalCurrencyRepository(AccountManager.Instance.Email);
