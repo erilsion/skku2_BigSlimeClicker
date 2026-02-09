@@ -96,7 +96,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "✅ *${{ github.repository }}* 빌드 & 배포 완료!\n📝 커밋: ${{ github.event.head_commit.message }}\n👤 작성자: ${{ github.actor }}\n🌐 <https://skkupsh.itch.io/card-factory|플레이하기>"
+                    "text": "✅ *${{ github.repository }}* 빌드 & 배포 완료!\n📝 커밋: ${{ github.event.head_commit.message }}\n👤 작성자: ${{ github.actor }} (문경연)\n🌐 <https://erilsion.github.io/skku2_BigSlimeClicker/|플레이하기>"
                   }
                 }
               ]
