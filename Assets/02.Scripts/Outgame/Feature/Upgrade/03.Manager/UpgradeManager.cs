@@ -6,6 +6,13 @@ using Cysharp.Threading.Tasks;
 
 public class UpgradeManager : MonoBehaviour
 {
+    private readonly string _userId;
+
+    public UpgradeManager(string userId)
+    {
+        _userId = userId;
+    }
+
     public static UpgradeManager Instance { get; private set; }
     public static event Action OnDataChanged;
 
@@ -20,7 +27,10 @@ public class UpgradeManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        _repository = new FirebaseUpgradeRepository();
+        _repository = new LocalUpgradeRepository(_userId);
+#if UNITY_WEBGL && !UNITY_EDITOR
+                _repository = new FirebaseUpgradeRepository();
+#endif
     }
 
     private void Start()
