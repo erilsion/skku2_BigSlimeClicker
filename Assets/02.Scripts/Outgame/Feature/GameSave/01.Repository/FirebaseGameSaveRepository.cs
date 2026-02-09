@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿#if !UNITY_WEBGL || UNITY_EDITOR
+using Cysharp.Threading.Tasks;
 using Firebase.Auth;
 using Firebase.Firestore;
 using System;
@@ -51,3 +52,4 @@ public class FirebaseGameSaveRepository : IGameSaveRepository
         }
     }
 }
+#endif
