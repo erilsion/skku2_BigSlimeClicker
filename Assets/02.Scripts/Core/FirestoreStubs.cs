@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-
-public class FirestoreStubs
-{
+﻿
 #if UNITY_WEBGL && !UNITY_EDITOR
 namespace Firebase.Firestore
 {
@@ -16,4 +13,4 @@ namespace Firebase.Firestore
     }
 }
 #endif
-}
+

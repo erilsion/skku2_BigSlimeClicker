@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿#if UNITY_WEBGL && !UNITY_EDITOR
+using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
@@ -287,3 +288,4 @@ public class FirebaseTutorial : MonoBehaviour
         }
     }
 }
+#endif
