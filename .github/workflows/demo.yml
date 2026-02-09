@@ -43,19 +43,20 @@ jobs:
             Library-${{ runner.os }}-StandaloneWindows64-
             Library-${{ runner.os }}-
       
-      # 3. Unity ºôµå (µ¥½ºÅ©Å¾)
-      - name: Build Windows
+      # 3. Unity ºôµå (WebGL)
+      - name: Build WebGL
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: StandaloneWindows64
+          targetPlatform: WebGL
+          buildProfile: "Assets/Settings/Build Profiles/Web - Desktop - Release.asset"
       
       # 4. ºôµå °á°ú¹° ¾÷·Îµå
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with:
-          name: Windows-Build
-          path: build/StandaloneWindows64
+          name: WebGL-Build
+          path: build/WebGL
