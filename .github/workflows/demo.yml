@@ -10,7 +10,7 @@ name: Unity WebGL Build
 # 2. 언제 실행할 것인가? (트리거, 이벤트)
 on:
   push:
-	branches: [main]
+    branches: [ main ]
 
 # 3. 무엇을?
 jobs:
