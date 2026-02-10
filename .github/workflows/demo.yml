@@ -64,14 +64,14 @@ jobs:
           customParameters: -logFile "$GITHUB_WORKSPACE/Editor.log"
 
       # 3.1. 빌드 프로파일 파일 존재 여부 확인
-        - name: Check buildProfile file exists
-          run: |
-            ls -al "Assets/Settings/Build Profiles/"
-            test -f "Assets/Settings/Build Profiles/Web - Desktop - Release.asset" && echo "OK" || (echo "MISSING" && exit 1)
+      - name: Check buildProfile file exists
+        run: |
+          ls -al "Assets/Settings/Build Profiles/"
+          test -f "Assets/Settings/Build Profiles/Web - Desktop - Release.asset" && echo "OK" || (echo "MISSING" && exit 1)
 
-        - name: List WebGL Build output
-          if: always()
-          run: |
+      - name: List WebGL Build output
+        if: always()
+        run: |
           ls -al build/WebGL/WebGL/Build || true
       
       # 4. 빌드 결과물 업로드
