@@ -34,6 +34,7 @@ jobs:
           lfs: true
           fetch-depth: 0
 
+      # LFS 확인
       - name: Verify LFS
         run: |
           git lfs version
@@ -51,6 +52,7 @@ jobs:
       
       # 3. Unity 빌드 (WebGL)
       - name: Build WebGL
+        id: build_webgl
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -59,6 +61,7 @@ jobs:
         with:
           targetPlatform: WebGL
           buildProfile: "Assets/Settings/Build Profiles/Web - Desktop - Release.asset"
+          customParameters: -logFile "$GITHUB_WORKSPACE/Editor.log"
       
       # 4. 빌드 결과물 업로드
       - name: Upload Build
@@ -80,6 +83,35 @@ jobs:
       # 7. GitHub Pages 배포
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
+
+      # 실패 원인 추출
+      - name: Extract failure reason
+        if: failure()
+        id: fail_reason
+        shell: bash
+        run: |
+          LOG="$GITHUB_WORKSPACE/Editor.log"
+
+          echo "Unity log path: $LOG"
+          if [ ! -f "$LOG" ]; then
+            echo "summary=Unity Editor.log not found at $LOG" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # 최근 에러 메시지 20줄 추출
+          SUMMARY=$(grep -nE "error CS[0-7]+:|Exception:|Build failed|Scripts have compiler errors" "$LOG" | tail -n 20 || true)
+
+          # 에러 메시지가 없으면 마지막 80줄을 요약으로 사용
+          if [ -z "$SUMMARY" ]; then
+            SUMMARY=$(tail -n 80 "$LOG" || true)
+          fi
+
+          # 출력 설정
+          {
+            echo "summary<<EOF"
+            echo "$SUMMARY"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       # 8. 슬랙 알림 (성공)
       - name: Slack Notification (Success)
@@ -117,7 +149,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "🔥 *${{ github.repository }}* 빌드 실패!\n📝 커밋: ${{ github.event.head_commit.message }}\n👤 작성자: ${{ github.actor }}\n🔗 <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|로그 확인>"
+                    "text": "🔥 *${{ github.repository }}* 빌드 실패!\n📝 커밋: ${{ github.event.head_commit.message }}\n👤 작성자: ${{ github.actor }}\n🔗 <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|로그 확인>\n🖊️ 원인 요약:\n${{ steps.fail_reason.outputs.summary }}"
                   }
                 }
               ]
