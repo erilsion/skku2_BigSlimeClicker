@@ -34,6 +34,7 @@ jobs:
           lfs: true
           fetch-depth: 0
 
+      # LFS 확인
       - name: Verify LFS
         run: |
           git lfs version
@@ -51,6 +52,7 @@ jobs:
       
       # 3. Unity 빌드 (WebGL)
       - name: Build WebGL
+        id: build_webgl
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -59,6 +61,18 @@ jobs:
         with:
           targetPlatform: WebGL
           buildProfile: "Assets/Settings/Build Profiles/Web - Desktop - Release.asset"
+          customParameters: -logFile "$GITHUB_WORKSPACE/Editor.log"
+
+      # 3.1. 빌드 프로파일 파일 존재 여부 확인
+      - name: Check buildProfile file exists
+        run: |
+          ls -al "Assets/Settings/Build Profiles/"
+          test -f "Assets/Settings/Build Profiles/Web - Desktop - Release.asset" && echo "OK" || (echo "MISSING" && exit 1)
+
+      - name: List WebGL Build output
+        if: always()
+        run: |
+          ls -al build/WebGL/WebGL/Build || true
       
       # 4. 빌드 결과물 업로드
       - name: Upload Build
@@ -81,6 +95,35 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
 
+      # 실패 원인 추출
+      - name: Extract failure reason
+        if: failure()
+        id: fail_reason
+        shell: bash
+        run: |
+          LOG="$GITHUB_WORKSPACE/Editor.log"
+
+          echo "Unity log path: $LOG"
+          if [ ! -f "$LOG" ]; then
+            echo "summary=Unity Editor.log not found at $LOG" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # 최근 에러 메시지 20줄 추출
+          SUMMARY=$(grep -nE "error CS[0-7]+:|Exception:|Build failed|Scripts have compiler errors" "$LOG" | tail -n 20 || true)
+
+          # 에러 메시지가 없으면 마지막 80줄을 요약으로 사용
+          if [ -z "$SUMMARY" ]; then
+            SUMMARY=$(tail -n 80 "$LOG" || true)
+          fi
+
+          # 출력 설정
+          {
+            echo "summary<<EOF"
+            echo "$SUMMARY"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       # 8. 슬랙 알림 (성공)
       - name: Slack Notification (Success)
         if: success()
@@ -89,16 +132,18 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook
           payload: |
-            text: "✅ WebGL 빌드 & 배포 성공"
-            blocks:
-              - type: section
-                text:
-                  type: mrkdwn
-                  text: |
-                    ✅ *${{ github.repository }}* 빌드 & 배포 완료!
-                    📝 커밋: ${{ github.event.head_commit.message }}
-                    👤 작성자: ${{ github.actor }}
-                    🌐 <https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/|플레이하기>
+            {
+              "text": "✅ WebGL 빌드 & 배포 성공",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "✅ *${{ github.repository }}* 빌드 & 배포 완료!\n📝 커밋: ${{ github.event.head_commit.message }}\n👤 작성자: ${{ github.actor }} (문경연)\n🌐 <https://erilsion.github.io/skku2_BigSlimeClicker/|플레이하기>"
+                  }
+                }
+              ]
+            }
 
       # 9. 슬랙 알림 (실패)
       - name: Slack Notification (Failure)
@@ -108,13 +153,15 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook
           payload: |
-            text: "❌ WebGL 빌드 실패"
-            blocks:
-              - type: section
-                text:
-                  type: mrkdwn
-                  text: |
-                    🔥 *${{ github.repository }}* 빌드 실패!
-                    📝 커밋: ${{ github.event.head_commit.message }}
-                    👤 작성자: ${{ github.actor }}
-                    🔗 <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|로그 확인>
+            {
+              "text": "❌ WebGL 빌드 실패",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🔥 *${{ github.repository }}* 빌드 실패!\n📝 커밋: ${{ github.event.head_commit.message }}\n👤 작성자: ${{ github.actor }}\n🔗 <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|로그 확인>\n🖊️ 원인 요약:\n${{ steps.fail_reason.outputs.summary }}"
+                  }
+                }
+              ]
+            }
