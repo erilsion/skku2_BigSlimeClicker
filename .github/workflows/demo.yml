@@ -56,21 +56,12 @@ jobs:
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAILL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
           buildProfile: "Assets/Settings/Build Profiles/Web - Desktop - Release.asset"
           customParameters: -logFile "$GITHUB_WORKSPACE/Editor.log"
-
-      # 3.1. 빌드 프로파일 파일 존재 여부 확인
-      - name: Inspect WebGL compression settings in files
-        run: |
-          echo "---- ProjectSettings.asset (grep webgl compression) ----"
-          grep -nEi "webgl.*compression|compressionFormat|decompressionFallback" ProjectSettings/ProjectSettings.asset || true
-
-          echo "---- Build Profile asset (grep compression) ----"
-          grep -nEi "compression|decompression" "Assets/Settings/Build Profiles/Web - Desktop - Release.asset" || true
       
       # 4. 빌드 결과물 업로드
       - name: Upload Build
@@ -123,43 +114,43 @@ jobs:
           } >> "$GITHUB_OUTPUT"
           
       # 8. 슬랙 알림 (성공)
-      #- name: Slack Notification (Success)
-       # if: success()
-        #uses: slackapi/slack-github-action@v2.1.1
-        #with:
-         # webhook: ${{ secrets.SLACK_WEBHOOK }}
-          #webhook-type: incoming-webhook
-          #payload: |
-            #{
-              #"text": "✅ WebGL 빌드 & 배포 성공",
-             # "blocks": [
-               # {
-                #  "type": "section",
-                 # "text": {
-                 #   "type": "mrkdwn",
-                 #   "text": "✅ *${{ github.repository }}* 빌드 & 배포 완료!\n📝 커밋: ${{ github.event.head_commit.message }}\n👤 작성자: ${{ github.actor }} (문경연)\n🌐 <https://erilsion.github.io/skku2_BigSlimeClicker/|플레이하기>"
-                 # }
-                #}
-              #]
-            #}
+      - name: Slack Notification (Success)
+        if: success()
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "✅ WebGL 빌드 & 배포 성공",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "✅ *${{ github.repository }}* 빌드 & 배포 완료!\n📝 커밋: ${{ github.event.head_commit.message }}\n👤 작성자: ${{ github.actor }} (문경연)\n🌐 <https://erilsion.github.io/skku2_BigSlimeClicker/|플레이하기>"
+                  }
+                }
+              ]
+            }
 
       # 9. 슬랙 알림 (실패)
-      #- name: Slack Notification (Failure)
-        #if: failure()
-        #uses: slackapi/slack-github-action@v2.1.1
-        #with:
-          #webhook: ${{ secrets.SLACK_WEBHOOK }}
-          #webhook-type: incoming-webhook
-          #payload: |
-            #{
-              #"text": "❌ WebGL 빌드 실패",
-              #"blocks": [
-                #{
-                  #"type": "section",
-                  #"text": {
-                    #"type": "mrkdwn",
-                    #"text": "🔥 *${{ github.repository }}* 빌드 실패!\n📝 커밋: ${{ github.event.head_commit.message }}\n👤 작성자: ${{ github.actor }}\n🔗 <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|로그 확인>\n🖊️ 원인 요약:\n${{ steps.fail_reason.outputs.summary }}"
-                  #}
-                #}
-              #]
-            #}
+      - name: Slack Notification (Failure)
+        if: failure()
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "❌ WebGL 빌드 실패",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🔥 *${{ github.repository }}* 빌드 실패!\n📝 커밋: ${{ github.event.head_commit.message }}\n👤 작성자: ${{ github.actor }}\n🔗 <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|로그 확인>\n🖊️ 원인 요약:\n${{ steps.fail_reason.outputs.summary }}"
+                  }
+                }
+              ]
+            }
