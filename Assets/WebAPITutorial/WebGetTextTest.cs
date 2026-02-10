@@ -18,8 +18,8 @@ public class WebGetTextTest : MonoBehaviour
         string result = await GetWebText("https://www.google.com/search?q=%EB%A7%88%EB%A6%AC%EC%98%A4&oq=%EB%A7%88%EB%A6%AC%EC%98%A4&gs_lcrp=EgZjaHJvbWUqEAgAEAAYgwEY4wIYsQMYgAQyEAgAEAAYgwEY4wIYsQMYgAQyDQgBEC4YgwEYsQMYgAQyBwgCEC4YgAQyBwgDEAAYgAQyBggEEAAYAzIHCAUQLhiABDIHCAYQLhiABDIKCAcQLhixAxiABDIHCAgQABiABDIHCAkQABiABNIBCDUyMDlqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8");
         Debug.Log(result);
 
-        // 서버에게 데이터 내놔 하는 작업은 비동기이므로 코루틴을 이용했다.
-        StartCoroutine(GetText());
+        // 서버에게 데이터 내놔 하는 작업은 비동기이므로 코루틴을 이용했다. -> 현업에서는 흠?
+        // StartCoroutine(GetText());
     }
 
     private async UniTask<string> GetWebText(string url)
