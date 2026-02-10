@@ -56,7 +56,7 @@ jobs:
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAILL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
@@ -84,6 +84,11 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
 
+        - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          path: AAA
+
       # 실패 원인 추출
       - name: Extract failure reason
         if: failure()
@@ -92,21 +97,25 @@ jobs:
         run: |
           LOG="$GITHUB_WORKSPACE/Editor.log"
 
-          echo "Unity log path: $LOG"
           if [ ! -f "$LOG" ]; then
-            echo "summary=Unity Editor.log not found at $LOG" >> "$GITHUB_OUTPUT"
+            {
+               echo "summary<<EOF"
+               echo "❌ Unity Editor.log를 찾을 수 없습니다."
+               echo "→ 라이선스, Docker, GitHub Runner 단계에서 실패했을 가능성이 큽니다."
+               echo "→ Actions 전체 로그를 확인해주세요."
+               echo "EOF"
+            } >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          # 최근 에러 메시지 20줄 추출
-          SUMMARY=$(grep -nE "error CS[0-7]+:|Exception:|Build failed|Scripts have compiler errors" "$LOG" | tail -n 20 || true)
+          SUMMARY=$(grep -nEi \
+          "error|exception|failed|exit code|Build failed|Scripts have compiler errors|IL2CPP|wasm-ld" \
+          "$LOG" | tail -n 30 || true)
 
-          # 에러 메시지가 없으면 마지막 80줄을 요약으로 사용
           if [ -z "$SUMMARY" ]; then
-            SUMMARY=$(tail -n 80 "$LOG" || true)
+            SUMMARY=$(tail -n 60 "$LOG" || true)
           fi
 
-          # 출력 설정
           {
             echo "summary<<EOF"
             echo "$SUMMARY"
