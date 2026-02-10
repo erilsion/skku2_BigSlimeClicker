@@ -1,51 +1,70 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using CsvHelper;
+using CsvHelper.Configuration;
+using CsvHelper.Configuration.Attributes;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class WebGetStudentCSVTest : MonoBehaviour
 {
-    private void Start()
+    private async void Start()
     {
-        ParseCSV();
-    }
+        // 일종 스펙(기획) 데이터
+        string result = await GetWebText("https://raw.githubusercontent.com/mongilteacher/skku2_script_study/refs/heads/main/students.csv");
+        result = result.TrimStart('\uFEFF'); // 맨 앞에 숨겨짓 문자 삭제
 
-    private void ParseCSV()
-    {
-        string path = Application.dataPath + "/WebAPITutorial/students.csv";
-        List<Person> people = new List<Person>();
-        // 1. 읽어온 CSV 파일을 파싱해서 (파싱 방법은 블로그 또는 llm 활용)
-        StreamReader reader = new StreamReader(path);
-        bool isFinished = false;
+        // CSV-Helper (어떻게 구현 되었는가보다 API 문서를 참고해서 잘 가져다 쓰자)
+        var config = new CsvConfiguration(CultureInfo.CurrentCulture);
+        var stringReader = new StringReader(result);
+        var csv = new CsvReader(stringReader, config);
 
-        // 2. Person 도메인 클래스에 넣고 people에 추가
-        while (isFinished == false)
+        List<Person> persons = new();
+        persons = csv.GetRecords<Person>().ToList();
+
+        foreach (Person p in persons)
         {
-            string data = reader.ReadLine();
-
-            // 더 이상 읽을 데이터가 없으면 종료
-            if (data == null)
-            {
-                isFinished = true;
-                break;
-            }
-
-            string[] splitData = data.Split(',');
-            Person person = new Person();
-
-            person.id = int.Parse(splitData[0]);
-            person.name = splitData[1];
-            person.age = int.Parse(splitData[2]);
-            people.Add(person);
-
-            // 3. List<Person> persons 순회하면서 출력
-            Debug.Log($"id: {person.id}, name: {person.name}, age: {person.age}");
+            Debug.Log(p);
         }
     }
 
-    public class Person
+    private async UniTask<string> GetWebText(string url)
     {
-        public int id;
-        public string name;
-        public int age;
+        var txt = (await UnityWebRequest.Get(url).SendWebRequest()).downloadHandler.text;
+        return txt;
+    }
+}
+
+public class Person
+{
+    [Name("id")]
+    public int Id { get; set; }
+
+    [Name("name")]
+    public string Name { get; set; }
+
+
+    [Name("age")]
+    public int Age { get; set; }
+
+    public Person()
+    {
+
+    }
+
+    public Person(int id, string name, int age)
+    {
+        Id = id;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        Age = age;
+    }
+
+    public override string ToString()
+    {
+        return $"Person(Id={Id}, Name={Name}, Age={Age})";
     }
 }
