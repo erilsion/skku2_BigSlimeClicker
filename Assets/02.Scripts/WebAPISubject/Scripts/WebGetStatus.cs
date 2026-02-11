@@ -1,59 +1,24 @@
 ﻿using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
 
-public class WebGetStatus : MonoBehaviour
+public class WebGetStatus
 {
     private const string API_KEY = "test_e3ff7acfde4849871d2d5c17a8b66c17028bbea2c0d0b370ab48a192b2fbf986efe8d04e6d233bd35cf2fabdeb93fb0d";
-    private MapleCharacter _character;
-    private MapleCharacterStat _characterStat;
 
-    [SerializeField] private TextMeshProUGUI _basicText;
-    [SerializeField] private TextMeshProUGUI _statText;
-    [SerializeField] private RawImage _characterImage;
-
-    private async void Start()
+    // 캐릭터 기본 정보를 웹에서 가져온다.
+    public async UniTask<MapleCharacter> GetCharacterInformation(string basicUrl)
     {
-        string basic = "https://open.api.nexon.com/maplestory/v1/character/basic?ocid=16b1a1f2502eea2a9fcf32c8eaa6b2ea";
-        string stat = "https://open.api.nexon.com/maplestory/v1/character/stat?ocid=16b1a1f2502eea2a9fcf32c8eaa6b2ea";
-        string basicResult = await GetWebText(basic);
-        string statResult = await GetWebText(stat);
-        _character = JsonUtility.FromJson<MapleCharacter>(basicResult);
-        string dateCreate = await PolishDataCreate(_character.character_date_create);
-        _characterStat = JsonUtility.FromJson<MapleCharacterStat>(statResult);
-        BindStatUI();
-        _characterImage.texture = await GetWebTexture(_character.character_image);
-        Debug.Log(basicResult);
-        Debug.Log(statResult);
-        _basicText.text =
-        $"캐릭터 이름: {_character.character_name}\n" +
-        $"서버: {_character.world_name}\n" +
-        $"성별: {_character.character_gender}\n" +
-        $"직업: {_character.character_class}\n" +
-        $"레벨: {_character.character_level}\n" +
-        $"길드: {_character.character_guild_name}\n" +
-        $"생성일자: {dateCreate}";
-        // _statText.text = ui 바인딩;
-    }
-
-    // 텍스트 데이터를 웹에서 가져온다.
-    private async UniTask<string> GetWebText(string url)
-    {
-        UnityWebRequest txt = UnityWebRequest.Get(url);
-        txt.SetRequestHeader("x-nxopen-api-key", API_KEY);
-        await txt.SendWebRequest();
-        return txt.downloadHandler.text;
+        string json = await GetWebText(basicUrl);
+        return JsonUtility.FromJson<MapleCharacter>(json);
     }
 
     // 캐릭터 이미지를 웹에서 가져온다.
-    private async UniTask<Texture> GetWebTexture(string json)
+    public async UniTask<Texture> GetCharacterTexture(string url)
     {
-        using var request = UnityWebRequestTexture.GetTexture(json);
+        using var request = UnityWebRequestTexture.GetTexture(url);
         await request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success)
@@ -65,70 +30,27 @@ public class WebGetStatus : MonoBehaviour
         return DownloadHandlerTexture.GetContent(request);
     }
 
-    // 생성 일자 정보에서 시간 정보를 제거한다.
-    private async UniTask<string> PolishDataCreate(string dateString)
+    // 캐릭터 세부 스탯 정보를 웹에서 가져온다.
+    public async UniTask<MapleCharacterStat> GetStatInformation(string statUrl)
     {
-        string rawDate = dateString;
-        string dateOnly = rawDate.Split('T')[0];
-        await UniTask.Yield();
-        return dateOnly;
+        string json = await GetWebText(statUrl);
+        return JsonUtility.FromJson<MapleCharacterStat>(json);
     }
 
-    // 세부 스탯 관련 UI 바인딩한다.
-    private void BindStatUI()
+    // URL으로 정보를 받아 string으로 전환해준다.
+    private async UniTask<string> GetWebText(string url)
     {
-        Dictionary<string, string> statDictionary = new Dictionary<string, string>();
+        using var txt = UnityWebRequest.Get(url);
+        txt.SetRequestHeader("x-nxopen-api-key", API_KEY);
+        await txt.SendWebRequest();
 
-        foreach (var stat in _characterStat.final_stat)
+        if (txt.result != UnityWebRequest.Result.Success)
         {
-            statDictionary[stat.stat_name] = stat.stat_value;
+            Debug.LogError(txt.error);
+            return null;
         }
 
-        _statText.text =
-            $"전투력 : {GetStatFormatted(statDictionary, "전투력")}\n" +
-            $"최소 공격력 : {GetStatFormatted(statDictionary, "최소 스탯공격력")}\n" +
-            $"최대 공격력 : {GetStatFormatted(statDictionary, "최대 스탯공격력")}\n\n" +
-
-            $"HP : {GetStatFormatted(statDictionary, "HP")}\n" +
-            $"MP : {GetStatFormatted(statDictionary, "MP")}\n\n" +
-
-            $"STR : {GetStatFormatted(statDictionary, "STR")}\n" +
-            $"DEX : {GetStatFormatted(statDictionary, "DEX")}\n" +
-            $"INT : {GetStatFormatted(statDictionary, "INT")}\n" +
-            $"LUK : {GetStatFormatted(statDictionary, "LUK")}\n\n" +
-
-            $"보스 데미지 : {GetStat(statDictionary, "보스 몬스터 데미지")}%\n" +
-            $"방무 : {GetStat(statDictionary, "방어율 무시")}%\n" +
-            $"크확 : {GetStat(statDictionary, "크리티컬 확률")}%\n" +
-            $"크뎀 : {GetStat(statDictionary, "크리티컬 데미지")}%";
-    }
-
-    // 천 단위 구분기호를 추가하여 포맷팅된 문자열을 반환한다.
-    private string GetStatFormatted(Dictionary<string, string> dictionary, string key)
-    {
-        if (!dictionary.TryGetValue(key, out string value))
-        {
-            return "0";
-        }
-
-        if (long.TryParse(value, out long number))
-        {
-            if (number < 1000)
-            {
-                return number.ToString();
-            }
-            else
-            {
-                return number.ToString("N0");
-            }
-        }
-        return value;
-    }
-
-    // 키에 해당하는 스탯 값을 반환한다. 없으면 "0"을 반환한다.
-    private string GetStat(Dictionary<string, string> dict, string key)
-    {
-        return dict.TryGetValue(key, out var value) ? value : "0";
+        return txt.downloadHandler.text;
     }
 
     // 캐릭터 기본 정보와 관련된 클래스이다.
