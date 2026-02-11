@@ -37,9 +37,15 @@ public class MapleCharacterUI : MonoBehaviour
             return;
         }
 
-        _characterImage.texture = data.Texture;
+        BindImageUI(data.Texture);
         BindBasicUI(data.Basic);
         BindStatUI(data.Stat);
+    }
+
+    private void BindImageUI(Texture texture)
+    {
+        _characterImage.texture = texture;
+        _characterImage.color = Color.white;
     }
 
     // 생성 일자 정보에서 시간 정보를 제거하고 UI에 바인딩한다.
