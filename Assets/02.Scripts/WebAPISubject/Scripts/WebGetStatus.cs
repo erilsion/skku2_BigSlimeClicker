@@ -1,12 +1,20 @@
 ﻿using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class WebGetStatus
 {
     private const string API_KEY = "test_e3ff7acfde4849871d2d5c17a8b66c17028bbea2c0d0b370ab48a192b2fbf986efe8d04e6d233bd35cf2fabdeb93fb0d";
+
+    public async Task<string> GetOcid(string ocidUrl)
+    {
+        string json = await GetWebText(ocidUrl);
+        MapleOcid data = JsonUtility.FromJson<MapleOcid>(json);
+        return data.ocid;
+    }
 
     // 캐릭터 기본 정보를 웹에서 가져온다.
     public async UniTask<MapleCharacter> GetCharacterInformation(string basicUrl)
@@ -16,9 +24,9 @@ public class WebGetStatus
     }
 
     // 캐릭터 이미지를 웹에서 가져온다.
-    public async UniTask<Texture> GetCharacterTexture(string url)
+    public async UniTask<Texture> GetCharacterTexture(string imageUrl)
     {
-        using var request = UnityWebRequestTexture.GetTexture(url);
+        using var request = UnityWebRequestTexture.GetTexture(imageUrl);
         await request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success)
@@ -89,5 +97,11 @@ public class WebGetStatus
     {
         public string stat_name;
         public string stat_value;
+    }
+
+    [System.Serializable]
+    public class MapleOcid
+    {
+        public string ocid;
     }
 }

@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using static WebGetStatus;
 
@@ -8,24 +11,57 @@ public class MapleCharacterUI : MonoBehaviour
 {
     private WebGetStatus _mapleAPI = new WebGetStatus();
 
+    [Header("캐릭터 이름 입력창")]
+    [SerializeField] private TMP_InputField _characterNameInput;
+    [SerializeField] private Button _searchButton;
+
+    [Header("캐릭터 정보 출력창")]
     [SerializeField] private TextMeshProUGUI _basicText;
     [SerializeField] private TextMeshProUGUI _statText;
     [SerializeField] private RawImage _characterImage;
 
+    private string _ocid;
     private MapleCharacter _character;
     private MapleCharacterStat _characterStat;
 
-    private const string BASIC_URL = "https://open.api.nexon.com/maplestory/v1/character/basic?ocid=16b1a1f2502eea2a9fcf32c8eaa6b2ea";
-    private const string STAT_URL = "https://open.api.nexon.com/maplestory/v1/character/stat?ocid=16b1a1f2502eea2a9fcf32c8eaa6b2ea";
+    private const string OCID_URL =
+    "https://open.api.nexon.com/maplestory/v1/id?character_name={0}";
 
-    private async void Start()
+    private const string BASIC_URL =
+    "https://open.api.nexon.com/maplestory/v1/character/basic?ocid={0}";
+
+    private const string STAT_URL =
+    "https://open.api.nexon.com/maplestory/v1/character/stat?ocid={0}";
+
+    public async void LoadCharacter()
     {
-        _character = await _mapleAPI.GetCharacterInformation(BASIC_URL);
-        _characterStat = await _mapleAPI.GetStatInformation(STAT_URL);
+        _ocid = await CheckOcid();
+
+        string basicUrl = string.Format(BASIC_URL, _ocid);
+        string statUrl = string.Format(STAT_URL, _ocid);
+
+        _character = await _mapleAPI.GetCharacterInformation(basicUrl);
+        _characterStat = await _mapleAPI.GetStatInformation(statUrl);
         _characterImage.texture = await _mapleAPI.GetCharacterTexture(_character.character_image);
 
         BindBasicUI();
         BindStatUI();
+    }
+
+    // 캐릭터 이름으로 OCID를 조회한다.
+    private async UniTask<string> CheckOcid()
+    {
+        string characterName = UnityWebRequest.EscapeURL(_characterNameInput.text);
+
+        string ocidUrl = string.Format(OCID_URL, characterName);
+        string ocid = await _mapleAPI.GetOcid(ocidUrl);
+
+        if (string.IsNullOrEmpty(ocid))
+        {
+            Debug.LogError("캐릭터 정보가 올바르지 않습니다.");
+            return null;
+        }
+        return ocid;
     }
 
     // 생성 일자 정보에서 시간 정보를 제거하고 UI에 바인딩한다.
