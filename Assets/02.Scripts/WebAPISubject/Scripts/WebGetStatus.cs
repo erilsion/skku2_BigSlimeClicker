@@ -41,6 +41,7 @@ public class WebGetStatus : MonoBehaviour
         // _statText.text = ui 바인딩;
     }
 
+    // 텍스트 데이터를 웹에서 가져온다.
     private async UniTask<string> GetWebText(string url)
     {
         UnityWebRequest txt = UnityWebRequest.Get(url);
@@ -49,6 +50,7 @@ public class WebGetStatus : MonoBehaviour
         return txt.downloadHandler.text;
     }
 
+    // 캐릭터 이미지를 웹에서 가져온다.
     private async UniTask<Texture> GetWebTexture(string json)
     {
         using var request = UnityWebRequestTexture.GetTexture(json);
@@ -63,6 +65,7 @@ public class WebGetStatus : MonoBehaviour
         return DownloadHandlerTexture.GetContent(request);
     }
 
+    // 생성 일자 정보에서 시간 정보를 제거한다.
     private async UniTask<string> PolishDataCreate(string dateString)
     {
         string rawDate = dateString;
@@ -71,22 +74,28 @@ public class WebGetStatus : MonoBehaviour
         return dateOnly;
     }
 
+    // 세부 스탯 관련 UI 바인딩한다.
     private void BindStatUI()
     {
         Dictionary<string, string> statDictionary = new Dictionary<string, string>();
 
         foreach (var stat in _characterStat.final_stat)
+        {
             statDictionary[stat.stat_name] = stat.stat_value;
+        }
 
         _statText.text =
-            $"전투력 : {GetStat(statDictionary, "전투력")}\n" +
-            $"최소 공격력 : {GetStat(statDictionary, "최소 스탯공격력")}\n" +
-            $"최대 공격력 : {GetStat(statDictionary, "최대 스탯공격력")}\n\n" +
+            $"전투력 : {GetStatFormatted(statDictionary, "전투력")}\n" +
+            $"최소 공격력 : {GetStatFormatted(statDictionary, "최소 스탯공격력")}\n" +
+            $"최대 공격력 : {GetStatFormatted(statDictionary, "최대 스탯공격력")}\n\n" +
 
-            $"INT : {GetStat(statDictionary, "INT")}\n" +
-            $"STR : {GetStat(statDictionary, "STR")}\n" +
-            $"DEX : {GetStat(statDictionary, "DEX")}\n" +
-            $"LUK : {GetStat(statDictionary, "LUK")}\n\n" +
+            $"HP : {GetStatFormatted(statDictionary, "HP")}\n" +
+            $"MP : {GetStatFormatted(statDictionary, "MP")}\n\n" +
+
+            $"STR : {GetStatFormatted(statDictionary, "STR")}\n" +
+            $"DEX : {GetStatFormatted(statDictionary, "DEX")}\n" +
+            $"INT : {GetStatFormatted(statDictionary, "INT")}\n" +
+            $"LUK : {GetStatFormatted(statDictionary, "LUK")}\n\n" +
 
             $"보스 데미지 : {GetStat(statDictionary, "보스 몬스터 데미지")}%\n" +
             $"방무 : {GetStat(statDictionary, "방어율 무시")}%\n" +
@@ -94,11 +103,35 @@ public class WebGetStatus : MonoBehaviour
             $"크뎀 : {GetStat(statDictionary, "크리티컬 데미지")}%";
     }
 
+    // 천 단위 구분기호를 추가하여 포맷팅된 문자열을 반환한다.
+    private string GetStatFormatted(Dictionary<string, string> dictionary, string key)
+    {
+        if (!dictionary.TryGetValue(key, out string value))
+        {
+            return "0";
+        }
+
+        if (long.TryParse(value, out long number))
+        {
+            if (number < 1000)
+            {
+                return number.ToString();
+            }
+            else
+            {
+                return number.ToString("N0");
+            }
+        }
+        return value;
+    }
+
+    // 키에 해당하는 스탯 값을 반환한다. 없으면 "0"을 반환한다.
     private string GetStat(Dictionary<string, string> dict, string key)
     {
         return dict.TryGetValue(key, out var value) ? value : "0";
     }
 
+    // 캐릭터 기본 정보와 관련된 클래스이다.
     [Serializable]
     public class MapleCharacter
     {
@@ -118,6 +151,7 @@ public class WebGetStatus : MonoBehaviour
         public string liberation_quest_clear;
     }
 
+    // 캐릭터 세부 스탯과 관련된 클래스이다.
     [Serializable]
     public class MapleCharacterStat
     {
@@ -127,6 +161,7 @@ public class WebGetStatus : MonoBehaviour
         public int remain_ap;
     }
 
+    // 최종 스탯은 배열 형태로 되어 있는 정보라 별도 클래스로 분리했다.
     [Serializable]
     public class MapleFinalStat
     {
