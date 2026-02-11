@@ -11,8 +11,12 @@ public class MapleCharacterUI : MonoBehaviour
 
     [Header("캐릭터 정보 출력창")]
     [SerializeField] private TextMeshProUGUI _basicText;
-    [SerializeField] private TextMeshProUGUI _statText;
+    [SerializeField] private TextMeshProUGUI _statText1;
+    [SerializeField] private TextMeshProUGUI _statText2;
     [SerializeField] private RawImage _characterImage;
+
+    private float _textPositionX = 360f;
+    string _positionTag => $"<pos={_textPositionX}px>";
 
     private MapleCharacterInformation _mapleAPI = new MapleCharacterInformation();
 
@@ -58,6 +62,7 @@ public class MapleCharacterUI : MonoBehaviour
             $"서버: {data.world_name}\n" +
             $"성별: {data.character_gender}\n" +
             $"직업: {data.character_class}\n" +
+            $"전직: {data.character_class_level}차\n" +
             $"레벨: {data.character_level}\n" +
             $"길드: {data.character_guild_name}\n" +
             $"생성일자: {dateOnly}";
@@ -73,7 +78,7 @@ public class MapleCharacterUI : MonoBehaviour
             statDictionary[stat.stat_name] = stat.stat_value;
         }
 
-        _statText.text =
+        _statText1.text =
             $"전투력 : {GetStatFormatted(statDictionary, "전투력")}\n" +
             $"최소 공격력 : {GetStatFormatted(statDictionary, "최소 스탯공격력")}\n" +
             $"최대 공격력 : {GetStatFormatted(statDictionary, "최대 스탯공격력")}\n\n" +
@@ -86,10 +91,26 @@ public class MapleCharacterUI : MonoBehaviour
             $"INT : {GetStatFormatted(statDictionary, "INT")}\n" +
             $"LUK : {GetStatFormatted(statDictionary, "LUK")}\n\n" +
 
+            $"공격력: {GetStatFormatted(statDictionary, "공격력")}\n" +
+            $"마력 : {GetStatFormatted(statDictionary, "마력")}\n" +
+            $"방어력 : {GetStatFormatted(statDictionary, "방어력")}";
+
+        _statText2.text =
+            $"데미지 : {GetStat(statDictionary, "데미지")}%\n" +
+            $"일반 데미지 : {GetStat(statDictionary, "일반 몬스터 데미지")}%\n" +
             $"보스 데미지 : {GetStat(statDictionary, "보스 몬스터 데미지")}%\n" +
-            $"방무 : {GetStat(statDictionary, "방어율 무시")}%\n" +
-            $"크확 : {GetStat(statDictionary, "크리티컬 확률")}%\n" +
-            $"크뎀 : {GetStat(statDictionary, "크리티컬 데미지")}%";
+            $"최종 데미지 : {GetStat(statDictionary, "최종 데미지")}%\n\n" +
+
+            $"방어율 무시 : {GetStat(statDictionary, "방어율 무시")}%\n" +
+            $"크리티컬 확률 : {GetStat(statDictionary, "크리티컬 확률")}%\n" +
+            $"크리티컬 데미지 : {GetStat(statDictionary, "크리티컬 데미지")}%\n\n" +
+
+            $"이동 속도 : {GetStatFormatted(statDictionary, "이동속도")}\n" +
+            $"점프력 : {GetStatFormatted(statDictionary, "점프력")}\n\n" +
+
+            $"스타포스 : {GetStatFormatted(statDictionary, "스타포스")}\n" +
+            $"아케인포스 : {GetStatFormatted(statDictionary, "아케인포스")}\n" +
+            $"어센틱포스 : {GetStatFormatted(statDictionary, "어센틱포스")}";
     }
 
     // 천 단위 구분기호를 추가하여 포맷팅된 문자열을 반환한다.
