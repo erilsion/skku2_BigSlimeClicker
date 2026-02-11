@@ -33,6 +33,17 @@ public class MapleCharacterUI : MonoBehaviour
     private const string STAT_URL =
     "https://open.api.nexon.com/maplestory/v1/character/stat?ocid={0}";
 
+    private void Start()
+    {
+        // 입력창에서 Enter키를 누르면 검색 버튼이 클릭되도록 설정한다. (InputField의 onSubmit 이벤트 활용)
+        _characterNameInput.onSubmit.AddListener(OnSubmit);
+    }
+
+    private void OnSubmit(string value)
+    {
+        _searchButton.onClick.Invoke();
+    }
+
     public async void LoadCharacter()
     {
         _ocid = await CheckOcid();
