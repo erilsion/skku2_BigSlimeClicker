@@ -15,9 +15,6 @@ public class MapleCharacterUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _statText2;
     [SerializeField] private RawImage _characterImage;
 
-    private float _textPositionX = 360f;
-    string _positionTag => $"<pos={_textPositionX}px>";
-
     private MapleCharacterInformation _mapleAPI = new MapleCharacterInformation();
 
     private void Start()
