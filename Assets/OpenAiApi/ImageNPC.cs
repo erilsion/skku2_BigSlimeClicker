@@ -31,7 +31,7 @@ public class ImageNPC : MonoBehaviour
             );
 
         // 3. 요청을 보내고 응답을 받는다.
-        var results = await api.ImagesEndPoint.GenerateImageAsync(request);
-        _displayImage.texture = results[0].Texture;
+        // var results = await api.ImagesEndPoint.GenerateImageAsync(request);  // <- 이 때 토큰이 사용된다.
+        // _displayImage.texture = results[0].Texture;
     }
 }
